@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:44:15 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 11:48:13 by pgober           ###   ########.fr       */
+/*   Updated: 2023/12/14 13:23:27 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ void	ft_putnbr_fd(int n, int fd);
 // additional
 void	free_and_null(void *alloc);
 int		abs(int i);
+void	search_and_replace(char *str, char *a, char *o);
 
 #endif
