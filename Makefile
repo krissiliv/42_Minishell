@@ -1,20 +1,20 @@
 RM := rm -rf
 
 NAME := minishell
-FT_PRINTFNAME := ./ft_printf/libftprintf.a
+LIBFTNAME := ./libft/libft.a
 
 LDFLAGS = -Lminilibx-linux -L ./libft -lmlx -lXext -lX11 -lm
 
-.PHONY: all clean fclean re ft_printf
+.PHONY: all clean fclean re libft
 
 all: $(NAME)
 
 clean:
-	cd ft_printf && $(MAKE) clean
+	cd libft && $(MAKE) clean
 	$(RM) $(OBJS)
 
 fclean: clean
-	cd ft_printf && $(MAKE) fclean
+	cd libft && $(MAKE) fclean
 	$(RM) $(NAME)
 
 re: fclean all 
@@ -30,9 +30,9 @@ OBJS = $(SRCS:.c=.o)
 %.o: %.c
 	$(COMPILE) -c $< -o $@
 
-$(FT_PRINTFNAME):
-	cd ft_printf && $(MAKE) all
+$(LIBFTNAME):
+	cd libft && $(MAKE) all
 
 ${NAME}: ${OBJS}
-	@${MAKE} -C ./ft_printf --no-print-directory
-	@${CC} ${CFLAGS} ${OBJS} $(FT_PRINTFNAME) -o ${NAME} $(LDFLAGS)
+	@${MAKE} -C ./libft --no-print-directory
+	@${CC} ${CFLAGS} ${OBJS} $(LIBFTNAME) -o ${NAME} $(LDFLAGS)
