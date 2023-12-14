@@ -1,0 +1,103 @@
+C Library Functions:
+
+***printf
+Prototype: int printf(const char *format, ...);
+Purpose: Outputs formatted data to the console. The format string controls the output, and additional arguments provide values to be formatted.
+Return Value: Number of characters printed or a negative value if an error occurs.
+
+***malloc
+Prototype: void *malloc(size_t size);
+Purpose: Allocates a block of memory on the heap of the specified size in bytes.
+Return Value: A pointer to the allocated memory or NULL if the allocation fails.
+
+***free
+Prototype: void free(void *ptr);
+Purpose: Deallocates the memory block pointed to by ptr, which must have been previously allocated with malloc, calloc, or realloc.
+Return Value: None.
+
+***strerror
+Prototype: char *strerror(int errnum);
+Purpose: Returns a pointer to the textual representation of the current errno value (errnum).
+Return Value: A pointer to the error message string.
+
+***perror
+Prototype: void perror(const char *s);
+Purpose: Prints a description for the last error that occurred, optionally preceded by the string s.
+Return Value: None.
+
+***exit
+Prototype: void exit(int status);
+Purpose: Terminates the program with the specified exit status.
+Return Value: None.
+System Calls:
+
+***read
+Prototype: ssize_t read(int fd, void *buf, size_t count);
+Purpose: Reads up to count bytes from the file descriptor fd into the buffer buf.
+Return Value: The number of bytes read or -1 on error.
+
+***write
+Prototype: ssize_t write(int fd, const void *buf, size_t count);
+Purpose: Writes up to count bytes from the buffer buf to the file descriptor fd.
+Return Value: The number of bytes written or -1 on error.
+
+***open
+Prototype: int open(const char *pathname, int flags, mode_t mode);
+Purpose: Opens or creates a file with the specified pathname, flags, and access permissions (mode).
+Return Value: A file descriptor or -1 on error.
+
+***close
+Prototype: int close(int fd);
+Purpose: Closes the file descriptor fd.
+Return Value: 0 on success, -1 on error.
+
+***fork
+Prototype: pid_t fork(void);
+Purpose: Creates a new process by duplicating the calling process.
+Return Value: In the parent, the process ID of the child; in the child, 0; on error, -1.
+
+***wait
+Prototype: pid_t wait(int *status);
+Purpose: Waits for any child process to terminate and retrieves the exit status.
+Return Value: The process ID of the terminated child or -1 on error.
+
+***execve
+Prototype: int execve(const char *pathname, char *const argv[], char *const envp[]);
+Purpose: Executes a program specified by pathname with arguments argv and environment variables envp.
+Return Value: Only returns on error, -1 is returned.
+
+***signal
+Prototype: void (*signal(int signum, void (*handler)(int)))(int);
+Purpose: Sets a signal handler function for the specified signal signum.
+Return Value: A pointer to the previous handler function or SIG_ERR on error.
+Terminal-related Functions:
+
+***readline
+Prototype: char *readline(const char *prompt);
+Purpose: Reads a line from the user with an optional prompt and adds it to the readline history.
+Return Value: A pointer to the line read or NULL on EOF or error.
+
+***rl_clear_history
+Prototype: void rl_clear_history(void);
+Purpose: Clears the history list used by the readline library.
+Return Value: None.
+
+***rl_on_new_line
+Prototype: void rl_on_new_line(void);
+Purpose: Indicates that the prompt has moved to a new line.
+Return Value: None.
+
+***rl_replace_line
+Prototype: void rl_replace_line(const char *text, int clear_undo);
+Purpose: Replaces the contents of the line buffer with the specified text.
+Return Value: None.
+
+***rl_redisplay
+Prototype: void rl_redisplay(void);
+Purpose: Redraws the current input line in the terminal.
+Return Value: None.
+
+***add_history
+Prototype: void add_history(const char *line);
+Purpose: Adds a line to the history list used by the readline library.
+Return Value: None.
