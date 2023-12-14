@@ -1,19 +1,13 @@
 C Library Functions:
 
 ***printf
-Prototype: int printf(const char *format, ...);
-Purpose: Outputs formatted data to the console. The format string controls the output, and additional arguments provide values to be formatted.
-Return Value: Number of characters printed or a negative value if an error occurs.
-
 ***malloc
-Prototype: void *malloc(size_t size);
-Purpose: Allocates a block of memory on the heap of the specified size in bytes.
-Return Value: A pointer to the allocated memory or NULL if the allocation fails.
-
 ***free
-Prototype: void free(void *ptr);
-Purpose: Deallocates the memory block pointed to by ptr, which must have been previously allocated with malloc, calloc, or realloc.
-Return Value: None.
+***exit
+***read
+***write
+***open
+***close
 
 ***strerror
 Prototype: char *strerror(int errnum);
@@ -24,32 +18,6 @@ Return Value: A pointer to the error message string.
 Prototype: void perror(const char *s);
 Purpose: Prints a description for the last error that occurred, optionally preceded by the string s.
 Return Value: None.
-
-***exit
-Prototype: void exit(int status);
-Purpose: Terminates the program with the specified exit status.
-Return Value: None.
-System Calls:
-
-***read
-Prototype: ssize_t read(int fd, void *buf, size_t count);
-Purpose: Reads up to count bytes from the file descriptor fd into the buffer buf.
-Return Value: The number of bytes read or -1 on error.
-
-***write
-Prototype: ssize_t write(int fd, const void *buf, size_t count);
-Purpose: Writes up to count bytes from the buffer buf to the file descriptor fd.
-Return Value: The number of bytes written or -1 on error.
-
-***open
-Prototype: int open(const char *pathname, int flags, mode_t mode);
-Purpose: Opens or creates a file with the specified pathname, flags, and access permissions (mode).
-Return Value: A file descriptor or -1 on error.
-
-***close
-Prototype: int close(int fd);
-Purpose: Closes the file descriptor fd.
-Return Value: 0 on success, -1 on error.
 
 ***fork
 Prototype: pid_t fork(void);

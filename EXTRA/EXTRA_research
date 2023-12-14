@@ -1,0 +1,33 @@
+Your shell must implement the following builtins:
+______________________________________________
+◦ echo with option -n
+echo														outputs the strings that are passed to it as arguments followed by  new line
+echo -n 													does the same but without newline in the end (Zeilenumbruch Unterdrückung)
+echo \														echos from stdin (whatever you write there after the > )
+echo $PATH													echos the PATH variable from envv - funktioniert auch mit "$PWD"
+
+echo and print are more or less the same. They are both used to output data to the screen. The differences are small - echo has no return value.
+
+_______________ - NICHT ZU MACHEN
+rot="\033[31m" 
+echo -e "${rot}Roter Text"									diese Kombi führt dazu, dass die cmdline tatsächlich rot wird
+weis="\033[37m"
+echo -e "${weis}"											change back to white
+_______________
+______________________________________________
+◦ cd with only a relative or absolute path
+
+______________________________________________
+◦ pwd with no options
+
+______________________________________________
+◦ export with no options
+
+______________________________________________
+◦ unset with no options
+
+______________________________________________
+◦ env with no options or arguments
+
+______________________________________________
+◦ exit with no options
