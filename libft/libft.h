@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:36:38 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 14:44:33 by pgober           ###   ########.fr       */
+/*   Updated: 2023/12/14 15:39:50 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,10 @@ typedef struct s_list
 	void			*data;
 }	t_list;
 
+// from Piscine
+int		ft_strcmp(char *s1, char *s2);
+void	ft_print_program_name(int argc, char *argv[]);
+
 // these were never checked
 void	free_and_null(void *alloc);
 int		abs(int i);
@@ -76,5 +80,6 @@ t_list	*create_linked_list(int listlen, int *elements);
 // void	prntlist(t_list *head);
 void	free_listnode(t_list *pos);
 void	ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)());
+int		wordcount(char *str);
 
 #endif
