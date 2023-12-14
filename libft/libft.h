@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/04 19:44:15 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 13:23:27 by pgober           ###   ########.fr       */
+/*   Created: 2023/12/14 14:36:38 by pgober            #+#    #+#             */
+/*   Updated: 2023/12/14 14:44:33 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,20 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 // additional
+
+typedef struct s_list
+{
+	struct s_list	*next;
+	void			*data;
+}	t_list;
+
+// these were never checked
 void	free_and_null(void *alloc);
 int		abs(int i);
 void	search_and_replace(char *str, char *a, char *o);
+t_list	*create_linked_list(int listlen, int *elements);
+// void	prntlist(t_list *head);
+void	free_listnode(t_list *pos);
+void	ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)());
 
 #endif
