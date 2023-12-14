@@ -24,7 +24,7 @@ COMPILER_FLAGS = -Wall -Wextra -Werror -g
 HEADERS = -I .
 COMPILE = $(CC) $(COMPILER_FLAGS) $(HEADERS) 
 
-SRCS = minishell.c
+SRCS = minishell.c minishell_utils.c
 OBJS = $(SRCS:.c=.o)
 
 %.o: %.c
