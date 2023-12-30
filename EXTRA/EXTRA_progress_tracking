@@ -1,0 +1,6 @@
+
+When you run make you can compile the program f.e. with
+./minishell _testfile cat "wc -l" out
+as it is still pipex.
+
+As this is working I will make a new branch now to try out somw stuff.
