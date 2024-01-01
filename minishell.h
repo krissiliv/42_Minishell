@@ -34,10 +34,20 @@ typedef struct s_alloc
 	int		status;
 }	t_alloc;
 
-void	free_strstr(char **str);
-void	free_everything(t_alloc *mallcd);
+// cmd finder
 char	**get_paths(char **envv);
 char	*find_path(char *cmd, char **envv, t_alloc *mallcd);
+
+// error
 int		error_handling(int *pipe_ends, int err_code, t_alloc *mallcd, bool pp);
+
+//input check
+
+//finish
+void	free_strstr(char **str);
+void	free_everything(t_alloc *mallcd);
+
+//pipex
+int	pipex(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd);
 
 #endif

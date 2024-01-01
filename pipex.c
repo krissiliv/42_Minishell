@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	execute(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
+static int	execute(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
 {
 	mallcd->cmd = ft_split(argv[mallcd->cmdnum], ' ');
 	if (!mallcd->cmd)
@@ -30,7 +30,7 @@ int	execute(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
 	return (free_everything(mallcd), 0);
 }
 
-int	child1(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
+static int	child1(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
 {
 	int	infile;
 
@@ -51,7 +51,7 @@ int	child1(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
 	exit (execute(pipe_ends, argv, envv, mallcd));
 }
 
-int	child2(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
+static int	child2(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
 {
 	int	outfile;
 
@@ -98,20 +98,4 @@ int	pipex(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd)
 	waitpid(mallcd->pid1, NULL, 0);
 	waitpid(mallcd->pid2, &(mallcd->status), 0);
 	return (free_everything(mallcd), WEXITSTATUS(mallcd->status));
-}
-
-int	main(int argc, char **argv, char **envv)
-{
-	int		pipe_ends[2];
-	t_alloc	mallcd;
-
-	if (argc != 5 || (argc == 5 && !(argv[1][0])))
-		return (error_handling(pipe_ends, 8, NULL, false));
-	mallcd.cmd = NULL;
-	mallcd.poss_paths = NULL;
-	mallcd.cmdpath = NULL;
-	mallcd.poss_path = NULL;
-	if (pipe(pipe_ends) == -1)
-		return (error_handling(pipe_ends, 9, NULL, false));
-	return (pipex(pipe_ends, argv, envv, &mallcd));
 }
