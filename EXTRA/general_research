@@ -18,3 +18,10 @@ program_1 ; program_2 ; program_3       program sequencing to run program_2 as s
 program_name &                          to run program in the background
 (program_1 ; program_2) | program_3     parser also recognizes parenthesis to do grouping
 
+_____
+so for executing a program we have a
+parsecmd - which is a revursive descent parser
+and a 
+runcmd - which walks through the tree recursively
+        and executes the nodes
+        and creates a child process as required
