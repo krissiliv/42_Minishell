@@ -20,8 +20,21 @@ program_name &                          to run program in the background
 
 _____
 so for executing a program we have a
-parsecmd - which is a revursive descent parser
+parsecmd - which is a recursive descent parser 
 and a 
 runcmd - which walks through the tree recursively
         and executes the nodes
         and creates a child process as required
+    
+_____recursive descent parser
+https://www.youtube.com/watch?v=SToUyjAsaFk&list=PLGU1kcPKHMKj5yA0RPb5AK4QAhexmQwrW&index=19
+Input is  sequence of tokens - (a token in that sense is one string in *argv[])
+Idea is to make each cmd a node which has the command variables as subnodes
+f.e. echo is the node and $PWD is the subnode
+or cat is the node and myfile.txt is the subnode
+
+when parsing we should check if the parsed string is/contains a
+"
+|
+$
+<
