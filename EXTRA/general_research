@@ -1,0 +1,20 @@
+bash is the language that runs in most terminals
+shell is the original bash (is also a language)
+shell is one step above the kernel and tells the kernel what to do
+
+echo $0         shows you which language you are running (f.e. /bin/zsh or bash)
+
+____a shell works like this basically:
+*print a prompt
+*read a line
+*parsing building a tree representation
+* execute and loops back to print a prompt
+
+____commands that you can give to a shell:
+program_name -options filename          provide options to program
+program_name < infile > outfile         (input/output redirection for stdin and stdout)
+program_1 | program_2 | program_3       pipe output of one program into the input of another program
+program_1 ; program_2 ; program_3       program sequencing to run program_2 as soon as program_1 complets
+program_name &                          to run program in the background
+(program_1 ; program_2) | program_3     parser also recognizes parenthesis to do grouping
+
