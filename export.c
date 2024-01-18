@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   exporting.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* export passes environment variables to other processes*/
+/* exporting passes environment variables to other processes*/
 
 #include "minishell.h"
 
@@ -70,7 +70,7 @@ static int	check_exist_var(t_env *env_list, char *input)
 	return (1);
 }
 
-int	export(t_env **env_list, char *input, t_alloc *mllcd)
+int	exporting(t_env **env_list, char *input, t_alloc *mllcd)
 {
 	if (!input[0])
 	{

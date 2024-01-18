@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:50:43 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 10:28:28 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:39:05 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	builtins(char *cmd)
 		pwd();
 	if (!ft_strncmp("env", cmd, 3))
 		env();
-	if (!ft_strncmp("export", cmd, 6))
-		export();
+	if (!ft_strncmp("exporting", cmd, 6))
+		exporting();
 	if (!ft_strncmp("unset", cmd, 5))
 		unset();
 	if (!ft_strncmp("exit", cmd, 4))
