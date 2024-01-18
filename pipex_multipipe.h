@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 15:50:41 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 16:33:42 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct s_pipex_m
 	int		compil_res;
 	int		status;
 	int		pipenum; // later this should come from s_input_parsing
-	int		*pipe_ends;
 }	t_pipex_m;
 
 // cmd finder
