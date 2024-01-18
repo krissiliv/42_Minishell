@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:25:24 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 14:43:50 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/05 09:46:32 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,6 @@ void	ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)())
 		pos = pos->next;
 	}
 }
-
-// void prntlist(t_list *head)
-// {
-//     t_list *pos;
-
-//     pos = head;
-//     while (pos != NULL) //print original list
-//     {
-//         printf("%d", *((int*)(pos->data))); 
-// 			//have to fix datatype as "int" again
-//         if (pos->next != NULL)
-//             printf(" -> ");
-//         pos = pos->next;
-//     }
-// }
 
 // int main(void)
 // {

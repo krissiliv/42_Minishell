@@ -1,0 +1,55 @@
+Your shell must implement the following builtins:
+
+(!)that means, we ONLY have to code this functions - the rest of the functions can be executed using execve (like in pipex)
+◦ echo with option -n
+◦ cd with only a relative or absolute path
+◦ pwd with no options
+◦ export with no options
+◦ unset with no options
+◦ env with no options or arguments
+◦ exit with no options
+
+______________________________________________
+◦ echo with option -n
+echo														outputs the strings that are passed to it as arguments followed by  new line
+echo -n 													does the same but without newline in the end (Zeilenumbruch Unterdrückung)
+echo \														echos from stdin (whatever you write there after the > )
+echo $PATH													echos the PATH variable from envv - funktioniert auch mit "$PWD"
+
+echo and print are more or less the same. 
+They are both used to output data to the screen. 
+When you set a $ sign in frot of a text, 
+echo will interpret it as a variable.
+Else it will be interpreted as a text.
+The differences are small - echo has no return value.
+
+_______________
+https://www.youtube.com/watch?v=9ZpL8iDU7LY&list=PLGU1kcPKHMKj5yA0RPb5AK4QAhexmQwrW&index=8
+
+can also define variable by typing:
+mynewvar="Hello"
+echo $mynewvar                                              should always use lowercase letters to define a new variable to prevent overwriting the global variables (as they are always written in uppercase letters)
+
+_______________ - NICHT ZU MACHEN
+rot="\033[31m" 
+echo -e "${rot}Roter Text"									diese Kombi führt dazu, dass die cmdline tatsächlich rot wird
+weis="\033[37m"
+echo -e "${weis}"											change back to white
+_______________
+______________________________________________
+◦ cd with only a relative or absolute path
+
+______________________________________________
+◦ pwd with no options
+
+______________________________________________
+◦ export with no options
+
+______________________________________________
+◦ unset with no options
+
+______________________________________________
+◦ env with no options or arguments
+
+______________________________________________
+◦ exit with no options

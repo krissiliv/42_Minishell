@@ -102,7 +102,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		i++;
 	}
 	trstr[i - strstart] = '\0';
-	return (trstr);
+	return (free((char *)s1), trstr);
 }
 
 /*int main(void)

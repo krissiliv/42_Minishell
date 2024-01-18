@@ -1,0 +1,21 @@
+
+token = 
+
+
+
+***What does a lexer do?
+A lexer is the part of an interpreter that turns a sequence of characters (plain text) 
+into a sequence of tokens. A parser, in turn, takes a sequence of tokens and produces 
+an abstract syntax tree (AST) of a language. 
+The rules by which a parser operates are usually specified by a formal grammar.
+
+
+_____________Exkurs:
+why would I need an abstract syntax tree for minishell?
+
+An abstract syntax tree is not necessarily a list but can also be a table (I think)
+
+so is it possible to run execve("/usr/bin/", (char *[]){grep, h, randomfile, |, wc, -l}?
+Bc if it was then we do not need the ast..
+
+No, directly passing a pipeline with commands and pipes as arguments to execve won't work. The execve system call is designed to execute a single command, not a sequence of commands with pipes.

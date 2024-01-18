@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:12:30 by pgober            #+#    #+#             */
-/*   Updated: 2023/09/13 11:59:02 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/03 15:29:10 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@ static int	count_words(char *str, char c)
 	int	i;
 	int	wcnt;
 
-	wcnt = 1;
-	if (str[0] == c)
-		wcnt = 0;
+	if (!str)
+		return (0);
+	wcnt = 0;
+	if (str[0] != c)
+		wcnt++;
 	if (str[0] == '\0')
 		return (0);
 	i = 0;
-	while (str[i] != '\0')
+	while (str[i + 1])
 	{
-		if (str[i - 1] != c && str[i] == c)
+		if (str[i] == c && str[i + 1] != c)
 			wcnt++;
 		i++;
 	}
-	if (str[i - 1] == c)
-		wcnt--;
 	return (wcnt);
 }
 
@@ -99,10 +99,10 @@ char	**ft_split(char const *s, char c)
 
     words = ft_split(str, c);
     wcnt = 0;
-	//printf("%d", count_words(str, c));
+	//printf("%d words:\n", count_words(str, c));
     while (wcnt < count_words(str, c))
 	{
-		printf("%s\n", words[wcnt++]);
+		printf("%s\n", words[wcnt]);
         free(words[wcnt++]);
 	}
 	free(words);

@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:36:38 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 15:39:50 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/05 09:56:10 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,19 @@ void	free_and_null(void *alloc);
 int		abs(int i);
 void	search_and_replace(char *str, char *a, char *o);
 t_list	*create_linked_list(int listlen, int *elements);
-// void	prntlist(t_list *head);
+void	prntlist_int(t_list *head);
 void	free_listnode(t_list *pos);
 void	ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)());
 int		wordcount(char *str);
+
+typedef struct s_charlist
+{
+	struct s_charlist	*next;
+	char				*data;
+}	t_charlist;
+
+void	prntlist_char(t_charlist *head);
+void	free_strstr(char **str);
+void	free_intarr(int **arr, int number);
 
 #endif

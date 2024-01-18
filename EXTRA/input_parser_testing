@@ -1,0 +1,54 @@
+
+RANDOM TESTS:
+echo $SHELL hello my world $PWD                                                  // tested and OK
+grep < _testfile \"r\" > out                                                    //tested and OK
+grep "ho" _testfile > out
+grep "ho" < _testfile > out
+
+
+FIXED:
+THERE IS A DIFFERENCE CONCERNING THE OUTPUT FOR THE FOLLOWING CMDS:
+wc -l _testfile     2                   This command uses input redirection (<) 
+                                        to provide the contents of the file (testfile) 
+                                        to the wc command.
+wc -l < _testfile   2 _testfile         This command takes the file (testfile) 
+                                        as an argument directly, without using input redirection.
+________________________________________
+
+COMPLEX TESTS
+grep -n "!< infile" | cat ' hello ' | ls < "  xx infile!" randomfile > out        //tested and OK
+
+________________________________________
+THINGS THAT ARE EQUIVALENT:
+< _testfile cat | wc -l > out			                                                //tested and OK
+=
+cat _testfile | wc -l > out			                                                    //tested and OK
+=
+cat < _testfile | wc -l > out			                                                    //tested and OK
+=
+"cat" < _testfile | "wc" -l > out                                                      //tested and OK
+
+
+THINGS THAT DO NOT WORK IN BASH:
+< _testfile | cat | wc -l > out		                 implemented too much
+cat | wc -l < _testfile
+cat | wc -l <_testfile > out
+"cat" < _testfile | "wc -l" > out
+"cat < _testfile" | "wc -l" > out
+etc
+________________________________________
+
+THINGS THAT WORK:
+ls > out			                                                                   //tested and OK
+=
+ls < _testfile > out            // _testfile ignored in that case			               //tested and OK
+
+ls -l > out			               			               			                   //tested and OK
+=
+ls -l  < _testfile > out        // infile ignored in that case			               //tested and OK
+
+cat < _testfile > out           //this works			                               //tested and OK
+
+THINGS THAT DO NOT WORK IN BASH:
+ls | > out
+cat _testfile | out

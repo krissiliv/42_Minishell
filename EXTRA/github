@@ -1,0 +1,10 @@
+git add  ~files that you want to add to main"
+git commit -m "pias commit 2.0"
+git log --->look for hash of commit you want to push to ain
+git cherry-pick ~hash~
+
+vs code window was opened, rightclick on conflickting files
+stage file 
+keep their version
+git commit -m "pia's commit 2.0"
+git push

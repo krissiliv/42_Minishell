@@ -1,0 +1,15 @@
+What are heredocs?
+
+cat >> _testfile       redirects input in append mode
+cat << x               reads input until delimiter x is found
+                       when delimiter is found it executes the function 
+                       also, it saves the read string line by line
+
+cat << o | cat > out
+
+
+THIS DOESN''T WORK:
+cat << h < _testfile >> out
+cat << x < _testfile
+cat _testfile << x
+cat _testfile <<x

@@ -6,47 +6,82 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 12:57:56 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/05 14:50:58 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_strstr(char **str)
+void	free_cmd_table(t_input_parsing *in_pars) //parsing
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	if (str)
+	if (in_pars->cmd_table)
 	{
-		while (str[i])
-			free(str[i++]);
-		free(str);
+		while (i <= in_pars->pipenum)
+		{
+			if (in_pars->cmd_table[i])
+			{
+				j = 0;
+				printf("freeing cmd_table[%d]: [%s, %s, %s, %s, %s] \n", i, in_pars->cmd_table[i][0], in_pars->cmd_table[i][1], in_pars->cmd_table[i][2], in_pars->cmd_table[i][3], in_pars->cmd_table[i][4]);
+				while (j <= 4)
+				{	
+					if (in_pars->cmd_table[i][j])
+						free_and_null((void *)in_pars->cmd_table[i][j]);
+					j++;
+				}
+				free_and_null((void *)in_pars->cmd_table[i]);
+			}
+			i++;
+		}
+		free_and_null((void *)in_pars->cmd_table);
 	}
 }
 
-void	free_everything(t_alloc *mallcd)
+void	general_free_all(char **m_argv)
 {
-	if (!mallcd)
+	rl_clear_history();
+	free_strstr(m_argv);
+}
+
+void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
+{
+	int	i;
+	
+	if (!pipex_m)
 		return ;
-	if (mallcd->cmd)
+	i = 0;
+	if (pipe_ends)
 	{
-		free_strstr(mallcd->cmd);
-		mallcd->cmd = NULL;
+		while (i < pipex_m->cmdnum)
+		{
+			close (pipe_ends[i][0]);
+			close (pipe_ends[i][1]);
+			i++;
+		}
+		i = 0;
+		free_intarr(pipe_ends, pipex_m->pipenum);
 	}
-	if (mallcd->poss_paths)
+	if (pipex_m->cmd)
 	{
-		free_strstr(mallcd->poss_paths);
-		mallcd->poss_paths = NULL;
+		free_strstr(pipex_m->cmd);
+		pipex_m->cmd = NULL;
 	}
-	if (mallcd->cmdpath)
+	if (pipex_m->poss_paths)
 	{
-		free(mallcd->cmdpath);
-		mallcd->cmdpath = NULL;
+		free_strstr(pipex_m->poss_paths);
+		pipex_m->poss_paths = NULL;
 	}
-	if (mallcd->poss_path)
+	if (pipex_m->cmdpath)
 	{
-		free(mallcd->poss_path);
-		mallcd->poss_path = NULL;
+		free(pipex_m->cmdpath);
+		pipex_m->cmdpath = NULL;
+	}
+	if (pipex_m->poss_path)
+	{
+		free(pipex_m->poss_path);
+		pipex_m->poss_path = NULL;
 	}
 }

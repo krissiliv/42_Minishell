@@ -1,0 +1,29 @@
+ 
+ ___________________________________________________________________________________________________________
+***for "readline", the following leaks are ok acc to: 
+https://stackoverflow.com/questions/55196451/gnu-readline-enormous-memory-leak
+and
+https://cboard.cprogramming.com/c-programming/136521-memory-leak-readline.html
+
+    ==427569== 28,784 bytes in 7 blocks are still reachable in loss record 63 of 63
+    ==427569==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+    ==427569==    by 0x4AE6BAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x4AC3251: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x4AC3B6A: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x4AD499E: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x4AD4B6C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x4ACEA38: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x4ACECD4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+    ==427569==    by 0x401E94: read_input_print_prompt (print_prompt.c:20)
+    ==427569==    by 0x401257: main (main.c:29)
+    ==427569== 
+    ==427569== LEAK SUMMARY:
+    ==427569==    definitely lost: 0 bytes in 0 blocks
+    ==427569==    indirectly lost: 0 bytes in 0 blocks
+    ==427569==      possibly lost: 0 bytes in 0 blocks
+    ==427569==    still reachable: 208,205 bytes in 222 blocks
+    ==427569==         suppressed: 0 bytes in 0 blocks
+    ==427569== 
+    ==427569== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+___________________________________________________________________________________________________________
