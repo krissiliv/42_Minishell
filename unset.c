@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:02:57 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 13:54:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:32:46 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ int	unset_one(t_env **env_list, char *input, t_alloc *mllcd)
 	}
 }
 
-int unset(t_env **env_list, char **cmd, t_alloc *mllcd)
+int unset(char **cmd, t_alloc *mllcd)
 {
 	int	i;
 
 	i = 0;
 	while (cmd[++i])
 	{
-		if (unset_one(env_list, cmd[i], mllcd))
+		if (unset_one((t_env **)&mllcd->env_list, cmd[i], mllcd))
 			return (1);
 	}
 	return (0);

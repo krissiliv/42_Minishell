@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:53:45 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:14:40 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int find_dollar_sign(char *str, int starting_pt)
 	return (-1);
 }
 
-static char	*find_envvar_value(char *envvar, char **envv)
+char	*find_envvar_value(char *envvar, char **envv)
 {
 	int		i;
 

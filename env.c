@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:22:39 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 13:37:17 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:22:15 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static void prntlist(t_env *head)
     }
 }
 
-int	env(t_env *env_list, t_alloc *mllcd)
+int	env(t_alloc *mllcd)
 {
-	prntlist(env_list);
+	prntlist(&mllcd->env_list);
 	mllcd->exit_status = 0;
 	return (0);
 }

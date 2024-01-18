@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:15:24 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:32:34 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 typedef struct	s_env
 {
 	char			*env_var;
+	bool			malloced;
 	struct s_env	*next;
 }	t_env;
 
@@ -58,6 +59,7 @@ void    init_simple_cmd(t_pipex_m *simple_cmd);
 int		run_simple_cmd(t_alloc *mllcd, char **envv);
 
 // expander
+char	*find_envvar_value(char *envvar, char **envv);
 int     expander(char **input_str, char **envv);
 
 // heredocs
@@ -76,11 +78,11 @@ int		get_env(char **envv, t_env *head);
 
 //built-ins:
 int		echo(char **cmd, t_alloc *mllcd);
-int		cd(char *path, int argc, t_env *env_list, t_alloc *mllcd);
+int		cd(char *path, int argc, t_alloc *mllcd);
 int		pwd(t_alloc *mllcd);
-int		env(t_env *env_list, t_alloc *mllcd);
-int		exporting(t_env **env_list, char **cmd, t_alloc *mllcd);
-int		unset(t_env **env_list, char **cmd, t_alloc *mllcd);
+int		env(t_alloc *mllcd);
+int		exporting(char **cmd, t_alloc *mllcd);
+int		unset(char **cmd, t_alloc *mllcd);
 int		exiting(t_alloc *mllcd, char *input, int argc);
 
 //atoi for exit builtin

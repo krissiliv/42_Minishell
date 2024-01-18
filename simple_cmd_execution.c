@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:25:19 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:20:11 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static int	simple_execute(t_alloc *mllcd, char **envv)
 
 	if (simple_execute_interpreter(mllcd->in_pars.cmd_table, &cmd))
 		return (1);
+	// if (builtins(cmd, mllcd))
+	
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 		cmdpath = cmd[0]; //try if this command is right here

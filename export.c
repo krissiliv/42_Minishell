@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:03:21 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 13:46:38 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:31:32 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	check_exist_var(t_env *env_list, char *input)
 	return (1);
 }
 
-static int	export_one(t_env **env_list, char *input, t_alloc *mllcd)
+static int	export_one(char *input, t_alloc *mllcd)
 {
 	if (!input[0])
 	{
@@ -84,8 +84,8 @@ static int	export_one(t_env **env_list, char *input, t_alloc *mllcd)
 			mllcd->exit_status = 1;
 			return (1);
 		}
-		else if (check_exist_var(*env_list, input) == 1)
-			ft_lstadd_front(env_list, ft_new_node(input));
+		else if (check_exist_var(&mllcd->env_list, input) == 1)
+			ft_lstadd_front((t_env **)&mllcd->env_list, ft_new_node(input));
 	}
 	else
 		printf("\n");
@@ -93,14 +93,14 @@ static int	export_one(t_env **env_list, char *input, t_alloc *mllcd)
 	return (0);
 }
 
-int	exporting(t_env **env_list, char **cmd, t_alloc *mllcd)
+int	exporting(char **cmd, t_alloc *mllcd)
 {
 	int	i;
 
 	i = 0;
 	while (cmd[++i]) // ++ to jump over first one (which is "export")
 	{
-		if (export_one(env_list, cmd[i], mllcd))
+		if (export_one(cmd[i], mllcd))
 			return (1);
 	}
 	return (0);
