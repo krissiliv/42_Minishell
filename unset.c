@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:02:57 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/17 19:06:43 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:54:11 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unset(t_env **env_list, char *input, t_alloc *mllcd)
+int	unset_one(t_env **env_list, char *input, t_alloc *mllcd)
 {
 	t_env	*head;
 	t_env	*temp;
@@ -36,4 +36,17 @@ int	unset(t_env **env_list, char *input, t_alloc *mllcd)
 		mllcd->exit_status = 0;
 		return (0);
 	}
+}
+
+int unset(t_env **env_list, char **cmd, t_alloc *mllcd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[++i])
+	{
+		if (unset_one(env_list, cmd[i], mllcd))
+			return (1);
+	}
+	return (0);
 }

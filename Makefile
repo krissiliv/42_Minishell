@@ -3,8 +3,6 @@ RM := rm -rf
 NAME := minishell
 LIBFTNAME := ./libft/libft.a
 
-LDFLAGS = -Lminilibx-linux -L ./libft -lXext -lX11 -lm
-
 .PHONY: all clean fclean re libft
 
 all: $(NAME)

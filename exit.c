@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 11:02:28 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:06:57 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 static void	exit_program(t_alloc *mallcd)
 {
 	// close all fds;
-	free_everything(mallcd);
+	//free_everything(mallcd);
 	exit(mallcd->exit_status);
 }
 
@@ -36,15 +38,20 @@ static int	validate_input(char *input)
 	return (0);
 }
 
-int	exit(t_alloc mallcd, char *input)
+int	exiting(t_alloc *mllcd, char *input, int argc)
 {
+	if (argc != 2)
+	{
+		ft_putstr_fd("exit: too many arguments", 2);
+		mllcd->exit_status = 1;
+	}
 	if (validate_input(input) == 1)
 	{
 		ft_putstr_fd("exit: numeric argument required", 2);
-		mallcd.exit_status = 2;
+		mllcd->exit_status = 2;
 	}
 	if (input)
-		mallcd.exit_status = ft_atoi_minishell(input);
-	exit_program(mallcd);
+		mllcd->exit_status = ft_atoi_minishell(input);
+	exit_program(mllcd);
 	return (0);
 }

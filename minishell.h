@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 13:46:49 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 14:06:40 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int		cd(char *path, int argc, t_env *env_list, t_alloc *mllcd);
 int		pwd(t_alloc *mllcd);
 int		env(t_env *env_list, t_alloc *mllcd);
 int		exporting(t_env **env_list, char **cmd, t_alloc *mllcd);
-int		unset(t_env **env_list, char *input, t_alloc *mllcd);
-int		exit(t_alloc mallcd, char *input);
+int		unset(t_env **env_list, char **cmd, t_alloc *mllcd);
+int		exiting(t_alloc *mllcd, char *input, int argc);
 
 //atoi for exit builtin
 int		is_num(char str);

@@ -11,7 +11,7 @@ static int  count_cmd_args(char **cmd)
     return (i - 1);
 }
 
-static int	builtins(char **cmd, t_alloc *mllcd, t_env *env_list)
+static void	builtins(char **cmd, t_alloc *mllcd, t_env *env_list)
 {
 	if (!ft_strncmp("echo", cmd[0], 4))
 		echo(cmd, mllcd);
@@ -22,11 +22,11 @@ static int	builtins(char **cmd, t_alloc *mllcd, t_env *env_list)
 	if (!ft_strncmp("env", cmd[0], 3))
 		env(env_list, mllcd);
 	if (!ft_strncmp("exporting", cmd[0], 6))
-		exporting(&env_list, cmd, mllcd);
+		exporting(&env_list, cmd, mllcd); // should have no dollar signs
 	if (!ft_strncmp("unset", cmd[0], 5))
-		unset();
+		unset(&env_list, cmd, mllcd);
 	if (!ft_strncmp("exit", cmd[0], 4))
-		exit();
+		exiting(mllcd, cmd[1], count_cmd_args(cmd));
 }
 
 static int preparing_minishell(char **envv, t_input_parsing *in_pars, t_alloc *mllcd)

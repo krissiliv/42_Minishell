@@ -78,7 +78,7 @@ static int	simple_execute(char ***cmd_table, char **envv, t_pipex_m *simple_cmd)
 		return (ft_putstr_fd("Pipex-Error: cmd not found.\n", 2), 1);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
 		return (ft_putstr_fd("Pipex-Error: Access to cmdpath denied\n", 2), 1);
-
+	
 	if (execve(cmdpath, cmd, envv) == -1)
 		return (ft_putstr_fd("Pipex-Error: No such process!\n", 2), 3);
 	return (ft_putstr_fd("Something went wrong", 2), 0);

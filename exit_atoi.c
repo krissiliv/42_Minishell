@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_atoi.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:57:46 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 11:02:18 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:57:03 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ static int	is_space(char str)
 	return (0);
 }
 
-static int	is_num(char str)
+int	is_num(char str)
 {
 	if ('0' <= str && str <= '9')
 		return (1);
 	return (0);
 }
 
-static int	is_pm(char str)
+int	is_pm(char str)
 {
 	if (str == '+' || str == '-')
 		return (1);
