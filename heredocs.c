@@ -1,53 +1,53 @@
 
 #include "minishell.h"
 
-static int process_cmd(char **envv, t_input_parsing *in_pars, t_pipex_m *simple_cmd)
+static int process_cmd(char **envv, t_alloc *mllcd)
 {
 	int	c;
 
-	simple_cmd->cmd = ft_split(in_pars->cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
-	if (!simple_cmd->cmd)
+	mllcd->simple_cmd->cmd = ft_split(mllcd->in_pars->cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+	if (!mllcd->simple_cmd->cmd)
 		return (1);
 	c = 0; // now remove "" from everywhere
-	while (simple_cmd->cmd[c] && c < 6)
+	while (mllcd->simple_cmd->cmd[c] && c < 6)
 	{
-		if (simple_cmd->cmd[c] && simple_cmd->cmd[c][0] == '\"')
-			simple_cmd->cmd[c] = ft_strtrim(simple_cmd->cmd[c], "\"");
-		else if (simple_cmd->cmd[c] && simple_cmd->cmd[c][0] == '\'')
-			simple_cmd->cmd[c] = ft_strtrim(simple_cmd->cmd[c], "\'");
+		if (mllcd->simple_cmd->cmd[c] && mllcd->simple_cmd->cmd[c][0] == '\"')
+			mllcd->simple_cmd->cmd[c] = ft_strtrim(mllcd->simple_cmd->cmd[c], "\"");
+		else if (mllcd->simple_cmd->cmd[c] && mllcd->simple_cmd->cmd[c][0] == '\'')
+			mllcd->simple_cmd->cmd[c] = ft_strtrim(mllcd->simple_cmd->cmd[c], "\'");
 		c++;
 	}
 
 	printf("cmd = ["); // PRINTING FOR DEBUGGING
 	int i = -1;
-	while (simple_cmd->cmd[++i])
-		printf("%s,", simple_cmd->cmd[i]);
+	while (mllcd->simple_cmd->cmd[++i])
+		printf("%s,", mllcd->simple_cmd->cmd[i]);
 	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
-	simple_cmd->cmdpath = pipex_find_cmd_path(simple_cmd->cmd[0], envv, simple_cmd);
-	free_strstr(simple_cmd->poss_paths);
-	free(simple_cmd->poss_path);
-	if (simple_cmd->cmdpath == NULL)
-		simple_cmd->cmdpath = simple_cmd->cmd[0];
-	if (access(simple_cmd->cmdpath, F_OK) != 0)
-		return (free(simple_cmd->cmdpath), free_strstr(simple_cmd->cmd), ft_putstr_fd("Pipex-Error: Cmdpath could not be found.\n", 2), 127);
-	if (access(simple_cmd->cmdpath, F_OK) == 0 && access(simple_cmd->cmdpath, X_OK) != 0)
-		return (free(simple_cmd->cmdpath), free_strstr(simple_cmd->cmd), ft_putstr_fd("Pipex-Error: Access to cmdpath denied\n", 2), 1);
+	mllcd->simple_cmd->cmdpath = pipex_find_cmd_path(mllcd->simple_cmd->cmd[0], envv, mllcd->simple_cmd);
+	free_strstr(mllcd->simple_cmd->poss_paths);
+	free(mllcd->simple_cmd->poss_path);
+	if (mllcd->simple_cmd->cmdpath == NULL)
+		mllcd->simple_cmd->cmdpath = mllcd->simple_cmd->cmd[0];
+	if (access(mllcd->simple_cmd->cmdpath, F_OK) != 0)
+		return (free(mllcd->simple_cmd->cmdpath), free_strstr(mllcd->simple_cmd->cmd), ft_putstr_fd("Pipex-Error: Cmdpath could not be found.\n", 2), 127);
+	if (access(mllcd->simple_cmd->cmdpath, F_OK) == 0 && access(mllcd->simple_cmd->cmdpath, X_OK) != 0)
+		return (free(mllcd->simple_cmd->cmdpath), free_strstr(mllcd->simple_cmd->cmd), ft_putstr_fd("Pipex-Error: Access to cmdpath denied\n", 2), 1);
 	return (0);
 }
 
-static int	execute_cmd(char **envv, int *pipe_ends,t_input_parsing *in_pars, t_pipex_m *simple_cmd)
+static int	execute_cmd(char **envv, int *pipe_ends,t_alloc *mllcd)
 {
-	if (process_cmd(envv, in_pars, simple_cmd))
-		return (free_strstr(in_pars->m_argv), free_cmd_table(in_pars), 1);
-	if (execve(simple_cmd->cmdpath, simple_cmd->cmd, envv) == -1)
-		return (free_strstr(in_pars->m_argv), free_cmd_table(in_pars), 1);
-	free_strstr(in_pars->m_argv);
-	free_cmd_table(in_pars);
-	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(simple_cmd, &pipe_ends), 0);
+	if (process_cmd(envv, mllcd))
+		return (free_strstr(mllcd->in_pars->m_argv), free_cmd_table(mllcd->in_pars), 1);
+	if (execve(mllcd->simple_cmd->cmdpath, mllcd->simple_cmd->cmd, envv) == -1)
+		return (free_strstr(mllcd->in_pars->m_argv), free_cmd_table(mllcd->in_pars), 1);
+	free_strstr(mllcd->in_pars->m_argv);
+	free_cmd_table(mllcd->in_pars);
+	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(mllcd->simple_cmd, &pipe_ends), 0);
 }
 
-static void	child(int *pipe_ends, t_input_parsing *in_pars)
+static void	child(int *pipe_ends, t_alloc *mllcd)
 {
 	char	*gnl;
 
@@ -55,7 +55,7 @@ static void	child(int *pipe_ends, t_input_parsing *in_pars)
 	while (1) // input reading until delimiter
 	{
 		gnl = readline("> ");
-		if (ft_strcmp(gnl, in_pars->cmd_table[0][3]) == 0)
+		if (ft_strcmp(gnl, mllcd->in_pars->cmd_table[0][3]) == 0)
 			break;
 		ft_putstr_fd(gnl, pipe_ends[1]); //made pipe_ends[1] to stdout
 		ft_putstr_fd("\n", pipe_ends[1]);
@@ -65,9 +65,9 @@ static void	child(int *pipe_ends, t_input_parsing *in_pars)
 	exit(0);
 }
 
-static int	parent(char **envv, int *pipe_ends, t_input_parsing *in_pars, t_pipex_m *simple_cmd)
+static int	parent(char **envv, int *pipe_ends, t_alloc *mllcd)
 {
-	wait(&simple_cmd->status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
+	wait(&mllcd->simple_cmd->status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
 	close(pipe_ends[1]); // close writing end of pipe
 	dup2(pipe_ends[0], 0);
 	// line = get_next_line(pipe_ends[0]); // made pipe_ends[0] to stdin
@@ -78,36 +78,36 @@ static int	parent(char **envv, int *pipe_ends, t_input_parsing *in_pars, t_pipex
 	// 	line = get_next_line(pipe_ends[0]);
 	// }
 	close(pipe_ends[0]);
-	execute_cmd(envv, pipe_ends, in_pars, simple_cmd);
-	free_strstr(in_pars->m_argv);
-	free_cmd_table(in_pars);
-	if (WEXITSTATUS(simple_cmd->status) == 1)
+	execute_cmd(envv, pipe_ends, mllcd);
+	free_strstr(mllcd->in_pars->m_argv);
+	free_cmd_table(mllcd->in_pars);
+	if (WEXITSTATUS(mllcd->simple_cmd->status) == 1)
 		return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
-	return (WEXITSTATUS(simple_cmd->status));
+	return (WEXITSTATUS(mllcd->simple_cmd->status));
 
 }
 
-int	handle_heredocs(char **envv, t_input_parsing *in_pars, t_pipex_m *simple_cmd)
+int	handle_heredocs(char **envv, t_alloc *mllcd)
 {
 	int	c;
 	int	pid;
 	int	pipe_ends[2];
 
-	init_simple_cmd(simple_cmd);
+	init_simple_cmd(mllcd->simple_cmd);
 	c = pipe(pipe_ends);
 	if (c == -1)
 		exit (1);
 	pid = fork();
 	if (pid == 0)
 	{
-		child(pipe_ends, in_pars);
-		free(simple_cmd->cmdpath);
-		free_strstr(simple_cmd->cmd);
+		child(pipe_ends, mllcd);
+		free(mllcd->simple_cmd->cmdpath);
+		free_strstr(mllcd->simple_cmd->cmd);
 	}
 	else
 	{
-		c = parent(envv, pipe_ends, in_pars, simple_cmd);
-		return (free(simple_cmd->cmdpath), free_strstr(simple_cmd->cmd), c);
+		c = parent(envv, pipe_ends, mllcd);
+		return (free(mllcd->simple_cmd->cmdpath), free_strstr(mllcd->simple_cmd->cmd), c);
 	}
 	return (0);
 

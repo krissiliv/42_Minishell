@@ -29,7 +29,7 @@ static void	builtins(char **cmd, t_alloc *mllcd, t_env *env_list)
 		exiting(mllcd, cmd[1], count_cmd_args(cmd));
 }
 
-static int preparing_minishell(char **envv, t_input_parsing *in_pars, t_alloc *mllcd)
+static int preparing_minishell(char **envv, t_alloc *mllcd)
 {
 	char    *input_str;
 
@@ -39,12 +39,12 @@ static int preparing_minishell(char **envv, t_input_parsing *in_pars, t_alloc *m
         return (1);
     printf("input_str expanded: %s\n", input_str);
 
-    if (cmdline_input_parser(in_pars, input_str))
+    if (cmdline_input_parser(mllcd->in_pars, input_str))
         return (1);
     free(input_str);
     int i = -1;
-    while (i++ < in_pars->m_argc)
-        printf("m_argv[%d] = %s\n", i, in_pars->m_argv[i]);
+    while (i++ < mllcd->in_pars->m_argc)
+        printf("m_argv[%d] = %s\n", i, mllcd->in_pars->m_argv[i]);
 
     mllcd->exit_status = 0;
     return (0);
@@ -53,24 +53,22 @@ static int preparing_minishell(char **envv, t_input_parsing *in_pars, t_alloc *m
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 int main(int argc, char **argv, char **envv)
 {
-	t_input_parsing	in_pars;
-    t_pipex_m	    simple_cmd;
     int             retval;
     t_alloc         mllcd;
 
     retval = 0;
     while (1)
     {
-        if (preparing_minishell(envv, &in_pars, &mllcd))
+        if (preparing_minishell(envv, &mllcd))
             return (1);
-        if (in_pars.cmd_table[0][3])
-            handle_heredocs(envv, &in_pars, &simple_cmd);
-        else if (in_pars.pipenum > 0)
-            retval = run_pipex_multipipe(in_pars, argc, argv, envv);
+        if (mllcd.in_pars->cmd_table[0][3])
+            handle_heredocs(envv, &mllcd);
+        else if (mllcd.in_pars->pipenum > 0)
+            retval = run_pipex_multipipe(&mllcd, argc, argv, envv);
         else
-            retval = run_simple_cmd(&in_pars, &simple_cmd, envv);
-        free_strstr(in_pars.m_argv);
-        free_cmd_table(&in_pars);
+            retval = run_simple_cmd(&mllcd, envv);
+        free_strstr(mllcd.in_pars->m_argv);
+        free_cmd_table(mllcd.in_pars);
     }
     return (retval);
 }

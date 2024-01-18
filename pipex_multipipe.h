@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_pipex.h                                  :+:      :+:    :+:   */
+/*   pipex_multipipe.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/05 14:38:21 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:19:29 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_MULTIPIPE_H
 # define PIPEX_MULTIPIPE_H
 
+#include "minishell.h"
 typedef struct s_pipex_m
 {
 	char	**cmd;
@@ -38,9 +39,9 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends);
 
 //pipex multipipe
 int		pipex_init(int *pipe_ends, int argc, char **argv, t_pipex_m *pipex_m);
-int		pipex(int **pipe_ends, char ***cmd_table, char **envv, t_pipex_m *pipex_m);
+int		pipex(int **pipe_ends, t_alloc *mllcd, char **envv);
 
 // pipex multipipe interpreter
-int		run_pipex_multipipe(t_input_parsing in_pars, int argc, char **argv, char **envv);
+int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv, char **envv)
 
 #endif

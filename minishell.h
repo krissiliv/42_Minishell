@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 14:18:22 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:09:02 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,7 @@
 # include "input_parser.h"
 # include "pipex_multipipe.h"
 
-
-// PIA
-//print prompt
-char	*read_input_print_prompt(void);
-
-//finish
-void	free_cmd_table(t_input_parsing *in_pars);
-void	general_free_all(char **m_argv);
-
-// simple cmd execution
-void    init_simple_cmd(t_pipex_m *simple_cmd);
-int	    run_simple_cmd(t_input_parsing *in_pars, t_pipex_m *simple_cmd, char **envv);
-
-// expander
-int     expander(char **input_str, char **envv);
-
-// heredocs
-int    handle_heredocs(char **envv, t_input_parsing *in_pars, t_pipex_m *simple_cmd);
-
-
-// NASTYA
+//NASTYA
 // stored environment
 typedef struct	s_env
 {
@@ -65,6 +45,26 @@ typedef struct s_alloc
 	int		exit_status; //put it in a global struct
 }	t_alloc;
 
+// PIA
+//print prompt
+char	*read_input_print_prompt(void);
+
+//finish
+void	free_cmd_table(t_input_parsing *in_pars);
+void	general_free_all(char **m_argv);
+
+// simple cmd execution
+void    init_simple_cmd(t_pipex_m *simple_cmd);
+int		run_simple_cmd(t_alloc *mllcd, char **envv);
+
+// expander
+int     expander(char **input_str, char **envv);
+
+// heredocs
+int		handle_heredocs(char **envv, t_alloc *mllcd);
+
+
+// NASTYA
 //store environment
 int		get_env(char **envv, t_env *head);
 

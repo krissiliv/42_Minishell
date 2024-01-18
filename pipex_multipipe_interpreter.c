@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_interpreter.c                                :+:      :+:    :+:   */
+/*   pipex_multipipe_interpreter.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:06:55 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/04 15:35:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:19:17 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_pipex_multipipe(t_input_parsing in_pars, int argc, char **argv, char **envv)
+int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv, char **envv)
 {
-	t_pipex_m	pipex_m;
 	int		**pipe_ends; // 1 pipe
 	int		i;
 
@@ -25,10 +24,10 @@ int	run_pipex_multipipe(t_input_parsing in_pars, int argc, char **argv, char **e
 	//this command works -leak -proof  cat _testfile | wc -l > out
 	//let's try the command cat _testfile | wc -l | cat >out   vs   cat _testfile | wc -l | wc -l >out
 	// char	***cmd_table;
-	// pipex_m.pipenum = 2; 
-	// cmd_table = (char ***)malloc((pipex_m.pipenum + 1) * 2 * sizeof(char *)); // 2 for (each pipenum + 1) ----> +1 as we start counting from 0
+	// mllcd->pipex_m->pipenum = 2; 
+	// cmd_table = (char ***)malloc((mllcd->pipex_m->pipenum + 1) * 2 * sizeof(char *)); // 2 for (each pipenum + 1) ----> +1 as we start counting from 0
 	// i = 0;
-	// while (i <= pipex_m.pipenum) // 2 commands
+	// while (i <= mllcd->pipex_m->pipenum) // 2 commands
 	// {
 	// 	cmd_table[i] = (char **)malloc(2 * sizeof(char *));
 	// 	i++;
@@ -41,10 +40,10 @@ int	run_pipex_multipipe(t_input_parsing in_pars, int argc, char **argv, char **e
 	// cmd_table[2][1] = "out"; // changes position of this to be cmd_table[i][2]
 	// the above will be defined in parser and set to NULL if they are not specified in cmd
 
-    pipex_m.pipenum = in_pars.pipenum;
-	pipe_ends = (int **)malloc(2 * pipex_m.pipenum * sizeof(int)); //2 pipe ends per pipe
+    mllcd->pipex_m->pipenum = mllcd->in_pars->pipenum;
+	pipe_ends = (int **)malloc(2 * mllcd->pipex_m->pipenum * sizeof(int)); //2 pipe ends per pipe
 	i = 0;
-	while (i < pipex_m.pipenum)
+	while (i < mllcd->pipex_m->pipenum)
 	{
 		pipe_ends[i] = (int *)malloc(2 * sizeof(int));
 		i++;
@@ -52,21 +51,21 @@ int	run_pipex_multipipe(t_input_parsing in_pars, int argc, char **argv, char **e
 	// if (argc != 5 || (argc == 5 && !(argv[1][0])))
 	// 	return (pipex_error_handling(NULL, 0, 8, NULL, false));
 	i = 0;
-	pipex_m.cmd = NULL;
-	pipex_m.poss_paths = NULL;
-	pipex_m.cmdpath = NULL;
-	pipex_m.poss_path = NULL;
-	while (i < pipex_m.pipenum)
+	mllcd->pipex_m->cmd = NULL;
+	mllcd->pipex_m->poss_paths = NULL;
+	mllcd->pipex_m->cmdpath = NULL;
+	mllcd->pipex_m->poss_path = NULL;
+	while (i < mllcd->pipex_m->pipenum)
 	{
 		if (pipe(pipe_ends[i]) == -1)
 			return (pipex_error_handling(pipe_ends, i, 9, NULL, true));
 		i++;
 	}
 	// i = 0; // done in main.c
-	// while (i <= pipex_m.pipenum) // 2 commands
+	// while (i <= mllcd->pipex_m->pipenum) // 2 commands
 	// 	free(cmd_table[i++]);
 	// free(cmd_table);
-	return (pipex(pipe_ends, in_pars.cmd_table, envv, &pipex_m));
+	return (pipex(pipe_ends, mllcd, envv, mllcd->pipex_m));
 }
 
 
