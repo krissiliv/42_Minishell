@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	update_pwds(t_env *env_list, char *pwd_var)
+static int	update_pwds(t_env *env_list, char *pwd_var, t_alloc *mllcd)
 {
 	t_env	*temp;
 	
@@ -24,7 +24,7 @@ static int	update_pwds(t_env *env_list, char *pwd_var)
 			if (!ft_strcmp(pwd_var, "OLDPWD"))
 			{
 				env_list->env_var = ft_strjoin("OLDPWD=", 
-					find_envvar_value("PWD", env_list));
+					find_envvar_value("PWD", mllcd));
 				if (!env_list->env_var)
 					return (1);
 			}
@@ -38,6 +38,7 @@ static int	update_pwds(t_env *env_list, char *pwd_var)
 		env_list = env_list->next;
 	}
 	env_list = temp;
+	return (0);
 }
 
 int cd(char *path, int argc, t_alloc *mllcd)
@@ -46,7 +47,7 @@ int cd(char *path, int argc, t_alloc *mllcd)
         return (ft_putstr_fd("Too many arguments", 2), 1);
     else if (argc == 1 || ft_strncmp(path, "~", 1) == 0)
     {
-        if (chdir(find_envvar_value("HOME", mllcd.env_list)) == -1)
+        if (chdir(find_envvar_value("HOME", mllcd)) == -1)
 		{
 			mllcd->exit_status = 1;
             return (perror("Chdir failed"), 1);
@@ -60,8 +61,8 @@ int cd(char *path, int argc, t_alloc *mllcd)
             return (perror("Chdir failed"), 1);
 		}
     }
-	update_pwds(&mllcd->env_list, "OLDPWD");
-	update_pwds(&mllcd->env_list, "PWD");
+	update_pwds(&mllcd->env_list, "OLDPWD", mllcd);
+	update_pwds(&mllcd->env_list, "PWD", mllcd);
 	mllcd->exit_status = 0;
     return (0);
 }

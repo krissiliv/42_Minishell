@@ -52,32 +52,34 @@ char	*read_input_print_prompt(void);
 
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);
-void	general_free_all(char **m_argv);
+// void	general_free_all(char **m_argv);
 
 // simple cmd execution
 void    init_simple_cmd(t_pipex_m *simple_cmd);
-int		run_simple_cmd(t_alloc *mllcd, char **envv);
+int		run_simple_cmd(t_alloc *mllcd);
 
 // expander
-char	*find_envvar_value(char *envvar, char **envv);
-int     expander(char **input_str, char **envv);
+char	*find_envvar_value(char *envvar, t_alloc *mllcd);
+int     expander(char **input_str, t_alloc *mllcd);
 
 // heredocs
-int		handle_heredocs(char **envv, t_alloc *mllcd);
+int		handle_heredocs(t_alloc *mllcd);
 
 //pipex multipipe
 int		pipex_init(int *pipe_ends, int argc, char **argv, t_pipex_m *pipex_m);
-int		pipex(int **pipe_ends, t_alloc *mllcd, char **envv);
+int		pipex(int **pipe_ends, t_alloc *mllcd);
 
 // pipex multipipe interpreter
-int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv, char **envv);
+int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
 
 // NASTYA
 //store environment
+char	**convert_linkedlst_to_table(t_alloc *mllcd);
 int		get_env(char **envv, t_env *head);
+void	ft_lstclear(t_env **env_list);
 
 //built-ins:
-int		echo(char **cmd, t_alloc *mllcd);
+int		echo(char *cmd[], t_alloc *mllcd);
 int		cd(char *path, int argc, t_alloc *mllcd);
 int		pwd(t_alloc *mllcd);
 int		env(t_alloc *mllcd);

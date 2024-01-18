@@ -75,15 +75,16 @@ static int	simple_execute_interpreter(char ***cmd_table, char ***cmd)
 	return (0);
 }
 
-static int	simple_execute(t_alloc *mllcd, char **envv)
+static int	simple_execute(t_alloc *mllcd)
 {
 	char	**cmd;
 	char	*cmdpath;
+	char	**envv;
 
 	if (simple_execute_interpreter(mllcd->in_pars.cmd_table, &cmd))
 		return (1);
 	// if (builtins(cmd, mllcd))
-	
+	envv = convert_linkedlst_to_table(mllcd);
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 		cmdpath = cmd[0]; //try if this command is right here
@@ -97,7 +98,7 @@ static int	simple_execute(t_alloc *mllcd, char **envv)
 	return (ft_putstr_fd("Something went wrong", 2), 0);
 }
 
-int	run_simple_cmd(t_alloc *mllcd, char **envv)
+int	run_simple_cmd(t_alloc *mllcd)
 {
 	int	pid;
 
@@ -108,7 +109,7 @@ int	run_simple_cmd(t_alloc *mllcd, char **envv)
 	else if (pid == 0) // means we are in child process
 	{
 		//printf("created child %d with compil res %d\n", i, compil_res);
-		mllcd->simple_cmd.compil_res = simple_execute(mllcd, envv);
+		mllcd->simple_cmd.compil_res = simple_execute(mllcd);
 		if (mllcd->simple_cmd.compil_res != 0)
 			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), mllcd->simple_cmd.compil_res);
 		// break ; //should break the loop in order to prevent child process from building pther processes

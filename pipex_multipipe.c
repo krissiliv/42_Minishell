@@ -51,10 +51,13 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 	return (0);
 }
 
-int	execute(int **pipe_ends, t_alloc *mllcd, char **envv)
+static int	execute(int **pipe_ends, t_alloc *mllcd)
 {
+	char **envv;
+
 	if (multi_execute_interpreter(mllcd))
 		return (pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
+	envv = convert_linkedlst_to_table(mllcd);
 	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
 		mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
@@ -69,7 +72,7 @@ int	execute(int **pipe_ends, t_alloc *mllcd, char **envv)
 	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
 }
 
-int	child(int **pipe_ends, t_alloc *mllcd, char **envv)
+int	child(int **pipe_ends, t_alloc *mllcd)
 {
 	int	cmd_file;
 	int i;
@@ -115,11 +118,11 @@ int	child(int **pipe_ends, t_alloc *mllcd, char **envv)
 	free_intarr(pipe_ends, mllcd->pipex_m.pipenum);
 	if (cmd_file != -1)
 		close(cmd_file);
-	exit (execute(pipe_ends, mllcd, envv));
+	exit (execute(pipe_ends, mllcd));
 }
 // when you call the pipe syscall like pipe(array), then array[0] is for reading and array[1] is for writing.
 
-int	last_child(int **pipe_ends, t_alloc *mllcd, char **envv)
+int	last_child(int **pipe_ends, t_alloc *mllcd)
 {
 	int	outfile;
 	int i;
@@ -151,10 +154,10 @@ int	last_child(int **pipe_ends, t_alloc *mllcd, char **envv)
 	free_intarr(pipe_ends, mllcd->pipex_m.pipenum);
 	if (outfile != -1)
 		close(outfile);
-	exit (execute(pipe_ends, mllcd, envv));
+	exit (execute(pipe_ends, mllcd));
 }
 
-int	pipex(int **pipe_ends, t_alloc *mllcd, char **envv)
+int	pipex(int **pipe_ends, t_alloc *mllcd)
 {
 	int	i;
 	int	pid[mllcd->pipex_m.pipenum + 1];
@@ -170,7 +173,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd, char **envv)
 		else if (pid[i] == 0) // means we are in child process number i
 		{
 			//printf("created child %d with compil res %d\n", i, mllcd->pipex_m.compil_res);
-			mllcd->pipex_m.compil_res = child(pipe_ends, mllcd, envv);
+			mllcd->pipex_m.compil_res = child(pipe_ends, mllcd);
 			if (mllcd->pipex_m.compil_res != 0)
 				return (pipex_free_all(&mllcd->pipex_m, pipe_ends), mllcd->pipex_m.compil_res);
 			// i = 0;
@@ -193,7 +196,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd, char **envv)
 		return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m, true));
 	else if (pid[i] == 0)
 	{
-		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd, envv);
+		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd);
 		if (mllcd->pipex_m.compil_res != 0)
 			return (pipex_free_all(&mllcd->pipex_m, pipe_ends), mllcd->pipex_m.compil_res);
 	}

@@ -47,8 +47,11 @@ static int process_cmd(char **envv, t_alloc *mllcd)
 	return (0);
 }
 
-static int	execute_cmd(char **envv, int *pipe_ends,t_alloc *mllcd)
+static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
 {
+	char **envv;
+
+	envv = convert_linkedlst_to_table(mllcd);
 	if (process_cmd(envv, mllcd))
 		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
 	if (execve(mllcd->simple_cmd.cmdpath, mllcd->simple_cmd.cmd, envv) == -1)
@@ -76,7 +79,7 @@ static void	child(int *pipe_ends, t_alloc *mllcd)
 	exit(0);
 }
 
-static int	parent(char **envv, int *pipe_ends, t_alloc *mllcd)
+static int	parent(int *pipe_ends, t_alloc *mllcd)
 {
 	wait(&mllcd->simple_cmd.status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
 	close(pipe_ends[1]); // close writing end of pipe
@@ -89,16 +92,15 @@ static int	parent(char **envv, int *pipe_ends, t_alloc *mllcd)
 	// 	line = get_next_line(pipe_ends[0]);
 	// }
 	close(pipe_ends[0]);
-	execute_cmd(envv, pipe_ends, mllcd);
+	execute_cmd(pipe_ends, mllcd);
 	free_strstr(mllcd->in_pars.m_argv);
 	free_cmd_table(&mllcd->in_pars);
 	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
 		return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
 	return (WEXITSTATUS(mllcd->simple_cmd.status));
-
 }
 
-int	handle_heredocs(char **envv, t_alloc *mllcd)
+int	handle_heredocs(t_alloc *mllcd)
 {
 	int	c;
 	int	pid;
@@ -117,7 +119,7 @@ int	handle_heredocs(char **envv, t_alloc *mllcd)
 	}
 	else
 	{
-		c = parent(envv, pipe_ends, mllcd);
+		c = parent(pipe_ends, mllcd);
 		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), c);
 	}
 	return (0);

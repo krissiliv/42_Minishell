@@ -26,19 +26,21 @@ static int find_dollar_sign(char *str, int starting_pt)
 	return (-1);
 }
 
-char	*find_envvar_value(char *envvar, char **envv)
+char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 {
-	int		i;
+	t_env *pos;
 
-	i = 0;
-	while (envv[i] && ft_strncmp(envv[i], envvar, ft_strlen(envvar) - 1) != 0)
-		i++;
-	if (envv[i] && ft_strncmp(envv[i], envvar, ft_strlen(envvar) - 1) == 0)
-		return (ft_strdup(envv[i] + ft_strlen(envvar) + 1)); // + 1 to jump over "="
+    pos = &mllcd->env_list;
+    while (pos != NULL && ft_strncmp(pos->env_var, envvar, ft_strlen(envvar) - 1) != 0)
+    {
+		pos = pos->next;
+	}
+	if (pos != NULL && ft_strncmp(pos->env_var, envvar, ft_strlen(envvar) - 1) == 0)
+		return (ft_strdup(pos->env_var + ft_strlen(envvar) + 1)); // + 1 to jump over "="
 	return (ft_strdup("\n"));
 }
 
-static int	replace_dollar_sign(char **input_str, int dsign, char **envv)
+static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 {
 	char	*new_str;
 	char	*envvar;
@@ -62,7 +64,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, char **envv)
 	while ((*input_str)[i] && (*input_str)[i] != ' ') // fill in envvar
 		envvar[j++] = (*input_str)[i++];
 	envvar[j] = '\0';
-	envvar_value = find_envvar_value(envvar, envv);
+	envvar_value = find_envvar_value(envvar, mllcd);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
 	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + j); // fill in rest of (*input_str)
 	free((*input_str));
@@ -70,7 +72,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, char **envv)
 	return (free(envvar), free(envvar_value), j);
 }
 
-int expander(char **input_str, char **envv)
+int expander(char **input_str, t_alloc *mllcd)
 {
 	int dsign;
 	int i;
@@ -81,7 +83,7 @@ int expander(char **input_str, char **envv)
 	{
 		dsign = find_dollar_sign((*input_str), i); // only those $ with no blankspace righ after will be found, as echo $ simply outputs $
 		if (dsign != -1)
-			i += replace_dollar_sign(input_str, dsign, envv);
+			i += replace_dollar_sign(input_str, dsign, mllcd);
 		else
 			i++; // go on looking from this spot on to find next $ and replace it
 	}

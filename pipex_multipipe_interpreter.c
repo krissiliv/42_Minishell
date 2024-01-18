@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv, char **envv)
+int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv)
 {
 	int		**pipe_ends; // 1 pipe
 	int		i;
@@ -65,7 +65,7 @@ int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv, char **envv)
 	// while (i <= mllcd->pipex_m.pipenum) // 2 commands
 	// 	free(cmd_table[i++]);
 	// free(cmd_table);
-	return (pipex(pipe_ends, mllcd, envv));
+	return (pipex(pipe_ends, mllcd));
 }
 
 
