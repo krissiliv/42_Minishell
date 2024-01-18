@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredocs.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
+/*   Updated: 2024/01/18 16:53:32 by pgober           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -28,7 +39,7 @@ static int process_cmd(char **envv, t_alloc *mllcd)
 	free_strstr(mllcd->simple_cmd.poss_paths);
 	free(mllcd->simple_cmd.poss_path);
 	if (mllcd->simple_cmd.cmdpath == NULL)
-		mllcd->simple_cmd.cmdpath = mllcd->simple_cmd.cmd[0];
+		mllcd->simple_cmd.cmdpath = ft_strdup(mllcd->simple_cmd.cmd[0]);
 	if (access(mllcd->simple_cmd.cmdpath, F_OK) != 0)
 		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), ft_putstr_fd("Pipex-Error: Cmdpath could not be found.\n", 2), 127);
 	if (access(mllcd->simple_cmd.cmdpath, F_OK) == 0 && access(mllcd->simple_cmd.cmdpath, X_OK) != 0)
