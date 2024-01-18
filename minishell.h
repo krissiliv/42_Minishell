@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 11:27:14 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:35:20 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,29 @@ typedef struct s_alloc
 	int		exit_status; //put it in a global struct
 }	t_alloc;
 
-// cmd finder
-char	**get_paths(char **envv);
-char	*find_path(char *cmd, char **envv, t_alloc *mallcd);
 
-// error
-int		error_handling(int *pipe_ends, int err_code, t_alloc *mallcd, bool pp);
+// stored environment
+typedef struct	s_env
+{
+	char			*env_var;
+	struct s_env	*next;
+}	t_env;
 
-//input check
+//store environment
+int	get_env(char **envv, t_env *head);
 
-//finish
-void	free_strstr(char **str);
-void	free_everything(t_alloc *mallcd);
+//built-ins:
+int echo(char *cmd, char *argv[], int argc, t_alloc *mllcd);
+int cd(char *path, int argc, t_env *env_list, t_alloc *mllcd);
+int pwd(t_alloc *mllcd);
+int	env(t_env *env_list, t_alloc *mllcd);
+int	export(t_env **env_list, char *input, t_alloc *mllcd);
+int	unset(t_env **env_list, char *input, t_alloc *mllcd);
+int	exit(t_alloc mallcd, char *input);
 
-//pipex
-int	pipex(int *pipe_ends, char **argv, char **envv, t_alloc *mallcd);
+//atoi for exit builtin
+int	is_num(char str);
+int	is_pm(char str);
+int	ft_atoi_minishell(const char *nptr);
 
 #endif
