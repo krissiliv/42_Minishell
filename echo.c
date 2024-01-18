@@ -1,6 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/15 17:01:28 by apashkov          #+#    #+#             */
+/*   Updated: 2024/01/18 11:26:41 by apashkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int echo(char *cmd, char *argv[], int argc)
+//TO DO:
+
+static int	check_minus_pos(char *cmd[])
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if ()
+		i++;
+	}
+}
+
+int echo(char *cmd[], t_alloc *mllcd)
 {
     int i;
 
@@ -11,7 +37,10 @@ int echo(char *cmd, char *argv[], int argc)
     {
         ft_putstr_fd(argv[i++], 1);
         ft_putchar_fd(' ', 1);
-        if (ft_strcmp("echo -n", cmd) != 0)
+		i = 0;
+		while (cmd[i] && ft_strncmp("-", cmd[1], 2))
+			i
+        if ( != 0)
             write(1, "\n", 1);
     }
     return (0);

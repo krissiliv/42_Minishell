@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 12:48:16 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 11:27:14 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,7 @@
 
 typedef struct s_alloc
 {
-	char	**cmd;
-	char	*cmdpath;
-	int		cmdnum;
-	char	*poss_path;
-	char	**poss_paths;
-	int		compil_res;
-	pid_t	pid1;
-	pid_t	pid2;
-	int		status;
+	int		exit_status; //put it in a global struct
 }	t_alloc;
 
 // cmd finder
