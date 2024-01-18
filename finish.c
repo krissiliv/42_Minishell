@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/05 14:50:58 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:15:10 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@ void	free_cmd_table(t_input_parsing *in_pars) //parsing
 	}
 }
 
-void	general_free_all(char **m_argv)
-{
-	rl_clear_history();
-	free_strstr(m_argv);
-}
-
 void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
 {
 	int	i;
@@ -65,23 +59,28 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
 		free_intarr(pipe_ends, pipex_m->pipenum);
 	}
 	if (pipex_m->cmd)
-	{
 		free_strstr(pipex_m->cmd);
-		pipex_m->cmd = NULL;
-	}
 	if (pipex_m->poss_paths)
-	{
 		free_strstr(pipex_m->poss_paths);
-		pipex_m->poss_paths = NULL;
-	}
 	if (pipex_m->cmdpath)
-	{
-		free(pipex_m->cmdpath);
-		pipex_m->cmdpath = NULL;
-	}
+		free_and_null((void *)pipex_m->cmdpath);
 	if (pipex_m->poss_path)
-	{
-		free(pipex_m->poss_path);
-		pipex_m->poss_path = NULL;
-	}
+		free_and_null((void *)pipex_m->poss_path);
+}
+
+void	free_everything(t_alloc *mllcd, int **pipe_ends)
+{
+	rl_clear_history();
+	// t_input_parsing	*in_pars; - DONE
+	if (mllcd->in_pars.m_argv)
+		free_strstr(mllcd->in_pars.m_argv);
+	if (mllcd->in_pars.cmd_table)
+		free_cmd_table(mllcd->in_pars);
+	// t_pipex_m	*simple_cmd;
+	pipex_free_all(&(mllcd->simple_cmd), NULL);
+	// t_pipex_m	*pipex_m;
+	pipex_free_all(&(mllcd->pipex_m), pipe_ends);
+	// t_env		*env_list;
+	if (mllcd->env_list)
+		ft_lstclear(&(mllcd->env_list));
 }

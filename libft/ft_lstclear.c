@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   addit_free_arr.c                                   :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 09:55:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:05:27 by apashkov         ###   ########.fr       */
+/*   Created: 2023/10/30 11:14:21 by apashkov          #+#    #+#             */
+/*   Updated: 2024/01/18 17:13:52 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	free_strstr(char **str)
+void	ft_lstclear(t_list **lst)
 {
-	int	i;
+	t_list	*temp;
 
-	i = 0;
-	if (str)
+	if (!del || !lst || !*lst)
+		return ;
+	while (*lst && lst)
 	{
-		while (str[i])
-			free(str[i++]);
-		free_and_null((void *)str);
+		temp = (*lst)->next;
+		if ((*lst)->malloced == true)
+			free((*lst)->env_var);
+		free(*lst);
+		*lst = temp;
 	}
-}
-
-void	free_intarr(int **arr, int number)
-{
-	int	i;
-
-	i = 0;
-	while (i < number)
-		free(arr[i++]);
-	free_and_null((void *)arr);
+	*lst = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:04:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 11:03:13 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:20:55 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	get_env(char **envv, t_env *head)
 	while (envv[i])
 	{
 		head->env_var = envv[i];
+		head->malloced = false;
 		if (envv[i + 1])
 		{
 			head->next = (t_env *)malloc(sizeof(t_env));
