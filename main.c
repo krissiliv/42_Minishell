@@ -1,25 +1,35 @@
 
 #include "minishell.h"
 
-static int	builtins(char *cmd)
+static int  count_cmd_args(char **cmd)
 {
-	if (!ft_strncmp("echo", cmd, 4))
-		echo();
-	if (!ft_strncmp("cd", cmd, 2))
-		cd();
-	if (!ft_strncmp("pwd", cmd, 3))
-		pwd();
-	if (!ft_strncmp("env", cmd, 3))
-		env();
-	if (!ft_strncmp("exporting", cmd, 6))
-		exporting();
-	if (!ft_strncmp("unset", cmd, 5))
+    int i;
+
+    i = 0;
+    while (cmd[i])
+        i++;
+    return (i - 1);
+}
+
+static int	builtins(char **cmd, t_alloc *mllcd, t_env *env_list)
+{
+	if (!ft_strncmp("echo", cmd[0], 4))
+		echo(cmd, mllcd);
+	if (!ft_strncmp("cd", cmd[0], 2))
+		cd(cmd[1], count_cmd_args(cmd), env_list, mllcd);
+	if (!ft_strncmp("pwd", cmd[0], 3))
+		pwd(mllcd);
+	if (!ft_strncmp("env", cmd[0], 3))
+		env(env_list, mllcd);
+	if (!ft_strncmp("exporting", cmd[0], 6))
+		exporting(&env_list, cmd, mllcd);
+	if (!ft_strncmp("unset", cmd[0], 5))
 		unset();
-	if (!ft_strncmp("exit", cmd, 4))
+	if (!ft_strncmp("exit", cmd[0], 4))
 		exit();
 }
 
-static int preparing_minishell(char **envv, t_input_parsing *in_pars)
+static int preparing_minishell(char **envv, t_input_parsing *in_pars, t_alloc *mllcd)
 {
 	char    *input_str;
 
@@ -35,6 +45,8 @@ static int preparing_minishell(char **envv, t_input_parsing *in_pars)
     int i = -1;
     while (i++ < in_pars->m_argc)
         printf("m_argv[%d] = %s\n", i, in_pars->m_argv[i]);
+
+    mllcd->exit_status = 0;
     return (0);
 }
 
@@ -44,11 +56,12 @@ int main(int argc, char **argv, char **envv)
 	t_input_parsing	in_pars;
     t_pipex_m	    simple_cmd;
     int             retval;
+    t_alloc         mllcd;
 
     retval = 0;
     while (1)
     {
-        if (preparing_minishell(envv, &in_pars))
+        if (preparing_minishell(envv, &in_pars, &mllcd))
             return (1);
         if (in_pars.cmd_table[0][3])
             handle_heredocs(envv, &in_pars, &simple_cmd);

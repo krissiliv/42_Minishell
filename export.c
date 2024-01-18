@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exporting.c                                           :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:03:21 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 11:02:53 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:46:38 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* exporting passes environment variables to other processes*/
+/* export passes environment variables to other processes*/
 
 #include "minishell.h"
 
@@ -70,7 +70,7 @@ static int	check_exist_var(t_env *env_list, char *input)
 	return (1);
 }
 
-int	exporting(t_env **env_list, char *input, t_alloc *mllcd)
+static int	export_one(t_env **env_list, char *input, t_alloc *mllcd)
 {
 	if (!input[0])
 	{
@@ -90,5 +90,18 @@ int	exporting(t_env **env_list, char *input, t_alloc *mllcd)
 	else
 		printf("\n");
 	mllcd->exit_status = 0;
+	return (0);
+}
+
+int	exporting(t_env **env_list, char **cmd, t_alloc *mllcd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[++i]) // ++ to jump over first one (which is "export")
+	{
+		if (export_one(env_list, cmd[i], mllcd))
+			return (1);
+	}
 	return (0);
 }

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/18 13:24:16 by pgober            #+#    #+#             */
+/*   Updated: 2024/01/18 13:24:19 by pgober           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int pwd()
+int pwd(t_alloc *mllcd)
 {
     char    *cwd;
 
@@ -8,10 +20,12 @@ int pwd()
     if (!cwd)
     {
         perror("pwd");
-        exit(1);
+        mllcd->exit_status = 1;
+        return (1);
     }
     printf("%s\n", cwd);
     free(cwd);
+    mllcd->exit_status = 0;
     return (0);
 }
 /*int main()

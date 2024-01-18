@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 12:46:47 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 13:46:49 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ typedef struct	s_env
 int		get_env(char **envv, t_env *head);
 
 //built-ins:
-int		echo(char *cmd, char *argv[], int argc, t_alloc *mllcd);
+int		echo(char **cmd, t_alloc *mllcd);
 int		cd(char *path, int argc, t_env *env_list, t_alloc *mllcd);
 int		pwd(t_alloc *mllcd);
 int		env(t_env *env_list, t_alloc *mllcd);
-int		exporting(t_env **env_list, char *input, t_alloc *mllcd);
+int		exporting(t_env **env_list, char **cmd, t_alloc *mllcd);
 int		unset(t_env **env_list, char *input, t_alloc *mllcd);
 int		exit(t_alloc mallcd, char *input);
 
