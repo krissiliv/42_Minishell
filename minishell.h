@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 14:06:40 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 14:18:22 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,21 @@ int    handle_heredocs(char **envv, t_input_parsing *in_pars, t_pipex_m *simple_
 
 
 // NASTYA
-typedef struct s_alloc
-{
-	int		exit_status; //put it in a global struct
-}	t_alloc;
-
-
 // stored environment
 typedef struct	s_env
 {
 	char			*env_var;
 	struct s_env	*next;
 }	t_env;
+
+typedef struct s_alloc
+{
+	t_pipex_m	*simple_cmd;
+	t_pipex_m	*pipex_m;
+	t_env		*env_list;
+	t_input_parsing	*in_pars;
+	int		exit_status; //put it in a global struct
+}	t_alloc;
 
 //store environment
 int		get_env(char **envv, t_env *head);
