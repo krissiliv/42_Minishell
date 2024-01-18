@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 12:39:13 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:46:47 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,37 @@
 # include <stdlib.h>
 # include <unistd.h> // fork
 # include <sys/wait.h> // wait
-# include "libft/libft.h"
 # include <stdbool.h> // bool
+# include "readline/readline.h" //readline
+# include "readline/history.h" //readline
 
+# include "libft/libft.h"
+# include "get_next_line/get_next_line.h"
+
+# include "input_parser.h"
+# include "pipex_multipipe.h"
+
+
+// PIA
+//print prompt
+char	*read_input_print_prompt(void);
+
+//finish
+void	free_cmd_table(t_input_parsing *in_pars);
+void	general_free_all(char **m_argv);
+
+// simple cmd execution
+void    init_simple_cmd(t_pipex_m *simple_cmd);
+int	    run_simple_cmd(t_input_parsing *in_pars, t_pipex_m *simple_cmd, char **envv);
+
+// expander
+int     expander(char **input_str, char **envv);
+
+// heredocs
+int    handle_heredocs(char **envv, t_input_parsing *in_pars, t_pipex_m *simple_cmd);
+
+
+// NASTYA
 typedef struct s_alloc
 {
 	int		exit_status; //put it in a global struct
@@ -35,20 +63,20 @@ typedef struct	s_env
 }	t_env;
 
 //store environment
-int	get_env(char **envv, t_env *head);
+int		get_env(char **envv, t_env *head);
 
 //built-ins:
-int echo(char *cmd, char *argv[], int argc, t_alloc *mllcd);
-int cd(char *path, int argc, t_env *env_list, t_alloc *mllcd);
-int pwd(t_alloc *mllcd);
-int	env(t_env *env_list, t_alloc *mllcd);
-int	exporting(t_env **env_list, char *input, t_alloc *mllcd);
-int	unset(t_env **env_list, char *input, t_alloc *mllcd);
-int	exit(t_alloc mallcd, char *input);
+int		echo(char *cmd, char *argv[], int argc, t_alloc *mllcd);
+int		cd(char *path, int argc, t_env *env_list, t_alloc *mllcd);
+int		pwd(t_alloc *mllcd);
+int		env(t_env *env_list, t_alloc *mllcd);
+int		exporting(t_env **env_list, char *input, t_alloc *mllcd);
+int		unset(t_env **env_list, char *input, t_alloc *mllcd);
+int		exit(t_alloc mallcd, char *input);
 
 //atoi for exit builtin
-int	is_num(char str);
-int	is_pm(char str);
-int	ft_atoi_minishell(const char *nptr);
+int		is_num(char str);
+int		is_pm(char str);
+int		ft_atoi_minishell(const char *nptr);
 
 #endif
