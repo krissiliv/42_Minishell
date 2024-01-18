@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 15:09:02 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 16:15:24 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ typedef struct	s_env
 
 typedef struct s_alloc
 {
-	t_pipex_m	*simple_cmd;
-	t_pipex_m	*pipex_m;
-	t_env		*env_list;
-	t_input_parsing	*in_pars;
-	int		exit_status; //put it in a global struct
+	t_pipex_m		simple_cmd;
+	t_pipex_m		pipex_m;
+	t_env			env_list;
+	t_input_parsing	in_pars;
+	int				exit_status; //put it in a global struct
 }	t_alloc;
 
 // PIA
@@ -63,6 +63,12 @@ int     expander(char **input_str, char **envv);
 // heredocs
 int		handle_heredocs(char **envv, t_alloc *mllcd);
 
+//pipex multipipe
+int		pipex_init(int *pipe_ends, int argc, char **argv, t_pipex_m *pipex_m);
+int		pipex(int **pipe_ends, t_alloc *mllcd, char **envv);
+
+// pipex multipipe interpreter
+int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv, char **envv);
 
 // NASTYA
 //store environment

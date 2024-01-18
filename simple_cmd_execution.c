@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 15:33:54 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 16:25:19 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ static int	simple_execute(t_alloc *mllcd, char **envv)
 	char	**cmd;
 	char	*cmdpath;
 
-	if (simple_execute_interpreter(mllcd->in_pars->cmd_table, &cmd))
+	if (simple_execute_interpreter(mllcd->in_pars.cmd_table, &cmd))
 		return (1);
-	cmdpath = pipex_find_cmd_path(cmd[0], envv, mllcd->simple_cmd);
+	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 		cmdpath = cmd[0]; //try if this command is right here
 	if (access(cmdpath, F_OK) != 0)
@@ -99,20 +99,20 @@ int	run_simple_cmd(t_alloc *mllcd, char **envv)
 {
 	int	pid;
 
-	init_simple_cmd(mllcd->simple_cmd);
+	init_simple_cmd(&mllcd->simple_cmd);
 	pid = fork();
 	if (pid < 0)
-		return (free_strstr(mllcd->in_pars->m_argv), free_cmd_table(mllcd->in_pars), ft_putstr_fd("Pipex-Error: forking process failed.\n", 2), 6);
+		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Pipex-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0) // means we are in child process
 	{
 		//printf("created child %d with compil res %d\n", i, compil_res);
-		mllcd->simple_cmd->compil_res = simple_execute(mllcd, envv);
-		if (mllcd->simple_cmd->compil_res != 0)
-			return (free_strstr(mllcd->in_pars->m_argv), free_cmd_table(mllcd->in_pars), mllcd->simple_cmd->compil_res);
+		mllcd->simple_cmd.compil_res = simple_execute(mllcd, envv);
+		if (mllcd->simple_cmd.compil_res != 0)
+			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), mllcd->simple_cmd.compil_res);
 		// break ; //should break the loop in order to prevent child process from building pther processes
 	}
-	waitpid(pid, &mllcd->simple_cmd->status , 0);
-	return (WEXITSTATUS(mllcd->simple_cmd->status));
+	waitpid(pid, &mllcd->simple_cmd.status , 0);
+	return (WEXITSTATUS(mllcd->simple_cmd.status));
 }
 
 //cc -Wall -Wextra -Werror simple_cmd_execution.c find_cmd.c finish.c libft/*.c -lreadline -g

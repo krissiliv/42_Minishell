@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/05 16:32:44 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/18 16:10:36 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 {
 	if (!input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
-
+	
 	in_pars->input_str = input_str;
 	init_input_parser(in_pars, input_str);
 	in_pars->m_argc = count_words(input_str, ' ');
