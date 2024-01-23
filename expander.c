@@ -31,13 +31,15 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	t_env	*pos;
 	int		len;
 
+	if (ft_strcmp(envvar, "?") == 0)
+		return (ft_itoa(mllcd->exit_status));
     pos = &mllcd->env_list;
 	len = ft_strlen(envvar);
-    while (pos != NULL && ft_strncmp(pos->env_var, envvar, len - 1) != 0)
+    while (pos != NULL && ft_strncmp(pos->env_var, envvar, len) != 0)
     {
 		pos = pos->next;
 	}
-	if (pos != NULL && ft_strncmp(pos->env_var, envvar, len - 1) == 0)
+	if (pos != NULL && ft_strncmp(pos->env_var, envvar, len) == 0)
 		return (ft_strdup(pos->env_var + len + 1)); // + 1 to jump over "="
 	return (ft_strdup("\n"));
 }
