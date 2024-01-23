@@ -28,15 +28,17 @@ static int find_dollar_sign(char *str, int starting_pt)
 
 char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 {
-	t_env *pos;
+	t_env	*pos;
+	int		len;
 
     pos = &mllcd->env_list;
-    while (pos != NULL && ft_strncmp(pos->env_var, envvar, ft_strlen(envvar) - 1) != 0)
+	len = ft_strlen(envvar);
+    while (pos != NULL && ft_strncmp(pos->env_var, envvar, len - 1) != 0)
     {
 		pos = pos->next;
 	}
-	if (pos != NULL && ft_strncmp(pos->env_var, envvar, ft_strlen(envvar) - 1) == 0)
-		return (ft_strdup(pos->env_var + ft_strlen(envvar) + 1)); // + 1 to jump over "="
+	if (pos != NULL && ft_strncmp(pos->env_var, envvar, len - 1) == 0)
+		return (ft_strdup(pos->env_var + len + 1)); // + 1 to jump over "="
 	return (ft_strdup("\n"));
 }
 

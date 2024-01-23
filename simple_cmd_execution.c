@@ -84,7 +84,6 @@ static int	simple_execute(t_alloc *mllcd)
 
 	if (simple_execute_interpreter(mllcd->in_pars.cmd_table, &cmd))
 		return (1);
-	// if (builtins(cmd, mllcd))
 	envv = convert_linkedlst_to_table(mllcd);
 
 	res = builtins(cmd, mllcd);

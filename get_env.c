@@ -53,7 +53,8 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 		pos = pos->next;
 		i++;
 	}
-	env_table = (char **)malloc(i * sizeof(char *));
+	env_table = (char **)malloc((i + 1) * sizeof(char *));
+	printf("%d\n", i);
     pos = &mllcd->env_list;
 	i = 0;
     while (pos != NULL)
