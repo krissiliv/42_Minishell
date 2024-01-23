@@ -65,8 +65,10 @@ int     expander(char **input_str, t_alloc *mllcd);
 // heredocs
 int		handle_heredocs(t_alloc *mllcd);
 
+// outredir appendmode
+void	outredir_appendmode(t_alloc *mllcd);
+
 //pipex multipipe
-int		pipex_init(int *pipe_ends, int argc, char **argv, t_pipex_m *pipex_m);
 int		pipex(int **pipe_ends, t_alloc *mllcd);
 
 // pipex multipipe interpreter

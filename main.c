@@ -17,11 +17,11 @@ static int preparing_minishell(char **envv, t_alloc *mllcd)
 	char    *input_str;
 
     get_env(envv, &mllcd->env_list);
-    input_str = read_input_print_prompt();
-	// input_str = ft_strdup("cat << x"); //fill in stuff from EXTRA/input_parser_testing
+    // input_str = read_input_print_prompt();
+	input_str = ft_strdup("cat EXTRA/EXTRA_progress_tracking >> _testfile"); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
         return (1);
-    printf("input_str expanded: %s\n", input_str);
+    // printf("input_str expanded: %s\n", input_str);
 
     if (cmdline_input_parser(&mllcd->in_pars, input_str))
         return (1);
@@ -41,10 +41,12 @@ int main(int argc, char **argv, char **envv)
     t_alloc         mllcd;
 
     retval = 0;
-    while (1)
-    {
+    // while (1)
+    // {
         if (preparing_minishell(envv, &mllcd))
             return (1);
+        if (mllcd.in_pars.cmd_table[0][4])
+            outredir_appendmode(&mllcd);
         if (mllcd.in_pars.cmd_table[0][3])
             handle_heredocs(&mllcd);
         else if (mllcd.in_pars.pipenum > 0)
@@ -53,6 +55,6 @@ int main(int argc, char **argv, char **envv)
             retval = run_simple_cmd(&mllcd);
         free_strstr(mllcd.in_pars.m_argv);
         free_cmd_table(&mllcd.in_pars);
-    }
+    // }
     return (retval);
 }

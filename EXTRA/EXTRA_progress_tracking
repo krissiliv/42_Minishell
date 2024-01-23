@@ -1,4 +1,6 @@
+grep "h" _testfile >> _testfile 
+grep: _testfile: input file is also the output
 
-general guidelines:
-
--when an error occurs, it is printed at the time it was found!
+echo $?
+2
+______________________

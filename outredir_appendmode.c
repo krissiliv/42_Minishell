@@ -1,30 +1,54 @@
 
 #include "minishell.h"
 
-void    redirection_appendmode(t_alloc *mllcd, char *filename)
+void	outredir_appendmode(t_alloc *mllcd)
 {
-    int fd;
+	int fd;
 
-    fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-    if (fd == -1)
-    {
-        ft_putstr_fd("Error: Output redirection iun append mode failed.\n", 2);
-        mllcd->exit_status = 1;
-        return ;
-    }
-    dup2(fd, 1);
-    close(fd);
-    return ;
+	fd = open(mllcd->in_pars.cmd_table[0][4], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		ft_putstr_fd("Error: Output redirection iun append mode failed.\n", 2);
+		mllcd->exit_status = 1;
+		return ;
+	}
+	dup2(fd, 1);
+	close(fd);
+	return ;
 }
 
-int main(void)
-{
-    t_alloc *mllcd;
-    char *filename;
+// cc -Wall -Wextra -Werror outredir_appendmode.c expander.c input_parser.c input_parser_ft_split_w_quotes.c input_parser_utils.c finish.c libft/*.c -lreadline -g
+// valgrind --leak-check=full --show-leak-kinds=all -s ./a.out
+// int main(int argc, char **argv)
+// {
+// 	char	*input_str;
+// 	t_alloc	mllcd;
 
-    mllcd = (t_alloc *)malloc(sizeof(t_alloc));
-    mllcd->exit_status = 0;
-    filename = "_testfile";
-    redirection_appendmode(mllcd, filename);
-    return (0);
-}
+// 	if (!(*argv)[argc - 1])
+// 		return (1);
+// 	input_str = ft_strdup("cat EXTRA/EXTRA_progress_tracking >> _testfile"); //fill in stuff from EXTRA/input_parser_testing
+// 	 // while (1)
+// 	 // {
+// 		 // input_str = read_input_print_prompt();
+		
+// 	 if (expander(&input_str, &mllcd))
+//         return (1);
+//     // printf("input_str expanded: %s\n", input_str);
+
+//     if (cmdline_input_parser(&mllcd.in_pars, input_str))
+//         return (1);
+//     free(input_str);
+//     int i = -1;
+//     while (i++ < mllcd.in_pars.m_argc)
+//     {
+// 		printf("m_argv[%d] = %s\n", i, mllcd.in_pars.m_argv[i]);
+// 	}
+
+// 	if (mllcd.in_pars.cmd_table[0][4])
+// 		outredir_appendmode(&mllcd);
+
+// 	free_strstr(mllcd.in_pars.m_argv);
+// 	free_cmd_table(&mllcd.in_pars);
+// 	// }
+// 	return (0);
+// }
