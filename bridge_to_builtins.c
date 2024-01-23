@@ -19,7 +19,7 @@ static int  count_cmd_args(char **cmd)
     i = 0;
     while (cmd[i])
         i++;
-    return (i - 1);
+    return (i);
 }
 
 int	builtins(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
