@@ -1,11 +1,11 @@
 
 #include "minishell.h"
 
-void	outredir_appendmode(t_alloc *mllcd)
+void	outredir_appendmode(t_alloc *mllcd, int cmdnum)
 {
 	int fd;
 
-	fd = open(mllcd->in_pars.cmd_table[0][4], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	fd = open(mllcd->in_pars.cmd_table[cmdnum][4], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
 		ft_putstr_fd("Error: Output redirection iun append mode failed.\n", 2);

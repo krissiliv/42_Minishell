@@ -52,6 +52,7 @@ char	*read_input_print_prompt(void);
 
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);
+void	free_env_table(char **envv);
 // void	general_free_all(char **m_argv);
 
 // simple cmd execution
@@ -66,7 +67,7 @@ int     expander(char **input_str, t_alloc *mllcd);
 int		handle_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
-void	outredir_appendmode(t_alloc *mllcd);
+void	outredir_appendmode(t_alloc *mllcd, int cmdnum);
 
 //pipex multipipe
 int		pipex(int **pipe_ends, t_alloc *mllcd);
@@ -81,7 +82,7 @@ int		builtins(char **cmd, t_alloc *mllcd);
 //store environment
 char	**convert_linkedlst_to_table(t_alloc *mllcd);
 int		get_env(char **envv, t_env *head);
-void	ft_lstclear(t_env **env_list);
+void	ft_lstclear(t_env *env_list);
 
 //built-ins:
 int		echo(char *cmd[], t_alloc *mllcd);

@@ -22,13 +22,13 @@ void	init_simple_cmd(t_pipex_m *simple_cmd)
 	simple_cmd->status = 0;
 }
 
-static int	simple_execute_interpreter(char ***cmd_table, char ***cmd)
+static int	simple_execute_interpreter(t_alloc *mllcd, char ***cmd)
 {
 	int out;
 	int in;
 	int c;
 
-	*cmd = ft_split(cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+	*cmd = ft_split(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
 	if (!(*cmd))
 		return (1);
 	c = 0; // now remove "" from everywhere
@@ -47,29 +47,32 @@ static int	simple_execute_interpreter(char ***cmd_table, char ***cmd)
 		printf("%s,", (*cmd)[i]);
 	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
-	if (cmd_table[0][1]) // input redirection
+	if (mllcd->in_pars.cmd_table[0][1]) // input redirection
 	{
-		in = open(cmd_table[0][1], O_RDONLY);
-		if (in == -1 && cmd_table[0][1] != NULL)
-			return (ft_putstr_fd("Pipex-Error: Could not open input-file.\n", 2), 1);
+		in = open(mllcd->in_pars.cmd_table[0][1], O_RDONLY);
+		if (in == -1 && mllcd->in_pars.cmd_table[0][1] != NULL)
+			return (ft_putstr_fd("Simplecmd-Error: Could not open input-file.\n", 2), 1);
 		if (in != -1 && dup2(in, 0) == -1) //the stdin will always be the in
 		{
 			close(in);
-			return (ft_putstr_fd("Pipex-Error: Interrupted system call. Permission for input-file denied.\n", 2), 4);
+			return (ft_putstr_fd("Simplecmd-Error: Interrupted system call. Permission for input-file denied.\n", 2), 4);
 		}
 	}
 
-	if (cmd_table[0][2]) // output redirection
+	if (mllcd->in_pars.cmd_table[0][4])
+		outredir_appendmode(mllcd, 0);
+
+	if (mllcd->in_pars.cmd_table[0][2]) // output redirection
 	{
-		out = open(cmd_table[0][2], O_WRONLY | O_CREAT | O_TRUNC, 0777); // on the 2nd position of the last command there will always be what is interpreted as the out by the parser
-		if (out == -1 && cmd_table[0][2] != NULL)
-			return (ft_putstr_fd("Pipex-Error: Could not open outputfile.\n", 2), 1);
+		out = open(mllcd->in_pars.cmd_table[0][2], O_WRONLY | O_CREAT | O_TRUNC, 0777); // on the 2nd position of the last command there will always be what is interpreted as the out by the parser
+		if (out == -1 && mllcd->in_pars.cmd_table[0][2] != NULL)
+			return (ft_putstr_fd("Simplecmd-Error: Could not open outputfile.\n", 2), 1);
 		if (out != -1 && dup2(out, 1) == -1) //the stdout will always be the out
 		{
 			if (in != -1)
 				close(in);
 			close(out);
-			return (ft_putstr_fd("Pipex-Error: Interrupted system call. Permission for output-file denied.\n", 2), 4);
+			return (ft_putstr_fd("Simplecmd-Error: Interrupted system call. Permission for output-file denied.\n", 2), 4);
 		}
 	}
 	return (0);
@@ -82,9 +85,10 @@ static int	simple_execute(t_alloc *mllcd)
 	char	**envv;
 	int		res;
 
-	if (simple_execute_interpreter(mllcd->in_pars.cmd_table, &cmd))
-		return (1);
+	if (simple_execute_interpreter(mllcd, &cmd))
+		return (ft_lstclear(&mllcd->env_list), 1);
 	envv = convert_linkedlst_to_table(mllcd);
+	ft_lstclear(&mllcd->env_list);
 
 	res = builtins(cmd, mllcd);
 	if (res != -1)
@@ -94,13 +98,13 @@ static int	simple_execute(t_alloc *mllcd)
 	if (cmdpath == NULL)
 		cmdpath = cmd[0]; //try if this command is right here
 	if (access(cmdpath, F_OK) != 0)
-		return (ft_putstr_fd("Pipex-Error: cmd not found.\n", 2), 1);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 1);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
-		return (ft_putstr_fd("Pipex-Error: Access to cmdpath denied\n", 2), 1);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 1);
 	
 	if (execve(cmdpath, cmd, envv) == -1)
-		return (ft_putstr_fd("Pipex-Error: No such process!\n", 2), 3);
-	return (ft_putstr_fd("Something went wrong", 2), 0);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 3);
+	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), 0);
 }
 
 int	run_simple_cmd(t_alloc *mllcd)
@@ -110,7 +114,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 	init_simple_cmd(&mllcd->simple_cmd);
 	pid = fork();
 	if (pid < 0)
-		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Pipex-Error: forking process failed.\n", 2), 6);
+		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0) // means we are in child process
 	{
 		//printf("created child %d with compil res %d\n", i, compil_res);
@@ -147,7 +151,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 //	 init_simple_cmd(&simple_cmd);
 //	 pid = fork();
 //	 if (pid < 0)
-//		 return (ft_putstr_fd("Pipex-Error: forking process failed.\n", 2), 6);
+//		 return (ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 //	 else if (pid == 0) // means we are in child process
 //	 {
 //		 //printf("created child %d with compil res %d\n", i, compil_res);

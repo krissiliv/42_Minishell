@@ -53,15 +53,18 @@ static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
 	int		res;
 
 	envv = convert_linkedlst_to_table(mllcd);
+	ft_lstclear(&mllcd->env_list);
+
 	if (process_cmd(envv, mllcd))
-		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
 	
 	res = builtins(mllcd->simple_cmd.cmd, mllcd);
 	if (res != -1)
 		return (res);
 
 	if (execve(mllcd->simple_cmd.cmdpath, mllcd->simple_cmd.cmd, envv) == -1)
-		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+	free_env_table(envv);
 	free_strstr(mllcd->in_pars.m_argv);
 	free_cmd_table(&mllcd->in_pars);
 	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->simple_cmd, &pipe_ends), 0);
@@ -97,8 +100,11 @@ static int	parent(int *pipe_ends, t_alloc *mllcd)
 	// 	free(line);
 	// 	line = get_next_line(pipe_ends[0]);
 	// }
+	if (mllcd->in_pars.cmd_table[0][4])
+		outredir_appendmode(mllcd, 0);
 	close(pipe_ends[0]);
 	execute_cmd(pipe_ends, mllcd);
+	ft_lstclear(&mllcd->env_list);
 	free_strstr(mllcd->in_pars.m_argv);
 	free_cmd_table(&mllcd->in_pars);
 	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)

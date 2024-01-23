@@ -54,7 +54,7 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 		i++;
 	}
 	env_table = (char **)malloc((i + 1) * sizeof(char *));
-	printf("%d\n", i);
+	// printf("%d\n", i);
     pos = &mllcd->env_list;
 	i = 0;
     while (pos != NULL)
@@ -67,19 +67,19 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 	return (env_table);
 }
 
-void	ft_lstclear(t_env **env_list)
+void	ft_lstclear(t_env *env_list)
 {
-	t_env	*temp;
+	// t_env	*temp;
 
-	if (!env_list || !*env_list)
+	if (!env_list)
 		return ;
-	while (*env_list && env_list)
-	{
-		temp = (*env_list)->next;
-		if ((*env_list)->malloced == true)
-			free((*env_list)->env_var);
-		free(*env_list);
-		*env_list = temp;
-	}
-	*env_list = NULL;
+	// while (env_list)
+	// {
+	// 	temp = (env_list)->next;
+	// 	if ((env_list)->malloced == true)
+	// 		free_and_null((env_list)->env_var);
+	// 	free_and_null(env_list);
+	// 	env_list = temp;
+	// }
+	// env_list = NULL;
 }

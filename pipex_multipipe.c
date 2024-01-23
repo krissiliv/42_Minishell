@@ -57,16 +57,19 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	int		res;
 
 	if (multi_execute_interpreter(mllcd))
-		return (pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
+		return (ft_lstclear(&mllcd->env_list), pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
+
 	envv = convert_linkedlst_to_table(mllcd);
+	ft_lstclear(&mllcd->env_list);
+
 	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
 		mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
 	if (access(mllcd->pipex_m.cmdpath, F_OK) != 0)
-		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m, true));
+		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m, true));
 	if (access(mllcd->pipex_m.cmdpath, F_OK) == 0 && \
 		access(mllcd->pipex_m.cmdpath, X_OK) != 0)
-		return (pipex_free_all(&mllcd->pipex_m, pipe_ends), \
+		return (free_env_table(envv), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 1, &mllcd->pipex_m, true));
 
 	res = builtins(mllcd->pipex_m.cmd, mllcd);
@@ -74,8 +77,8 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 		return (res);
 
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
-		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m, true));
-	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
+		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m, true));
+	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
 }
 
 int	child(int **pipe_ends, t_alloc *mllcd)
@@ -146,6 +149,8 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m, true));
 		}
 	}
+	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][4])
+		outredir_appendmode(mllcd, mllcd->pipex_m.cmdnum);
 	//printf("in child %d make %s to stdout\n", mllcd->pipex_m.cmdnum, mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2]);
 	if (dup2(pipe_ends[mllcd->pipex_m.cmdnum - 1][0], 0) == -1) //for last child, the stdin will always be the reading pipeend to the last child
 		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m, true));
