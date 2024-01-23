@@ -27,7 +27,7 @@ int	builtins(char **cmd, t_alloc *mllcd) // this is actually like execute or exe
 	if (!ft_strncmp("echo", cmd[0], 4))
 		echo(cmd, mllcd);
 	else if (!ft_strncmp("cd", cmd[0], 2))
-		cd(cmd[1], count_cmd_args(cmd), mllcd); // works
+		cd(cmd[1], count_cmd_args(cmd), mllcd);
 	else if (!ft_strncmp("pwd", cmd[0], 3))
 		pwd(mllcd);
 	else if (!ft_strncmp("env", cmd[0], 3))
