@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:28 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 15:02:39 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:27:13 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int echo(char *cmd[], t_alloc *mllcd)
     	i = 2;
 	else
 		i = 1;
-    if (!cmd[2] && !cmd[2][0])
+    if (!cmd[1] && !cmd[1][0])
         write(1, "\n", 1);
 	else
 	{
