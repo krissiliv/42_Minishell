@@ -22,20 +22,23 @@ static int  count_cmd_args(char **cmd)
     return (i - 1);
 }
 
-void	builtins(char **cmd, t_alloc *mllcd)
+int	builtins(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
 {
 	if (!ft_strncmp("echo", cmd[0], 4))
 		echo(cmd, mllcd);
-	if (!ft_strncmp("cd", cmd[0], 2))
-		cd(cmd[1], count_cmd_args(cmd), mllcd);
-	if (!ft_strncmp("pwd", cmd[0], 3))
+	else if (!ft_strncmp("cd", cmd[0], 2))
+		cd(cmd[1], count_cmd_args(cmd), mllcd); // works
+	else if (!ft_strncmp("pwd", cmd[0], 3))
 		pwd(mllcd);
-	if (!ft_strncmp("env", cmd[0], 3))
-		env(mllcd);
-	if (!ft_strncmp("exporting", cmd[0], 6))
+	else if (!ft_strncmp("env", cmd[0], 3))
+		env(mllcd); //works
+	else if (!ft_strncmp("exporting", cmd[0], 6))
 		exporting(cmd, mllcd); // should have no dollar signs
-	if (!ft_strncmp("unset", cmd[0], 5))
+	else if (!ft_strncmp("unset", cmd[0], 5))
 		unset(cmd, mllcd);
-	if (!ft_strncmp("exit", cmd[0], 4))
+	else if (!ft_strncmp("exit", cmd[0], 4))
 		exiting(mllcd, cmd[1], count_cmd_args(cmd));
+	else 
+		return (-1);
+	return (0);
 }

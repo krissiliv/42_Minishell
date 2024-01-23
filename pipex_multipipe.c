@@ -53,7 +53,8 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 
 static int	execute(int **pipe_ends, t_alloc *mllcd)
 {
-	char **envv;
+	char	**envv;
+	int		res;
 
 	if (multi_execute_interpreter(mllcd))
 		return (pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
@@ -67,6 +68,11 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 		access(mllcd->pipex_m.cmdpath, X_OK) != 0)
 		return (pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 1, &mllcd->pipex_m, true));
+
+	res = builtins(mllcd->pipex_m.cmd, mllcd);
+	if (res != -1)
+		return (res);
+
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
 		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m, true));
 	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);

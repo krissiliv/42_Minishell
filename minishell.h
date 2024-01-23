@@ -72,6 +72,9 @@ int		pipex(int **pipe_ends, t_alloc *mllcd);
 // pipex multipipe interpreter
 int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
 
+// bridge to builtins
+int		builtins(char **cmd, t_alloc *mllcd);
+
 // NASTYA
 //store environment
 char	**convert_linkedlst_to_table(t_alloc *mllcd);

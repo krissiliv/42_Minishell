@@ -49,11 +49,17 @@ static int process_cmd(char **envv, t_alloc *mllcd)
 
 static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
 {
-	char **envv;
+	char	**envv;
+	int		res;
 
 	envv = convert_linkedlst_to_table(mllcd);
 	if (process_cmd(envv, mllcd))
 		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+	
+	res = builtins(mllcd->simple_cmd.cmd, mllcd);
+	if (res != -1)
+		return (res);
+
 	if (execve(mllcd->simple_cmd.cmdpath, mllcd->simple_cmd.cmd, envv) == -1)
 		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
 	free_strstr(mllcd->in_pars.m_argv);

@@ -80,11 +80,17 @@ static int	simple_execute(t_alloc *mllcd)
 	char	**cmd;
 	char	*cmdpath;
 	char	**envv;
+	int		res;
 
 	if (simple_execute_interpreter(mllcd->in_pars.cmd_table, &cmd))
 		return (1);
 	// if (builtins(cmd, mllcd))
 	envv = convert_linkedlst_to_table(mllcd);
+
+	res = builtins(cmd, mllcd);
+	if (res != -1)
+		return (res);
+
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 		cmdpath = cmd[0]; //try if this command is right here
