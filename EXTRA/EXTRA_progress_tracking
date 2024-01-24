@@ -12,3 +12,8 @@ ______________________
  echo \'$SHELL\'-
  echo $-
  echo \"$SHELL xxx\"
+
+ ______________________
+
+ PROBLEM with the following:
+ env << out     the problem only occurs with builtins in connection to redirections
