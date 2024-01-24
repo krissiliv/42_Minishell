@@ -6,13 +6,11 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:28 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/23 17:27:13 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:32:36 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//TO DO:
 
 static int	validate_n_flag(char *flag)
 {
