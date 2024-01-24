@@ -6,17 +6,16 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:58:16 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 10:28:10 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int preparing_minishell(char **envv, t_alloc *mllcd)
+static int preparing_minishell(t_alloc *mllcd)
 {
 	char    *input_str;
 
-    get_env(envv, &mllcd->env_list);
     input_str = read_input_print_prompt();
 	// input_str = ft_strdup("cat EXTRA/EXTRA_progress_tracking >> _testfile"); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
@@ -41,9 +40,10 @@ int main(int argc, char **argv, char **envv)
     t_alloc         mllcd;
 
     retval = 0;
+    get_env(envv, &mllcd.env_list);
     while (1)
     {
-        if (preparing_minishell(envv, &mllcd))
+        if (preparing_minishell(&mllcd))
             return (1);
         // if (mllcd.in_pars.cmd_table[0][4]) // this should not be here but inside a forked process in order not to redir parents output no?
         //     outredir_appendmode(&mllcd);
