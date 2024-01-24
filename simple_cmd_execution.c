@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 17:20:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 10:41:47 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	simple_execute_interpreter(t_alloc *mllcd, char ***cmd)
 	int in;
 	int c;
 
-	*cmd = ft_split(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+	*cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
 	if (!(*cmd))
 		return (1);
 	c = 0; // now remove "" from everywhere

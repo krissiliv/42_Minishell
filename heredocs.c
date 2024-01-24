@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:53:32 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 10:41:02 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int process_cmd(char **envv, t_alloc *mllcd)
 {
 	int	c;
 
-	mllcd->simple_cmd.cmd = ft_split(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+	mllcd->simple_cmd.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
 	if (!mllcd->simple_cmd.cmd)
 		return (1);
 	c = 0; // now remove "" from everywhere

@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 16:24:58 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 10:41:36 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 	int c;
 	int in;
 
-    mllcd->pipex_m.cmd = ft_split(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0], ' '); // on the cmd-position 0 there is always the command
+    mllcd->pipex_m.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0], ' '); // on the cmd-position 0 there is always the command
 	if (!(mllcd->pipex_m.cmd))
 		return (1);
 	c = 0; // now remove "" from everywhere
