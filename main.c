@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 12:28:39 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 13:23:00 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int preparing_minishell(t_alloc *mllcd)
 	char    *input_str;
 
     // input_str = read_input_print_prompt();
-	input_str = ft_strdup("echo $SHELL"); //fill in stuff from EXTRA/input_parser_testing
+	input_str = ft_strdup("echo \"$SHELL xxx\""); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
         return (1);
     // printf("input_str expanded: %s\n", input_str);

@@ -11,3 +11,4 @@ ______________________
 
  echo \'$SHELL\'-
  echo $-
+ echo \"$SHELL xxx\"

@@ -6,21 +6,38 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 12:27:54 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 13:20:23 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "minishell.h"
 
 static int find_dollar_sign(char *str, int starting_pt)
 {
-	int i;
+	int		i;
+	bool	single_quotes_open;
+	bool	double_quotes_open;
 
+	i = 0;
+	single_quotes_open = false;
+	double_quotes_open = false;
+	while (i < starting_pt)
+	{
+		if (str[i] == '\'' && !double_quotes_open)
+			single_quotes_open = !single_quotes_open;
+		else if (str[i] == '\"' && !single_quotes_open)
+			double_quotes_open = !double_quotes_open;
+		i++;
+	}
 	i = starting_pt;
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == '$' && ft_isalpha(str[i + 1]) != 0)
+		if (str[i] == '\'' && !double_quotes_open)
+			single_quotes_open = !single_quotes_open;
+		else if (str[i] == '\"' && !single_quotes_open)
+			double_quotes_open = !double_quotes_open;
+		if (single_quotes_open == false && \
+			str[i + 1] && str[i] == '$' && ft_isalpha(str[i + 1]) != 0)
 			return (i);
 		i++;
 	}
