@@ -6,38 +6,38 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/24 11:09:33 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:31:44 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	update_pwds(t_env *env_list, char *pwd_var, t_alloc *mllcd)
+static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 {
 	t_env	*temp;
 	
-	temp = env_list;
-	while (env_list)
+	temp = *env_list;
+	while (*env_list)
 	{
-		if (!ft_strncmp(env_list->env_var, pwd_var, ft_strlen(pwd_var)))
+		if (!ft_strncmp((*env_list)->env_var, pwd_var, ft_strlen(pwd_var)))
 		{
 			if (!ft_strcmp(pwd_var, "OLDPWD"))
 			{
-				env_list->env_var = ft_strjoin("OLDPWD=", 
+				(*env_list)->env_var = ft_strjoin("OLDPWD=", 
 					find_envvar_value("PWD", mllcd));
-				if (!env_list->env_var)
+				if (!(*env_list)->env_var)
 					return (1);
 			}
 			else if (!ft_strcmp(pwd_var, "PWD"))
 			{
-				env_list->env_var = ft_strjoin("PWD=", getcwd(NULL, 1024));
-				if (!env_list->env_var)
+				(*env_list)->env_var = ft_strjoin("PWD=", getcwd(NULL, 1024));
+				if (!(*env_list)->env_var)
 					return (1);
 			}
 		}
-		env_list = env_list->next;
+		*env_list = (*env_list)->next;
 	}
-	env_list = temp;
+	*env_list = temp;
 	return (0);
 }
 

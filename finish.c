@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:40:58 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 13:44:54 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	free_everything(t_alloc *mllcd, int **pipe_ends)
 		free_strstr(mllcd->in_pars.m_argv);
 	if (mllcd->in_pars.cmd_table)
 		free_cmd_table(&mllcd->in_pars);
-	// t_pipex_m	*simple_cmd;
+	// t_pipex_m	*simple_cmd; - DONE
 	pipex_free_all(&(mllcd->simple_cmd), NULL);
-	// t_pipex_m	*pipex_m;
+	// t_pipex_m	*pipex_m; - DONE
 	pipex_free_all(&(mllcd->pipex_m), pipe_ends);
 	// t_env		*env_list;
 	// if (mllcd->env_list) 				// this does not work yet

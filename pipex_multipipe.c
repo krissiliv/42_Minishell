@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:36 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 15:30:21 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 		return (ft_lstclear(&mllcd->env_list), pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
 
 	envv = convert_linkedlst_to_table(mllcd);
-	ft_lstclear(&mllcd->env_list);
 
 	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)

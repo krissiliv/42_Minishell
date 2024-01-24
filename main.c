@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 13:53:05 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 15:16:02 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,20 @@ static int preparing_minishell(t_alloc *mllcd)
     return (0);
 }
 
+void prntlist(t_env *head)
+{
+    t_env *pos;
+
+    pos = head;
+	if (pos == NULL)
+		printf("NULL\n");
+    while (pos != NULL)
+    {
+        printf("%s\n", pos->env_var);
+        pos = pos->next;
+    }
+}
+
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 int main(int argc, char **argv, char **envv)
 {
@@ -40,7 +54,9 @@ int main(int argc, char **argv, char **envv)
     t_alloc         mllcd;
 
     retval = 0;
+	mllcd.env_list = (t_env *)malloc(sizeof(t_env));
     get_env(envv, &mllcd.env_list);
+	//prntlist(mllcd.env_list);
     while (1)
     {
         if (preparing_minishell(&mllcd))

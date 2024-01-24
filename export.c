@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:03:21 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 17:31:32 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 13:42:24 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static int	compare_env_var(char *env_var1, char *env_var2)
 	return (1);
 }
 
+//I need to change the following function, bc it has to modify the linked list
+
 static int	check_exist_var(t_env *env_list, char *input)
 {
 	t_env	*temp;
@@ -84,8 +86,8 @@ static int	export_one(char *input, t_alloc *mllcd)
 			mllcd->exit_status = 1;
 			return (1);
 		}
-		else if (check_exist_var(&mllcd->env_list, input) == 1)
-			ft_lstadd_front((t_env **)&mllcd->env_list, ft_new_node(input));
+		else if (check_exist_var(mllcd->env_list, input) == 1)
+			ft_lstadd_front(&mllcd->env_list, ft_new_node(input));
 	}
 	else
 		printf("\n");

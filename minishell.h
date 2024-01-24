@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:26 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 15:26:34 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_alloc
 {
 	t_pipex_m		simple_cmd;
 	t_pipex_m		pipex_m;
-	t_env			env_list;
+	t_env			*env_list;
 	t_input_parsing	in_pars;
 	int				exit_status; //put it in a global struct
 }	t_alloc;
@@ -81,8 +81,9 @@ int		builtins(char **cmd, t_alloc *mllcd);
 // NASTYA
 //store environment
 char	**convert_linkedlst_to_table(t_alloc *mllcd);
-int		get_env(char **envv, t_env *head);
-void	ft_lstclear(t_env *env_list);
+int		get_env(char **envv, t_env **head);
+void	ft_lstclear(t_env **env_list);
+void 	prntlist(t_env *head);
 
 //built-ins:
 int		echo(char *cmd[], t_alloc *mllcd);

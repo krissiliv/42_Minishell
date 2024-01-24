@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 13:20:23 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 13:42:58 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,12 @@
 
 static int find_dollar_sign(char *str, int starting_pt)
 {
-	int		i;
-	bool	single_quotes_open;
-	bool	double_quotes_open;
+	int i;
 
-	i = 0;
-	single_quotes_open = false;
-	double_quotes_open = false;
-	while (i < starting_pt)
-	{
-		if (str[i] == '\'' && !double_quotes_open)
-			single_quotes_open = !single_quotes_open;
-		else if (str[i] == '\"' && !single_quotes_open)
-			double_quotes_open = !double_quotes_open;
-		i++;
-	}
 	i = starting_pt;
 	while (str[i])
 	{
-		if (str[i] == '\'' && !double_quotes_open)
-			single_quotes_open = !single_quotes_open;
-		else if (str[i] == '\"' && !single_quotes_open)
-			double_quotes_open = !double_quotes_open;
-		if (single_quotes_open == false && \
-			str[i + 1] && str[i] == '$' && ft_isalpha(str[i + 1]) != 0)
+		if (str[i + 1] && str[i] == '$' && str[i + 1] != ' ')
 			return (i);
 		i++;
 	}
@@ -51,9 +33,9 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 
 	if (ft_strcmp(envvar, "?") == 0)
 		return (ft_itoa(mllcd->exit_status));
-    pos = &mllcd->env_list;
+    pos = mllcd->env_list;
 	len = ft_strlen(envvar);
-    while (pos != NULL && !(ft_strncmp(pos->env_var, envvar, len) == 0 && pos->env_var[len] == '=')) // if right after there is no = 
+    while (pos != NULL && ft_strncmp(pos->env_var, envvar, len) != 0)
     {
 		pos = pos->next;
 	}
@@ -78,12 +60,12 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	new_str[i] = '\0';
 	i++;
 	// then i = dsign + 1
-	while ((*input_str)[i] && ft_isalpha((*input_str)[i]) != 0) //determine envvar size
+	while ((*input_str)[i] && (*input_str)[i] != ' ') //determine envvar size
 		i++;
 	envvar = (char *)malloc((i - dsign) * sizeof(char));
 	i = dsign + 1;
 	j = 0;
-	while ((*input_str)[i] && ft_isalpha((*input_str)[i]) != 0) // fill in envvar
+	while ((*input_str)[i] && (*input_str)[i] != ' ') // fill in envvar
 		envvar[j++] = (*input_str)[i++];
 	envvar[j] = '\0';
 	envvar_value = find_envvar_value(envvar, mllcd);

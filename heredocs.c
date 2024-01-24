@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:02 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 15:30:00 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
 	int		res;
 
 	envv = convert_linkedlst_to_table(mllcd);
-	ft_lstclear(&mllcd->env_list);
 
 	if (process_cmd(envv, mllcd))
 		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
@@ -104,7 +103,6 @@ static int	parent(int *pipe_ends, t_alloc *mllcd)
 		outredir_appendmode(mllcd, 0);
 	close(pipe_ends[0]);
 	execute_cmd(pipe_ends, mllcd);
-	ft_lstclear(&mllcd->env_list);
 	free_strstr(mllcd->in_pars.m_argv);
 	free_cmd_table(&mllcd->in_pars);
 	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
