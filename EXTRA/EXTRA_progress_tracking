@@ -4,3 +4,7 @@ grep: _testfile: input file is also the output
 echo $?
 2
 ______________________
+
+ <<h cat
+
+ ______

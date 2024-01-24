@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 17:22:36 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 11:09:33 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,16 @@ static int	update_pwds(t_env *env_list, char *pwd_var, t_alloc *mllcd)
 int cd(char *path, int argc, t_alloc *mllcd)
 {
     if (argc > 2)
-        return (ft_putstr_fd("Too many arguments", 2), 1);
+	{
+		mllcd->exit_status = 1;
+        return (ft_putstr_fd("cd: too many arguments", 2), 1);
+	}
     else if (argc == 1 || ft_strncmp(path, "~", 1) == 0)
     {
         if (chdir(find_envvar_value("HOME", mllcd)) == -1)
 		{
 			mllcd->exit_status = 1;
-            return (perror("Chdir failed"), 1);
+            return (perror("cd"), 1);
 		}
     }
     else
@@ -58,7 +61,7 @@ int cd(char *path, int argc, t_alloc *mllcd)
         if (chdir(path) == -1)
 		{
 			mllcd->exit_status = 1;
-            return (perror("Chdir failed"), 1);
+            return (perror("cd"), 1);
 		}
     }
 	update_pwds(&mllcd->env_list, "OLDPWD", mllcd);
