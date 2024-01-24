@@ -18,6 +18,6 @@ ______________________
  PROBLEM with the following:
  env << out     the problem only occurs with builtins in connection to redirections
 
- ALSO
+ ALSO:
  echo \"$SHELL\"-   the problem occurs when there is sth directly after the second "" 
                     => solution: during parsing, already remove the quotes and strjoin with the thing after the quotes until the next question mark
