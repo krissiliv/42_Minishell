@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 15:29:24 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:51:01 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 
 void	init_simple_cmd(t_pipex_m *simple_cmd)
 {
@@ -89,8 +90,10 @@ static int	simple_execute(t_alloc *mllcd)
 		return (ft_lstclear(&mllcd->env_list), 1);
 	envv = convert_linkedlst_to_table(mllcd);
 	res = builtins(cmd, mllcd);
-	if (res != -1)
+	if (res != -1) {
+		perror("builtins");
 		return (res);
+	}
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
@@ -120,6 +123,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 		if (mllcd->simple_cmd.compil_res != 0)
 			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), mllcd->simple_cmd.compil_res);
 		// break ; //should break the loop in order to prevent child process from building pther processes
+		// exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
 	}
 	waitpid(pid, &mllcd->simple_cmd.status , 0);
 	return (WEXITSTATUS(mllcd->simple_cmd.status));

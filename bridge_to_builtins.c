@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bridge_to_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:58:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 15:35:53 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:13:50 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ int	builtins(char **cmd, t_alloc *mllcd) // this is actually like execute or exe
 		exiting(mllcd, cmd[1], count_cmd_args(cmd));
 	else 
 		return (-1);
-	return (0);
+	exit (mllcd->exit_status);
 }
