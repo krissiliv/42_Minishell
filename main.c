@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 13:23:00 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/24 13:53:05 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static int preparing_minishell(t_alloc *mllcd)
 {
 	char    *input_str;
 
-    // input_str = read_input_print_prompt();
-	input_str = ft_strdup("echo \"$SHELL xxx\""); //fill in stuff from EXTRA/input_parser_testing
+    input_str = read_input_print_prompt();
+	// input_str = ft_strdup("echo \"$SHELL\"-"); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
         return (1);
     // printf("input_str expanded: %s\n", input_str);
@@ -41,11 +41,11 @@ int main(int argc, char **argv, char **envv)
 
     retval = 0;
     get_env(envv, &mllcd.env_list);
-    // while (1)
-    // {
+    while (1)
+    {
         if (preparing_minishell(&mllcd))
-            return (1);
-        // if (mllcd.in_pars.cmd_table[0][4]) // this should not be here but inside a forked process in order not to redir parents output no?
+            mllcd.exit_status = 1;
+        // if (mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
         //     outredir_appendmode(&mllcd);
         if (mllcd.in_pars.cmd_table[0][3])
             handle_heredocs(&mllcd);
@@ -55,6 +55,6 @@ int main(int argc, char **argv, char **envv)
             retval = run_simple_cmd(&mllcd);
         free_strstr(mllcd.in_pars.m_argv);
         free_cmd_table(&mllcd.in_pars);
-    // }
+    }
     return (retval);
 }
