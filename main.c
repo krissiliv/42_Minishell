@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 15:16:02 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:52:39 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,6 @@ static int preparing_minishell(t_alloc *mllcd)
 
     mllcd->exit_status = 0;
     return (0);
-}
-
-void prntlist(t_env *head)
-{
-    t_env *pos;
-
-    pos = head;
-	if (pos == NULL)
-		printf("NULL\n");
-    while (pos != NULL)
-    {
-        printf("%s\n", pos->env_var);
-        pos = pos->next;
-    }
 }
 
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
