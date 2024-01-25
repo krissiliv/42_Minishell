@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:03:21 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/24 13:42:24 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:38:57 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,30 @@ static int	compare_env_var(char *env_var1, char *env_var2)
 
 //I need to change the following function, bc it has to modify the linked list
 
-static int	check_exist_var(t_env *env_list, char *input)
+static int	check_exist_var(t_alloc *mllcd, char *input)
 {
 	t_env	*temp;
+	int		flag;
 
-	temp = env_list;
+	flag = 0;
+	temp = mllcd->env_list;
 	while (temp)
 	{
-		if (!compare_env_var(env_list->env_var, input))
+		if (!compare_env_var(temp->env_var, input))
 		{
-			env_list->env_var = input;
-			return (0);
+			flag = 1;
+			mllcd->exit_status = 0;
+			temp->env_var = input;
 		}
 		temp = temp->next;
 	}
-	return (1);
+	if (flag == 0)
+	{
+		mllcd->exit_status = 1;
+		return (1);
+	}
+	else
+		return (0);
 }
 
 static int	export_one(char *input, t_alloc *mllcd)
@@ -86,7 +95,7 @@ static int	export_one(char *input, t_alloc *mllcd)
 			mllcd->exit_status = 1;
 			return (1);
 		}
-		else if (check_exist_var(mllcd->env_list, input) == 1)
+		else if (check_exist_var(mllcd, input) == 1)
 			ft_lstadd_front(&mllcd->env_list, ft_new_node(input));
 	}
 	else
