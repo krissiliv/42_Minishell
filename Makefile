@@ -22,7 +22,7 @@ COMPILER_FLAGS = -Wall -Wextra -Werror -g
 HEADERS = -I .
 COMPILE = $(CC) $(COMPILER_FLAGS) $(HEADERS)
 
-SRCS = outredir_appendmode.c bridge_to_builtins.c cd.c echo.c env.c error.c exit_atoi.c exit.c expander.c export.c find_cmd.c finish.c get_env.c heredocs.c input_parser.c input_parser_ft_split_w_quotes.c input_parser_utils.c main.c pipex_multipipe.c pipex_multipipe_interpreter.c print_prompt.c pwd.c simple_cmd_execution.c unset.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+SRCS = export_utils.c outredir_appendmode.c bridge_to_builtins.c cd.c echo.c env.c error.c exit_atoi.c exit.c expander.c export.c find_cmd.c finish.c get_env.c heredocs.c input_parser.c input_parser_ft_split_w_quotes.c input_parser_utils.c main.c pipex_multipipe.c pipex_multipipe_interpreter.c print_prompt.c pwd.c simple_cmd_execution.c unset.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 OBJS = $(SRCS:.c=.o)
 
 %.o: %.c
