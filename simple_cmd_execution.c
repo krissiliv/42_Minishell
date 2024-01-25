@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 18:51:01 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/25 17:24:44 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 		if (mllcd->simple_cmd.compil_res != 0)
 			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), mllcd->simple_cmd.compil_res);
 		// break ; //should break the loop in order to prevent child process from building pther processes
-		// exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
+		exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
 	}
 	waitpid(pid, &mllcd->simple_cmd.status , 0);
 	return (WEXITSTATUS(mllcd->simple_cmd.status));
