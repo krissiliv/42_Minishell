@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/25 17:24:44 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/26 11:36:33 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ static int	simple_execute(t_alloc *mllcd)
 	if (simple_execute_interpreter(mllcd, &cmd))
 		return (ft_lstclear(&mllcd->env_list), 1);
 	envv = convert_linkedlst_to_table(mllcd);
+	// ft_lstclear(&mllcd->env_list);
+
 	res = builtins(cmd, mllcd);
 	if (res != -1) {
 		perror("builtins");
