@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+static void remove_quotes_from_input(char **input_str)
+{
+    int i;
+
+    i = 0;
+    while ((*input_str)[i])
+    {
+        if ((*input_str)[i] == '\'' || (*input_str)[i] == '\"')
+            ft_strlcpy(&(*input_str)[i], &(*input_str)[i + 1], ft_strlen(*input_str) - i);
+        else
+            i++;
+    }
+}
+
 static int preparing_minishell(t_alloc *mllcd)
 {
 	char    *input_str;
@@ -21,6 +35,7 @@ static int preparing_minishell(t_alloc *mllcd)
     if (expander(&input_str, mllcd))
         return (1);
     // printf("input_str expanded: %s\n", input_str);
+    remove_quotes_from_input(&input_str);
 
     if (cmdline_input_parser(&mllcd->in_pars, input_str))
         return (1);
