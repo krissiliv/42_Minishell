@@ -21,3 +21,8 @@ ______________________
  ALSO:
  echo \"$SHELL\"-   the problem occurs when there is sth directly after the second "" 
                     => solution: during parsing, already remove the quotes and strjoin with the thing after the quotes until the next question mark
+
+______________________
+
+cat << s | cat > out                        not working
+cat < _testfile | wc -l > out
