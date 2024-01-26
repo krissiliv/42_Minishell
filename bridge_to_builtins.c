@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bridge_to_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:58:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/26 11:24:06 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/26 11:41:54 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	builtins(char **cmd, t_alloc *mllcd) // this is actually like execute or exe
 		pwd(mllcd);
 	else if (!ft_strncmp("env", cmd[0], 3))
 		env(mllcd); //works
-	else if (!ft_strncmp("exporting", cmd[0], 6))
+	else if (!ft_strncmp("export", cmd[0], 6))
 		exporting(cmd, mllcd); // should have no dollar signs
 	else if (!ft_strncmp("unset", cmd[0], 5))
 		unset(cmd, mllcd);
