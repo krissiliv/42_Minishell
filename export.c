@@ -6,34 +6,82 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:03:21 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/25 12:38:57 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:38:44 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* export passes environment variables to other processes*/
-
 #include "minishell.h"
 
-static t_env	*ft_new_node(char *input)
+void	swap_nodes_begin(t_env **env_list)
 {
-	t_env	*new_node;
+	t_env	*swap1;
+	t_env	*swap2;
+	t_env	*swap3;
 
-	new_node = (t_env *)malloc(sizeof(t_env));
-	if (!new_node)
-		return (NULL);
-	new_node->env_var = input;
-	new_node->next = NULL;
-	return (new_node);
+	swap1 = *env_list;
+	swap2 = swap1->next;
+	swap3 = swap2->next;
+	*env_list = swap2;
+	swap2->next = swap1;
+	swap1->next = swap3;
 }
 
-static void	ft_lstadd_front(t_env **env_list, t_env *new_node)
+void	swap_nodes_mid(t_env **env_list)
 {
-	if (env_list)
+	t_env	*prev_node;
+	t_env	*swap1;
+	t_env	*swap2;
+	t_env	*swap3;
+
+	prev_node = *env_list;
+	swap1 = (*env_list)->next;
+	swap2 = swap1->next;
+	swap3 = swap2->next;
+	prev_node->next = swap2;
+	swap2->next = swap1;
+	swap1->next = swap3;
+	*env_list = prev_node;
+}
+
+void	prnt_sortedlist(t_env *head)
+{
+	t_env *pos;
+
+    pos = head;
+	if (pos == NULL)
+		printf("NULL\n");
+    while (pos != NULL)
+    {
+        printf("declare -x %s\n", pos->env_var);
+        pos = pos->next;
+    }
+}
+
+t_env	*sort_list(t_env *env_list)
+{
+	t_env	*head;
+
+	head = env_list;
+	while (env_list->next && env_list->next->next)
 	{
-		if (*env_list)
-			new_node->next = *env_list;
-		*env_list = new_node;
+		if (env_list == head)
+		{
+			if (ft_strcmp(env_list->env_var, env_list->next->env_var) > 0)
+			{
+				swap_nodes_begin(&env_list);
+				head = env_list;
+			}
+		}
+		if (ft_strcmp(env_list->next->env_var, env_list->next->next->env_var) > 0)
+		{
+			swap_nodes_mid(&env_list);
+			env_list = head;
+		}
+		else
+			env_list = env_list->next;
 	}
+	env_list = head;
+	return (env_list);
 }
 
 static int	compare_env_var(char *env_var1, char *env_var2)
@@ -52,8 +100,6 @@ static int	compare_env_var(char *env_var1, char *env_var2)
 	}
 	return (1);
 }
-
-//I need to change the following function, bc it has to modify the linked list
 
 static int	check_exist_var(t_alloc *mllcd, char *input)
 {
@@ -83,11 +129,6 @@ static int	check_exist_var(t_alloc *mllcd, char *input)
 
 static int	export_one(char *input, t_alloc *mllcd)
 {
-	if (!input[0])
-	{
-		mllcd->exit_status = 1;
-		return (ft_putstr_fd("No arguments\n", 2), 1);
-	}
 	if (ft_strchr(input, '=') != NULL)
 	{
 		if (input[0] == '=')
@@ -109,6 +150,8 @@ int	exporting(char **cmd, t_alloc *mllcd)
 	int	i;
 
 	i = 0;
+	if (!cmd[1])
+		prnt_sortedlist(sort_list(mllcd->env_list));
 	while (cmd[++i]) // ++ to jump over first one (which is "export")
 	{
 		if (export_one(cmd[i], mllcd))
@@ -116,3 +159,15 @@ int	exporting(char **cmd, t_alloc *mllcd)
 	}
 	return (0);
 }
+
+/* int	main(int argc, char *argv[], char **envv)
+{
+	t_env	*env_list;
+
+	if (argv && argc)
+	{
+		env_list = (t_env *)malloc(sizeof(t_env));
+		get_env(envv, &env_list);
+		prnt_sortedlist(sort_list(env_list));
+	}
+} */

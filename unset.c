@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:02:57 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/25 16:35:00 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:00:12 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	unset_one(t_env **env_list, char *input, t_alloc *mllcd)
 		}
 		else
 			temp->next = head->next;
+		if (head->malloced == true)
+			free(head->env_var);
 		free(head);
 		mllcd->exit_status = 0;
 		return (0);
