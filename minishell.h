@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 15:26:34 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:53:41 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,9 @@ int		exiting(t_alloc *mllcd, char *input, int argc);
 int		is_num(char str);
 int		is_pm(char str);
 int		ft_atoi_minishell(const char *nptr);
+
+//export utils
+t_env	*ft_new_node(char *input);
+void	ft_lstadd_front(t_env **env_list, t_env *new_node);
 
 #endif

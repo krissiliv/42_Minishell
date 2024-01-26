@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/24 13:31:44 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:49:41 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 					find_envvar_value("PWD", mllcd));
 				if (!(*env_list)->env_var)
 					return (1);
+				(*env_list)->malloced = true;
 			}
 			else if (!ft_strcmp(pwd_var, "PWD"))
 			{
 				(*env_list)->env_var = ft_strjoin("PWD=", getcwd(NULL, 1024));
 				if (!(*env_list)->env_var)
 					return (1);
+				(*env_list)->malloced = true;
 			}
 		}
 		*env_list = (*env_list)->next;
