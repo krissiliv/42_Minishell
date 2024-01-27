@@ -38,6 +38,7 @@ int		count_words(char *str, char c);
 char	**ft_split_w_quotes(char const *s, char c);
 
 //input parser utils
+void	remove_quotes_from_argv(t_input_parsing *in_pars);
 int		special_operator(char *str);
 char	*ft_strjoin_w_free(char *s1, char *s2);
 int		input_check_adapt(char *input);

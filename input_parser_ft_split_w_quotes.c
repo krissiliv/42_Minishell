@@ -82,11 +82,9 @@ char	**ft_split_w_quotes(char const *s, char c)
 	char		**words;
 	t_mystruct	*hst;
 	t_quotes	quotes; // single, double quotes open
-	bool		word_found;
 
 	quotes.single_quotes_open = false;
 	quotes.double_quotes_open = false;
-	word_found = false;
 	hst = (t_mystruct *)malloc(sizeof(t_mystruct));
 	words = (char **)malloc((count_words((char *)s, c) + 1) * sizeof(char *));
 	if (freeing_choice_struct(words, hst) == NULL)
@@ -95,21 +93,17 @@ char	**ft_split_w_quotes(char const *s, char c)
 	hst->wct = 0;
 	while (hst->wct < count_words((char *)s, c))
 	{
-		word_found = false;
 		while (s[hst->j] == c && s[hst->j] != '\0') // jump over c ->should not be quotes
 			hst->j++;
 		hst->k = hst->j; // fix this spot
 		quote_checker(s[hst->j++], &quotes, 'x');
-		while (s[hst->j] != c && s[hst->j] != '\0' && (quotes.single_quotes_open == false && quotes.double_quotes_open == false))
-			quote_checker(s[hst->j++], &quotes, 'x'); //check for any quote findin
-		if (hst->k != hst->j && (quotes.single_quotes_open == false && quotes.double_quotes_open == false))
-			word_found = true;
-		while (word_found == false && quotes.single_quotes_open == true && quotes.double_quotes_open == false)
-			quote_checker(s[hst->j++], &quotes, 's'); //check for new single quote finding
-		if (hst->k != hst->j && (quotes.single_quotes_open == false && quotes.double_quotes_open == false))
-			word_found = true;
-		while (word_found == false && quotes.single_quotes_open == false && quotes.double_quotes_open == true)
-			quote_checker(s[hst->j++], &quotes, 'd'); //check for new double finding
+		while (s[hst->j] != '\0' && (s[hst->j] != c || (s[hst->j] == c && (quotes.single_quotes_open || quotes.double_quotes_open))))
+		{
+			quote_checker(s[hst->j], &quotes, 'x');
+			if (s[hst->j] == c && !quotes.single_quotes_open && !quotes.double_quotes_open)
+				break ;
+			hst->j++;
+		}
 		words[hst->wct] = (char *)malloc((hst->j - hst->k + 1) * sizeof(char));
 		if (freeing_choice_word(words, hst) == NULL)
 			return (NULL);
@@ -121,22 +115,35 @@ char	**ft_split_w_quotes(char const *s, char c)
 	return (words);
 }
 
-//cc -Wall -Wextra -Werror -g input_parser_ft_split_w_quotes.c libft/ft_strlen.c libft/ft_strlcpy.c
-// int	main(void)
+//cc -Wall -Wextra -Werror -g input_parser_ft_split_w_quotes.c expander.c input_parser_utils.c get_env.c libft/*.c
+// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./a.out
+// int	main(int argc, char **argv, char **envv)
 // {
-//     char	*str = " \"< infile\" \"cat\"";
+//     char	*input_str;
 //     int	wcnt;
 //     char	**words;
 // 	char	c = ' ';
+// 	t_alloc mllcd;
 
-//     words = ft_split_w_quotes(str, c);
+// 	if (!argc || !argv)
+// 		return (1);
+// 	input_str = ft_strdup("echo \'$SHELL\'$PWD"); //fill in stuff from EXTRA/input_parser_testing
+//     mllcd.env_list = (t_env *)malloc(sizeof(t_env));
+//     get_env(envv, &mllcd.env_list);
+// 	if (expander(&input_str, &mllcd))
+//         return (1);
+//     if (!input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
+// 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
+//     words = ft_split_w_quotes(input_str, c);
 //     wcnt = 0;
-// 	printf("%d words:\n", count_words(str, c));
-//     while (wcnt < count_words(str, c))
+// 	printf("%d words:\n", count_words(input_str, c));
+//     while (wcnt < count_words(input_str, c))
 // 	{
 // 		printf("%s\n", words[wcnt]);
 //         free(words[wcnt++]);
 // 	}
 // 	free(words);
+// 	free(input_str);
+// 	ft_lstclear(&mllcd.env_list);
 //     return (0);
 // }

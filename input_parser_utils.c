@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+void remove_quotes_from_argv(t_input_parsing *in_pars)
+{
+    int i;
+    int j;
+    
+    i = -1;
+    while (in_pars->m_argv[++i])
+    {
+        j = -1;
+        while (in_pars->m_argv[i][++j])
+        {
+            if (in_pars->m_argv[i][j] == '\"' || in_pars->m_argv[i][j] == '\'')
+                ft_strlcpy(in_pars->m_argv[i] + j, in_pars->m_argv[i] + j + 1, ft_strlen(in_pars->m_argv[i] + j));
+        }
+    }
+}
+
 int	special_operator(char *str)
 {
 	if (ft_strcmp(str, "<") == 0)

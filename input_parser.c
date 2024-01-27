@@ -16,17 +16,17 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str)
 {
 	int		i;
 	int		j;
-	char	**test_m_argv;
+	// char	**test_m_argv;
 
 	in_pars->pipenum = 0;
-	test_m_argv = ft_split_w_quotes(input_str, ' ');
-	if ((ft_strcmp(test_m_argv[0], "<") == 0 || \
-		ft_strcmp(test_m_argv[0], ">") == 0) && \
-		test_m_argv[2] && ft_strcmp(test_m_argv[2], "|") == 0) // If there is just "< infile" in front of the first pipe, then pipenum-- as the first pipe is not needed/counted
-		in_pars->pipenum--;
+	// test_m_argv = ft_split_w_quotes(input_str, ' '); // this is wrong as f.e. the cmd grep "ho" | < _test does not work in bash eigther
+	// if ((ft_strcmp(test_m_argv[0], "<") == 0 || 
+	// 	ft_strcmp(test_m_argv[0], ">") == 0) && 
+	// 	test_m_argv[2] && ft_strcmp(test_m_argv[2], "|") == 0) // If there is just "< infile" in front of the first pipe, then pipenum-- as the first pipe is not needed/counted
+	// 	in_pars->pipenum--;
 	// if (ft_strcmp(in_pars->input_str, ">") == 0 && ft_strcmp(in_pars->input_str, "|") != 0)
 	// 	in_pars->pipenum++;
-	free_strstr(test_m_argv);
+	// free_strstr(test_m_argv);
 	while (*input_str)
 	{
 		if (*input_str == '|')
@@ -156,6 +156,15 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	in_pars->m_argc = count_words(input_str, ' ');
 	//printf("m_argc = %d\n", m_argc);
 	in_pars->m_argv = ft_split_w_quotes(input_str, ' ');
+
+	int i = 0;
+	while (i < in_pars->m_argc)
+	{
+		printf("m_argv[%d] = %s\n", i, in_pars->m_argv[i]);
+		i++;
+	}
+
+	remove_quotes_from_argv(in_pars);
 	if (processing_read(in_pars))
 		return (1);
 	// free(input_str);
