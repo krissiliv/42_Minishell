@@ -164,7 +164,6 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 		i++;
 	}
 
-	remove_quotes_from_argv(in_pars);
 	if (processing_read(in_pars))
 		return (1);
 	// free(input_str);

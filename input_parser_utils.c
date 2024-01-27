@@ -12,21 +12,27 @@
 
 #include "minishell.h"
 
-void remove_quotes_from_argv(t_input_parsing *in_pars)
+char *ft_remove_quotes(char *str)
 {
-    int i;
-    int j;
-    
-    i = -1;
-    while (in_pars->m_argv[++i])
-    {
-        j = -1;
-        while (in_pars->m_argv[i][++j])
-        {
-            if (in_pars->m_argv[i][j] == '\"' || in_pars->m_argv[i][j] == '\'')
-                ft_strlcpy(in_pars->m_argv[i] + j, in_pars->m_argv[i] + j + 1, ft_strlen(in_pars->m_argv[i] + j));
-        }
-    }
+	int i;
+	int j;
+	char *new;
+
+	i = 0;
+	j = 0;
+	new = (char *)malloc((ft_strlen(str) + 1) * sizeof(char));
+	if (!new)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] != '\"' && str[i] != '\'')
+			new[j++] = str[i];
+		i++;
+	}
+	new[j] = '\0';
+	free(str);
+	str = new;
+	return (str);
 }
 
 int	special_operator(char *str)

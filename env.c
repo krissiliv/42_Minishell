@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void prntlist(t_env *head)
+static void prntlist(t_env *head)
 {
     t_env *pos;
 

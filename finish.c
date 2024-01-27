@@ -68,16 +68,6 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
 		free_and_null((void *)pipex_m->poss_path);
 }
 
-void	free_env_table(char **envv)
-{
-	int		i;
-
-	i = 0;
-    while (envv[i] != NULL)
-		free_and_null(envv[i++]);
-	free_and_null(envv);
-}
-
 void	free_everything(t_alloc *mllcd, int **pipe_ends)
 {
 	rl_clear_history();

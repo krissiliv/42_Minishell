@@ -17,7 +17,7 @@ static int preparing_minishell(t_alloc *mllcd)
 	char    *input_str;
 
     // input_str = read_input_print_prompt();
-	input_str = ft_strdup("echo \"hello                  .\""); //fill in stuff from EXTRA/input_parser_testing
+	input_str = ft_strdup("echo \"hello         $SHELL         .\"----"); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
         return (1);
     if (!input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))

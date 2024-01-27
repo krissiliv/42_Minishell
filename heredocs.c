@@ -22,10 +22,7 @@ static int process_cmd(char **envv, t_alloc *mllcd)
 	c = 0; // now remove "" from everywhere
 	while (mllcd->simple_cmd.cmd[c] && c < 6)
 	{
-		if (mllcd->simple_cmd.cmd[c] && mllcd->simple_cmd.cmd[c][0] == '\"')
-			mllcd->simple_cmd.cmd[c] = ft_strtrim(mllcd->simple_cmd.cmd[c], "\"");
-		else if (mllcd->simple_cmd.cmd[c] && mllcd->simple_cmd.cmd[c][0] == '\'')
-			mllcd->simple_cmd.cmd[c] = ft_strtrim(mllcd->simple_cmd.cmd[c], "\'");
+		mllcd->simple_cmd.cmd[c] = ft_remove_quotes(mllcd->simple_cmd.cmd[c]);
 		c++;
 	}
 
@@ -59,10 +56,11 @@ static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
 	
 	res = builtins(mllcd->simple_cmd.cmd, mllcd);
 	if (res != -1)
-		return (res);
+		return (free_env_table(envv), res);
 
 	if (execve(mllcd->simple_cmd.cmdpath, mllcd->simple_cmd.cmd, envv) == -1)
 		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+	free_env_table(envv);
 	free_strstr(mllcd->in_pars.m_argv);
 	free_cmd_table(&mllcd->in_pars);
 	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->simple_cmd, &pipe_ends), 0);

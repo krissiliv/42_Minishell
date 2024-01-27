@@ -40,6 +40,23 @@ int	get_env(char **envv, t_env **head)
 	return (0);
 }
 
+void	ft_lstclear(t_env **env_list)
+{
+	t_env	*temp;
+
+	if (!(*env_list))
+		return ;
+	while (*env_list)
+	{
+		temp = (*env_list)->next;
+		if ((*env_list)->malloced == true)
+			free_and_null((*env_list)->env_var);
+		free_and_null(*env_list);
+		*env_list = temp;
+	}
+	*env_list = NULL;
+}
+
 char	**convert_linkedlst_to_table(t_alloc *mllcd)
 {
 	char	**env_table;
@@ -67,19 +84,12 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 	return (env_table);
 }
 
-void	ft_lstclear(t_env **env_list)
+void	free_env_table(char **envv_table)
 {
-	t_env	*temp;
+	int		i;
 
-	if (!(*env_list))
-		return ;
-	while (*env_list)
-	{
-		temp = (*env_list)->next;
-		if ((*env_list)->malloced == true)
-			free_and_null((*env_list)->env_var);
-		free_and_null(*env_list);
-		*env_list = temp;
-	}
-	*env_list = NULL;
+	i = 0;
+    while (envv_table[i] != NULL)
+		free_and_null(envv_table[i++]);
+	free_and_null(envv_table);
 }

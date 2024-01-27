@@ -21,14 +21,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 	if (!(mllcd->pipex_m.cmd))
 		return (1);
 	c = 0; // now remove "" from everywhere
-    while ((mllcd->pipex_m.cmd)[c] && c < 6)
-    {
-        if ((mllcd->pipex_m.cmd)[c] && (mllcd->pipex_m.cmd)[c][0] == '\"')
-            (mllcd->pipex_m.cmd)[c] = ft_strtrim((mllcd->pipex_m.cmd)[c], "\"");
-        else if ((mllcd->pipex_m.cmd)[c] && (mllcd->pipex_m.cmd)[c][0] == '\'')
-            (mllcd->pipex_m.cmd)[c] = ft_strtrim((mllcd->pipex_m.cmd)[c], "\'");
-        c++;
-    }
+	while (mllcd->pipex_m.cmd[c] && c < 6)
+	{
+		mllcd->pipex_m.cmd[c] = ft_remove_quotes(mllcd->pipex_m.cmd[c]);
+		c++;
+	}
 
     printf("cmd = ["); // PRINTING FOR DEBUGGING
     int i = -1;
@@ -74,7 +71,7 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 
 	res = builtins(mllcd->pipex_m.cmd, mllcd);
 	if (res != -1)
-		return (res);
+		return (free_env_table(envv), res);
 
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
 		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m, true));
