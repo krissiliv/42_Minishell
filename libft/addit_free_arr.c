@@ -16,6 +16,8 @@ void	free_strstr(char **str)
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = 0;
 	if (str)
 	{
