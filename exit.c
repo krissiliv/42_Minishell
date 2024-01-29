@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/18 14:06:57 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/29 12:08:24 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ static int	validate_input(char *input)
 
 int	exiting(t_alloc *mllcd, char *input, int argc)
 {
-	if (argc != 2)
+	if (argc > 2)
 	{
-		ft_putstr_fd("exit: too many arguments", 2);
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		mllcd->exit_status = 1;
+		return (1);
 	}
 	if (validate_input(input) == 1)
 	{
-		ft_putstr_fd("exit: numeric argument required", 2);
+		ft_putstr_fd("exit: numeric argument required\n", 2);
 		mllcd->exit_status = 2;
+		return (2);
 	}
 	if (input)
 		mllcd->exit_status = ft_atoi_minishell(input);

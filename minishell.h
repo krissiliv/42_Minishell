@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/25 16:53:41 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/29 17:30:21 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ typedef struct s_alloc
 	t_pipex_m		pipex_m;
 	t_env			*env_list;
 	t_input_parsing	in_pars;
-	int				saved_stdin;
-	// int				in_fd;
-	// int				out_fd;
 	int				exit_status; //put it in a global struct
 }	t_alloc;
 
@@ -55,6 +52,7 @@ char	*read_input_print_prompt(void);
 
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);
+void	free_env_table(char **envv);
 // void	general_free_all(char **m_argv);
 
 // simple cmd execution
@@ -81,12 +79,11 @@ int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
 int		builtins(char **cmd, t_alloc *mllcd);
 
 // NASTYA
-//get env ---- store environment
+//store environment
+char	**convert_linkedlst_to_table(t_alloc *mllcd);
 int		get_env(char **envv, t_env **head);
 void	ft_lstclear(t_env **env_list);
-char	**convert_linkedlst_to_table(t_alloc *mllcd);
-void	free_env_table(char **env_table);
-// void 	prntlist(t_env *head);
+void 	prntlist(t_env *head);
 
 //built-ins:
 int		echo(char *cmd[], t_alloc *mllcd);
@@ -105,5 +102,7 @@ int		ft_atoi_minishell(const char *nptr);
 //export utils
 t_env	*ft_new_node(char *input);
 void	ft_lstadd_front(t_env **env_list, t_env *new_node);
+t_env	*sort_list(t_env *env_list);
+void	prnt_sortedlist(t_env *head);
 
 #endif
