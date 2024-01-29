@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:22:39 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/24 17:52:47 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/29 18:38:23 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void prntlist(t_env *head)
+void prntlist(t_env *head)
 {
     t_env *pos;
 

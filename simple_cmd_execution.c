@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/26 11:36:33 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/29 18:38:00 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ static int	simple_execute_interpreter(t_alloc *mllcd, char ***cmd)
 	c = 0; // now remove "" from everywhere
 	while ((*cmd)[c] && c < 6)
 	{
-		(*cmd)[c] = ft_remove_quotes((*cmd)[c]);
+		if ((*cmd)[c] && (*cmd)[c][0] == '\"')
+			(*cmd)[c] = ft_strtrim((*cmd)[c], "\"");
+		else if ((*cmd)[c] && (*cmd)[c][0] == '\'')
+			(*cmd)[c] = ft_strtrim((*cmd)[c], "\'");
 		c++;
 	}
 
@@ -76,53 +79,57 @@ static int	simple_execute_interpreter(t_alloc *mllcd, char ***cmd)
 	return (0);
 }
 
-static int	simple_execute(t_alloc *mllcd)
+static int	simple_execute(t_alloc *mllcd, char **cmd)
 {
-	char	**cmd;
+	//char	**cmd;
 	char	*cmdpath;
 	char	**envv;
 	int		res;
 
-	if (simple_execute_interpreter(mllcd, &cmd))
-		return (ft_lstclear(&mllcd->env_list), 1);
+	/* if (simple_execute_interpreter(mllcd, &cmd))
+		return (ft_lstclear(&mllcd->env_list), 1); */
 	envv = convert_linkedlst_to_table(mllcd);
 	// ft_lstclear(&mllcd->env_list);
 
 	res = builtins(cmd, mllcd);
 	if (res != -1) {
 		perror("builtins");
-		return (free_env_table(envv), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), res);
+		return (res);
 	}
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
-	// if (cmdpath == NULL) //implemented builtin calling differently, so not needed any more
-	// 	cmdpath = cmd[0]; //try if this command is right here
+	if (cmdpath == NULL)
+		cmdpath = cmd[0]; //try if this command is right here
 	if (access(cmdpath, F_OK) != 0)
-		return (free_env_table(envv), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 1);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 1);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
-		return (free_env_table(envv), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 1);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 1);
 	
 	if (execve(cmdpath, cmd, envv) == -1)
-		return (free_env_table(envv), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 3);
-	return (free_env_table(envv), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), ft_putstr_fd("Something went wrong", 2), 0);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 3);
+	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), 0);
 }
 
 int	run_simple_cmd(t_alloc *mllcd)
 {
-	int	pid;
+	int		pid;
+	char	**cmd;
 
 	init_simple_cmd(&mllcd->simple_cmd);
 	pid = fork();
 	if (pid < 0)
-		return (ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
+		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0) // means we are in child process
 	{
+		if (simple_execute_interpreter(mllcd, &cmd))
+			return (ft_lstclear(&mllcd->env_list), 1);
 		//printf("created child %d with compil res %d\n", i, compil_res);
-		mllcd->simple_cmd.compil_res = simple_execute(mllcd);
+		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
 		if (mllcd->simple_cmd.compil_res != 0)
-			return (mllcd->simple_cmd.compil_res);
+			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), mllcd->simple_cmd.compil_res);
 		// break ; //should break the loop in order to prevent child process from building pther processes
-		exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
+		if (ft_strncmp("cd", cmd[0], 2) && ft_strncmp("export", cmd[0], 6) && ft_strncmp("unset", cmd[0], 5) && ft_strncmp("exit", cmd[0], 4))
+			exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
 	}
 	waitpid(pid, &mllcd->simple_cmd.status , 0);
 	return (WEXITSTATUS(mllcd->simple_cmd.status));
