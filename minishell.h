@@ -43,6 +43,9 @@ typedef struct s_alloc
 	t_pipex_m		pipex_m;
 	t_env			*env_list;
 	t_input_parsing	in_pars;
+	int				saved_stdin;
+	// int				in_fd;
+	// int				out_fd;
 	int				exit_status; //put it in a global struct
 }	t_alloc;
 

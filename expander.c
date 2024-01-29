@@ -102,7 +102,9 @@ int expander(char **input_str, t_alloc *mllcd)
 
 	dsign = 0;
 	i = 0;
-	while (dsign != -1 && (*input_str)[i])
+	// if (!(*input_str))
+	// 	return (ft_putstr_fd("Expander-error: no input received.\n", 2), 1);
+	while (*input_str && dsign != -1 && (*input_str)[i])
 	{
 		dsign = find_dollar_sign((*input_str), i); // only those $ with no blankspace righ after will be found, as echo $ simply outputs $
 		if (dsign != -1)

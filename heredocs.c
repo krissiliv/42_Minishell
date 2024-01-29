@@ -12,59 +12,59 @@
 
 #include "minishell.h"
 
-static int process_cmd(char **envv, t_alloc *mllcd)
-{
-	int	c;
+// static int process_cmd(char **envv, t_alloc *mllcd)
+// {
+// 	int	c;
 
-	mllcd->simple_cmd.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
-	if (!mllcd->simple_cmd.cmd)
-		return (1);
-	c = 0; // now remove "" from everywhere
-	while (mllcd->simple_cmd.cmd[c] && c < 6)
-	{
-		mllcd->simple_cmd.cmd[c] = ft_remove_quotes(mllcd->simple_cmd.cmd[c]);
-		c++;
-	}
+// 	mllcd->simple_cmd.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+// 	if (!mllcd->simple_cmd.cmd)
+// 		return (1);
+// 	c = 0; // now remove "" from everywhere
+// 	while (mllcd->simple_cmd.cmd[c] && c < 6)
+// 	{
+// 		mllcd->simple_cmd.cmd[c] = ft_remove_quotes(mllcd->simple_cmd.cmd[c]);
+// 		c++;
+// 	}
 
-	printf("cmd = ["); // PRINTING FOR DEBUGGING
-	int i = -1;
-	while (mllcd->simple_cmd.cmd[++i])
-		printf("%s,", mllcd->simple_cmd.cmd[i]);
-	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
+// 	printf("cmd = ["); // PRINTING FOR DEBUGGING
+// 	int i = -1;
+// 	while (mllcd->simple_cmd.cmd[++i])
+// 		printf("%s,", mllcd->simple_cmd.cmd[i]);
+// 	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
-	mllcd->simple_cmd.cmdpath = pipex_find_cmd_path(mllcd->simple_cmd.cmd[0], envv, &mllcd->simple_cmd);
-	free_strstr(mllcd->simple_cmd.poss_paths);
-	free(mllcd->simple_cmd.poss_path);
-	if (mllcd->simple_cmd.cmdpath == NULL)
-		mllcd->simple_cmd.cmdpath = ft_strdup(mllcd->simple_cmd.cmd[0]);
-	if (access(mllcd->simple_cmd.cmdpath, F_OK) != 0)
-		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), ft_putstr_fd("Pipex-Error: Cmdpath could not be found.\n", 2), 127);
-	if (access(mllcd->simple_cmd.cmdpath, F_OK) == 0 && access(mllcd->simple_cmd.cmdpath, X_OK) != 0)
-		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), ft_putstr_fd("Pipex-Error: Access to cmdpath denied\n", 2), 1);
-	return (0);
-}
+// 	mllcd->simple_cmd.cmdpath = pipex_find_cmd_path(mllcd->simple_cmd.cmd[0], envv, &mllcd->simple_cmd);
+// 	free_strstr(mllcd->simple_cmd.poss_paths);
+// 	free(mllcd->simple_cmd.poss_path);
+// 	if (mllcd->simple_cmd.cmdpath == NULL)
+// 		mllcd->simple_cmd.cmdpath = ft_strdup(mllcd->simple_cmd.cmd[0]);
+// 	if (access(mllcd->simple_cmd.cmdpath, F_OK) != 0)
+// 		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), ft_putstr_fd("Pipex-Error: Cmdpath could not be found.\n", 2), 127);
+// 	if (access(mllcd->simple_cmd.cmdpath, F_OK) == 0 && access(mllcd->simple_cmd.cmdpath, X_OK) != 0)
+// 		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), ft_putstr_fd("Pipex-Error: Access to cmdpath denied\n", 2), 1);
+// 	return (0);
+// }
 
-static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
-{
-	char	**envv;
-	int		res;
+// static int	execute_cmd(int *pipe_ends, t_alloc *mllcd)
+// {
+// 	char	**envv;
+// 	int		res;
 
-	envv = convert_linkedlst_to_table(mllcd);
+// 	envv = convert_linkedlst_to_table(mllcd);
 
-	if (process_cmd(envv, mllcd))
-		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+// 	if (process_cmd(envv, mllcd))
+// 		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
 	
-	res = builtins(mllcd->simple_cmd.cmd, mllcd);
-	if (res != -1)
-		return (free_env_table(envv), res);
+// 	res = builtins(mllcd->simple_cmd.cmd, mllcd);
+// 	if (res != -1)
+// 		return (free_env_table(envv), res);
 
-	if (execve(mllcd->simple_cmd.cmdpath, mllcd->simple_cmd.cmd, envv) == -1)
-		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
-	free_env_table(envv);
-	free_strstr(mllcd->in_pars.m_argv);
-	free_cmd_table(&mllcd->in_pars);
-	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->simple_cmd, &pipe_ends), 0);
-}
+// 	if (execve(mllcd->simple_cmd.cmdpath, mllcd->simple_cmd.cmd, envv) == -1)
+// 		return (free_env_table(envv), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), 1);
+// 	free_env_table(envv);
+// 	free_strstr(mllcd->in_pars.m_argv);
+// 	free_cmd_table(&mllcd->in_pars);
+// 	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->simple_cmd, &pipe_ends), 0);
+// }
 
 static void	child(int *pipe_ends, t_alloc *mllcd)
 {
@@ -81,14 +81,19 @@ static void	child(int *pipe_ends, t_alloc *mllcd)
 		free(gnl);
 	}
 	close(pipe_ends[1]);
+	free(mllcd->simple_cmd.cmdpath);
+	free_strstr(mllcd->simple_cmd.cmd);
+	free_strstr(mllcd->in_pars.m_argv);
+	free_cmd_table(&mllcd->in_pars);
+	ft_lstclear(&mllcd->env_list);
 	exit(0);
 }
 
 static int	parent(int *pipe_ends, t_alloc *mllcd)
 {
-	wait(&mllcd->simple_cmd.status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
+	// wait(&mllcd->simple_cmd.status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
 	close(pipe_ends[1]); // close writing end of pipe
-	dup2(pipe_ends[0], 0);
+	dup2(pipe_ends[0], 0); // made pipe_ends[0] to stdin
 	// line = get_next_line(pipe_ends[0]); // made pipe_ends[0] to stdin
 	// while(line)
 	// {
@@ -96,12 +101,12 @@ static int	parent(int *pipe_ends, t_alloc *mllcd)
 	// 	free(line);
 	// 	line = get_next_line(pipe_ends[0]);
 	// }
-	if (mllcd->in_pars.cmd_table[0][4])
-		outredir_appendmode(mllcd, 0);
+	// if (mllcd->in_pars.cmd_table[0][4])
+	// 	outredir_appendmode(mllcd, 0);
 	close(pipe_ends[0]);
-	execute_cmd(pipe_ends, mllcd);
-	free_strstr(mllcd->in_pars.m_argv);
-	free_cmd_table(&mllcd->in_pars);
+	// execute_cmd(pipe_ends, mllcd);
+	// free_strstr(mllcd->in_pars.m_argv);
+	// free_cmd_table(&mllcd->in_pars);
 	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
 		return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
 	return (WEXITSTATUS(mllcd->simple_cmd.status));
@@ -119,19 +124,57 @@ int	handle_heredocs(t_alloc *mllcd)
 		exit (1);
 	pid = fork();
 	if (pid == 0)
-	{
 		child(pipe_ends, mllcd);
-		free(mllcd->simple_cmd.cmdpath);
-		free_strstr(mllcd->simple_cmd.cmd);
-	}
-	else
-	{
-		c = parent(pipe_ends, mllcd);
-		return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), c);
-	}
-	return (0);
-
+	waitpid(pid, &mllcd->simple_cmd.status , 0);
+	c = parent(pipe_ends, mllcd);
+	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), c);
 }
+
+
+// int	handle_heredocs(t_alloc *mllcd)
+// {
+// 	char	*gnl;
+// 	int		pid;
+// 	int		pipe_ends[2];
+// 	int		c;
+// 	c = pipe(pipe_ends);
+// 	init_simple_cmd(&mllcd->simple_cmd);
+// 	if (mllcd->in_pars.cmd_table[0][1])
+// 		dup2(mllcd->in_fd, 0);
+// 	if (mllcd->in_pars.cmd_table[0][2])
+// 		dup2(mllcd->out_fd, 1);
+// 	if (mllcd->in_pars.cmd_table[0][4])
+// 		outredir_appendmode(mllcd, 0);
+// 	pid = fork();
+// 	if (pid == 0) // child
+// 	{
+// 		while (1) // input reading until delimiter
+// 		{
+// 			gnl = readline("> ");
+// 			if (ft_strcmp(gnl, mllcd->in_pars.cmd_table[0][3]) == 0)
+// 				break;
+// 			ft_putstr_fd(gnl, mllcd->in_fd); //made mllcd->in_fd to stdout
+// 			ft_putstr_fd("\n", mllcd->in_fd);
+// 			free(gnl);
+// 		}
+// 		exit(0);
+// 	}
+// 	wait(&mllcd->simple_cmd.status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
+// 	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
+// 		return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
+// 	return (WEXITSTATUS(mllcd->simple_cmd.status));
+
+
+// 	// execute_cmd(mllcd);
+// 	// free_strstr(mllcd->in_pars.m_argv);
+// 	// free_cmd_table(&mllcd->in_pars);
+// 	// if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
+// 	// 	return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
+// 	// return (WEXITSTATUS(mllcd->simple_cmd.status));
+// 	// return (0);
+
+// }
+
 
 // cc -Wall -Wextra -Werror heredocs.c finish.c find_cmd.c expander.c input_parser.c input_parser_utils.c input_parser_ft_split_w_quotes.c simple_cmd_execution.c libft/*.c get_next_line/*.c -lreadline -g
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./a.out
