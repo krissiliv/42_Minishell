@@ -35,8 +35,6 @@ static int preparing_minishell(t_alloc *mllcd)
     //     printf("m_argv[%d] = %s\n", i, mllcd->in_pars.m_argv[i]);
 
     mllcd->exit_status = 0;
-    // mllcd->in_fd = 0;
-    // mllcd->out_fd = 1;
     mllcd->saved_stdin = dup(0);
     return (0);
 }
