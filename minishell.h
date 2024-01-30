@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/29 17:30:21 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:29:22 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void 	prntlist(t_env *head);
 int		echo(char *cmd[], t_alloc *mllcd);
 int		cd(char *path, int argc, t_alloc *mllcd);
 int		pwd(t_alloc *mllcd);
-int		env(t_alloc *mllcd);
+int		env(char **cmd, t_alloc *mllcd);
 int		exporting(char **cmd, t_alloc *mllcd);
 int		unset(char **cmd, t_alloc *mllcd);
 int		exiting(t_alloc *mllcd, char *input, int argc);
