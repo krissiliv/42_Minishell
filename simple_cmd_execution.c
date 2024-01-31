@@ -128,7 +128,6 @@ int	run_simple_cmd(t_alloc *mllcd)
 	while (cmd[c] && c < 6)
 	{
 		cmd[c] = ft_strtrim(cmd[c], "\"\'");
-		printf("cmd[%d] = %s\n", c, cmd[c]);
 		c++;
 	}
 	res = builtins_1(cmd, mllcd);
