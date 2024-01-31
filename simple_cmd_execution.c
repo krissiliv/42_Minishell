@@ -96,7 +96,11 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
-		cmdpath = cmd[0]; //try if this command is right here
+	{
+		// cmdpath = cmd[0]; //try if this command is right here in the current directory
+		free_env_table(envv);
+		return (ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
+	}
 	if (access(cmdpath, F_OK) != 0)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)

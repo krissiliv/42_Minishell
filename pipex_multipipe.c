@@ -61,7 +61,11 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	
 	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
-		mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
+	{
+		// mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
+		free_env_table(envv);
+		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m, true));
+	}
 	if (access(mllcd->pipex_m.cmdpath, F_OK) != 0)
 		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m, true));
 	if (access(mllcd->pipex_m.cmdpath, F_OK) == 0 && \
