@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-int	pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m *pipex_m, bool pp)
+int	pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m *pipex_m)
 {
-	if (pp)
+	if (pipe_ends)
 	{
 		while (pipenum >= 0)
 		{

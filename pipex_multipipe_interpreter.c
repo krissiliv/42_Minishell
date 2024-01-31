@@ -58,7 +58,7 @@ int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv)
 	while (i < mllcd->pipex_m.pipenum)
 	{
 		if (pipe(pipe_ends[i]) == -1)
-			return (pipex_error_handling(pipe_ends, i, 9, NULL, true));
+			return (pipex_error_handling(pipe_ends, i, 9, NULL));
 		i++;
 	}
 	// i = 0; // done in main.c

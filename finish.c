@@ -57,11 +57,18 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
 		}
 		i = 0;
 		free_intarr(pipe_ends, pipex_m->pipenum);
+		pipe_ends = NULL;
 	}
 	if (pipex_m->cmd)
+	{
 		free_strstr(pipex_m->cmd);
+		pipex_m->cmd = NULL;
+	}
 	if (pipex_m->poss_paths)
+	{
 		free_strstr(pipex_m->poss_paths);
+		pipex_m->poss_paths = NULL;
+	}
 	if (pipex_m->cmdpath)
 		free_and_null((void *)pipex_m->cmdpath);
 	if (pipex_m->poss_path)

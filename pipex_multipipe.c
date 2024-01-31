@@ -38,11 +38,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
     {
         in = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1], O_RDONLY);
         if (in == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL)
-            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 2, &mllcd->pipex_m, false));
+            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 2, &mllcd->pipex_m));
         if (in != -1 && dup2(in, 0) == -1) //the stdin will always be the in
         {
             close(in);
-            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m, false));
+            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
         }
     }
 	return (0);
@@ -64,21 +64,21 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	{
 		// mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
 		free_env_table(envv);
-		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m, true));
+		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m));
 	}
 	if (access(mllcd->pipex_m.cmdpath, F_OK) != 0)
-		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m, true));
+		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m));
 	if (access(mllcd->pipex_m.cmdpath, F_OK) == 0 && \
 		access(mllcd->pipex_m.cmdpath, X_OK) != 0)
 		return (free_env_table(envv), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
-				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 1, &mllcd->pipex_m, true));
+				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 1, &mllcd->pipex_m));
 
 	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
 	if (res != -1)
 		return (free_env_table(envv), res);
 
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
-		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m, true));
+		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m));
 	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
 }
 
@@ -92,7 +92,7 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL) //on cmd-position 1 there is always sth that is believed to be a file
 		cmd_file = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1], O_RDONLY);
 	if (cmd_file == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL) // I would set the filename of mllcd->in_pars.cmd_table[cmdnum][1] to NULL if the cmd doesn't have a file
-		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m, false));
+		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m));
 	//printf("in child %d, the cmd is %s and the file is %s\n", mllcd->pipex_m.cmdnum, mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0], mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1]);
 	// what is the stdin of my child? if cmdnum == 0, then if is probably a file, if it is not a file then it can be stdin as f.e. here: ls | cat > out
 	if (mllcd->pipex_m.cmdnum == 0 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL) // turn file into stdin
@@ -100,7 +100,7 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 		if (dup2(cmd_file, 0) == -1) //turn file into stdin
 		{
 			close(cmd_file);
-			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m, true));
+			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
 		}
 		//printf("in child %d, made %s to stdin\n", mllcd->pipex_m.cmdnum, mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1]);
 	}
@@ -109,14 +109,14 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 		if (dup2(pipe_ends[mllcd->pipex_m.cmdnum - 1][0], 0) == -1) //turn reading pipeend into stdin
 		{
 			close(cmd_file);
-			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m, true));
+			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
 		}
 		//printf("in child %d, made pipe_ends[%d][0] to stdin\n", mllcd->pipex_m.cmdnum, mllcd->pipex_m.cmdnum - 1);
 	}
 	// what is the stdout of my child? since for cmdnum == pipenum there is an other child, for this child the stdout will always be the pipeend to the next child 
 	//printf("in child %d dup made pipe_ends[%d][1] to stdout ...\n", mllcd->pipex_m.cmdnum, mllcd->pipex_m.cmdnum);
 	if (dup2(pipe_ends[mllcd->pipex_m.cmdnum][1], 1) == -1) // turn writing pipeend into stdout
-		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m, true));
+		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m));
 	//printf("in child %d made pipe_ends[%d][1] to stdout\n", mllcd->pipex_m.cmdnum, mllcd->pipex_m.cmdnum);
 	i = 0;
 	while (i < mllcd->pipex_m.pipenum)
@@ -125,7 +125,11 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 		close (pipe_ends[i][1]);
 		i++;
 	}
-	free_intarr(pipe_ends, mllcd->pipex_m.pipenum);
+	if (pipe_ends)
+	{
+		free_intarr(pipe_ends, mllcd->pipex_m.pipenum);
+		pipe_ends = NULL;
+	}
 	if (cmd_file != -1)
 		close(cmd_file);
 	exit (execute(pipe_ends, mllcd));
@@ -143,18 +147,18 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 	{
 		outfile = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2], O_WRONLY | O_CREAT | O_TRUNC, 0777); // on the 2nd position of the last command there will always be what is interpreted as the outfile by the parser
 		if (outfile == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2] != NULL)
-			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m, true));
+			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
 		if (outfile != -1 && dup2(outfile, 1) == -1) //the stdout will always be the outfile
 		{
 			close(outfile);
-			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m, true));
+			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
 		}
 	}
 	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][4])
 		outredir_appendmode(mllcd, mllcd->pipex_m.cmdnum);
 	//printf("in child %d make %s to stdout\n", mllcd->pipex_m.cmdnum, mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2]);
 	if (dup2(pipe_ends[mllcd->pipex_m.cmdnum - 1][0], 0) == -1) //for last child, the stdin will always be the reading pipeend to the last child
-		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m, true));
+		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m));
 	//printf("in child %d, made pipe_ends[%d][0] to stdin\n", mllcd->pipex_m.cmdnum, mllcd->pipex_m.cmdnum - 1);
 	i = 0;
 	while (i < mllcd->pipex_m.pipenum)
@@ -163,7 +167,11 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 		close (pipe_ends[i][1]);
 		i++;
 	}
-	free_intarr(pipe_ends, mllcd->pipex_m.pipenum);
+	if (pipe_ends)
+	{
+		free_intarr(pipe_ends, mllcd->pipex_m.pipenum);
+		pipe_ends = NULL;
+	}
 	if (outfile != -1)
 		close(outfile);
 	exit (execute(pipe_ends, mllcd));
@@ -181,7 +189,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 		mllcd->pipex_m.cmdnum = i;
 		pid[i] = fork();
 		if (pid[i] < 0)
-			return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m, true));
+			return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m));
 		else if (pid[i] == 0) // means we are in child process number i
 		{
 			//printf("created child %d with compil res %d\n", i, mllcd->pipex_m.compil_res);
@@ -205,7 +213,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 	mllcd->pipex_m.cmdnum = i;
 	pid[i] = fork();
 	if (pid[i] < 0)
-		return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m, true));
+		return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m));
 	else if (pid[i] == 0)
 	{
 		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd);
