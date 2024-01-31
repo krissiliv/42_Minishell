@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:22:39 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/30 12:41:54 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:29:13 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,11 @@ void prntlist(t_env *head)
     }
 }
 
-int	env(char **cmd, t_alloc *mllcd)
+int	env(char **cmd, t_alloc mllcd)
 {
 	if (cmd[1])
-		mllcd->exit_status = 127;
+		return (127);
 	else
-	{
-		prntlist(mllcd->env_list);
-		mllcd->exit_status = 0;
-	}
+		prntlist(mllcd.env_list);
 	return (0);
 }

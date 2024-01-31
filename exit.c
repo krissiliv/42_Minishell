@@ -6,17 +6,17 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/29 12:08:24 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:54:01 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exit_program(t_alloc *mallcd)
+static void	exit_program(t_alloc *mllcd)
 {
 	// close all fds;
-	//free_everything(mallcd);
-	exit(mallcd->exit_status);
+	free_everything(mllcd, NULL);
+	exit(mllcd->exit_status);
 }
 
 static int	validate_input(char *input)

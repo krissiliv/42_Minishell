@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:28 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/24 13:32:36 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:24:32 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	validate_n_flag(char *flag)
 		return (1);
 }
 
-int echo(char *cmd[], t_alloc *mllcd)
+int echo(char *cmd[])
 {
     int i;
 
@@ -56,7 +56,6 @@ int echo(char *cmd[], t_alloc *mllcd)
 		if (validate_n_flag(cmd[1]) == 1)
 			write(1, "\n", 1);
 	}
-	mllcd->exit_status = 0;
     return (0);
 }
 

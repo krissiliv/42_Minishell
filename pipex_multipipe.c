@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/26 11:37:02 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/31 11:47:50 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 		return (free_env_table(envv), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 1, &mllcd->pipex_m, true));
 
-	res = builtins(mllcd->pipex_m.cmd, mllcd);
+	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
 	if (res != -1)
 		return (free_env_table(envv), res);
 

@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/29 18:38:00 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:06:53 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,18 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 	/* if (simple_execute_interpreter(mllcd, &cmd))
 		return (ft_lstclear(&mllcd->env_list), 1); */
 	envv = convert_linkedlst_to_table(mllcd);
-	// ft_lstclear(&mllcd->env_list);
 
-	res = builtins(cmd, mllcd);
-	if (res != -1) {
-		perror("builtins");
-		return (res);
-	}
+	res = builtins_2(cmd, mllcd);
+	if (res != -1)
+		return (perror("builtins2"), res);
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 		cmdpath = cmd[0]; //try if this command is right here
 	if (access(cmdpath, F_OK) != 0)
-		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 1);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
-		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 1);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 126);
 	
 	if (execve(cmdpath, cmd, envv) == -1)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 3);
@@ -114,8 +111,25 @@ int	run_simple_cmd(t_alloc *mllcd)
 {
 	int		pid;
 	char	**cmd;
+	int		res;
+	int		c;
 
 	init_simple_cmd(&mllcd->simple_cmd);
+	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+	if (!(cmd))
+		return (1);
+	c = 0; // now remove "" from everywhere
+	while ((cmd)[c] && c < 6)
+	{
+		if ((cmd)[c] && (cmd)[c][0] == '\"')
+			(cmd)[c] = ft_strtrim((cmd)[c], "\"");
+		else if ((cmd)[c] && (cmd)[c][0] == '\'')
+			(cmd)[c] = ft_strtrim((cmd)[c], "\'");
+		c++;
+	}
+	res = builtins_1(cmd, mllcd);
+	if (res != -1)
+		return (perror("builtins1"), res);
 	pid = fork();
 	if (pid < 0)
 		return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
@@ -125,14 +139,20 @@ int	run_simple_cmd(t_alloc *mllcd)
 			return (ft_lstclear(&mllcd->env_list), 1);
 		//printf("created child %d with compil res %d\n", i, compil_res);
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
+		mllcd->exit_status = mllcd->simple_cmd.compil_res;
+		printf("Exit status: [%d]\n", mllcd->exit_status);
 		if (mllcd->simple_cmd.compil_res != 0)
-			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), mllcd->simple_cmd.compil_res);
+		{
+			free_strstr(mllcd->in_pars.m_argv);
+			free_cmd_table(&mllcd->in_pars);
+		}
 		// break ; //should break the loop in order to prevent child process from building pther processes
 		if (ft_strncmp("cd", cmd[0], 2) && ft_strncmp("export", cmd[0], 6) && ft_strncmp("unset", cmd[0], 5) && ft_strncmp("exit", cmd[0], 4))
 			exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
 	}
-	waitpid(pid, &mllcd->simple_cmd.status , 0);
-	return (WEXITSTATUS(mllcd->simple_cmd.status));
+	waitpid(pid, &mllcd->simple_cmd.compil_res, 0);
+	mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
+	return (mllcd->exit_status);
 }
 
 //cc -Wall -Wextra -Werror simple_cmd_execution.c find_cmd.c finish.c libft/*.c -lreadline -g

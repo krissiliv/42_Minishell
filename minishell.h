@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/30 11:29:22 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:47:08 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char	*read_input_print_prompt(void);
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);
 void	free_env_table(char **envv);
+void	free_everything(t_alloc *mllcd, int **pipe_ends);
 // void	general_free_all(char **m_argv);
 
 // simple cmd execution
@@ -77,7 +78,9 @@ int		pipex(int **pipe_ends, t_alloc *mllcd);
 int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
 
 // bridge to builtins
-int		builtins(char **cmd, t_alloc *mllcd);
+int		builtins_1(char **cmd, t_alloc *mllcd);
+int		builtins_2(char **cmd, t_alloc *mllcd);
+int		builtins_all(char **cmd, t_alloc *mllcd);
 
 // NASTYA
 //store environment
@@ -87,10 +90,10 @@ void	ft_lstclear(t_env **env_list);
 void 	prntlist(t_env *head);
 
 //built-ins:
-int		echo(char *cmd[], t_alloc *mllcd);
+int		echo(char *cmd[]);
 int		cd(char *path, int argc, t_alloc *mllcd);
-int		pwd(t_alloc *mllcd);
-int		env(char **cmd, t_alloc *mllcd);
+int		pwd();
+int		env(char **cmd, t_alloc mllcd);
 int		exporting(char **cmd, t_alloc *mllcd);
 int		unset(char **cmd, t_alloc *mllcd);
 int		exiting(t_alloc *mllcd, char *input, int argc);
