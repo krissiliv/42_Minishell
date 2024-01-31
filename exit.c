@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/31 12:56:56 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:28:35 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	exit_program(t_alloc *mllcd)
 {
+	printf("exit\n");
 	// close all fds;
 	free_everything(mllcd, NULL);
 	exit(mllcd->exit_status);

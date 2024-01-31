@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:58:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 11:53:25 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:25:38 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static int  count_cmd_args(char **cmd)
 
 int	builtins_1(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
 {
-	if (!ft_strncmp("cd", cmd[0], 2))
+	if (!ft_strcmp("cd", cmd[0]))
 		cd(cmd[1], count_cmd_args(cmd), mllcd);
-	else if (!ft_strncmp("export", cmd[0], 6))
+	else if (!ft_strcmp("export", cmd[0]))
 		exporting(cmd, mllcd); // should have no dollar signs
-	else if (!ft_strncmp("unset", cmd[0], 5))
+	else if (!ft_strcmp("unset", cmd[0]))
 		unset(cmd, mllcd);
-	else if (!ft_strncmp("exit", cmd[0], 4))
+	else if (!ft_strcmp("exit", cmd[0]))
 		exiting(mllcd, cmd[1], count_cmd_args(cmd));
 	else
 		return (-1);
@@ -39,11 +39,11 @@ int	builtins_1(char **cmd, t_alloc *mllcd) // this is actually like execute or e
 
 int	builtins_2(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
 {
-	if (!ft_strncmp("echo", cmd[0], 4))
+	if (!ft_strcmp("echo", cmd[0]))
 		return (echo(cmd));
-	else if (!ft_strncmp("pwd", cmd[0], 3))
+	else if (!ft_strcmp("pwd", cmd[0]))
 		return (pwd());
-	else if (!ft_strncmp("env", cmd[0], 3))
+	else if (!ft_strcmp("env", cmd[0]))
 		return (env(cmd, *mllcd));
 	else
 		return (-1);
@@ -52,19 +52,19 @@ int	builtins_2(char **cmd, t_alloc *mllcd) // this is actually like execute or e
 
 int	builtins_all(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
 {
-	if (!ft_strncmp("echo", cmd[0], 4))
+	if (!ft_strcmp("echo", cmd[0]))
 		echo(cmd);
-	else if (!ft_strncmp("cd", cmd[0], 2))
+	else if (!ft_strcmp("cd", cmd[0]))
 		cd(cmd[1], count_cmd_args(cmd), mllcd);
-	else if (!ft_strncmp("pwd", cmd[0], 3))
+	else if (!ft_strcmp("pwd", cmd[0]))
 		pwd(mllcd);
-	else if (!ft_strncmp("env", cmd[0], 3))
+	else if (!ft_strcmp("env", cmd[0]))
 		env(cmd, *mllcd); //works
-	else if (!ft_strncmp("export", cmd[0], 6))
+	else if (!ft_strcmp("export", cmd[0]))
 		exporting(cmd, mllcd); // should have no dollar signs
-	else if (!ft_strncmp("unset", cmd[0], 5))
+	else if (!ft_strcmp("unset", cmd[0]))
 		unset(cmd, mllcd);
-	else if (!ft_strncmp("exit", cmd[0], 4))
+	else if (!ft_strcmp("exit", cmd[0]))
 		exiting(mllcd, cmd[1], count_cmd_args(cmd));
 	else 
 		return (-1);
