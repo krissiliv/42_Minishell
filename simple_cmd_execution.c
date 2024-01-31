@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 12:54:05 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:19:38 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 126);
 	
 	if (execve(cmdpath, cmd, envv) == -1)
-		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 3);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 2);
 	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), 0);
 }
 

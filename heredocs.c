@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 16:53:00 by pgober           ###   ########.fr       */
+/*   Updated: 2024/01/31 16:32:49 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ int	handle_heredocs(t_alloc *mllcd)
 	if (pid == 0)
 		child(pipe_ends, mllcd);
 	waitpid(pid, &mllcd->simple_cmd.status , 0);
-	c = parent(pipe_ends, mllcd);
-	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), c);
+	mllcd->exit_status = parent(pipe_ends, mllcd);
+	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), mllcd->exit_status);
 }
 
 

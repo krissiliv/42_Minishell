@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:02:57 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/25 17:00:12 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:56:28 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ int unset(char **cmd, t_alloc *mllcd)
 
 	i = 0;
 	while (cmd[++i])
-	{
-		if (unset_one(&mllcd->env_list, cmd[i], mllcd))
-			return (1);
-	}
+		unset_one(&mllcd->env_list, cmd[i], mllcd);
 	return (0);
 }
