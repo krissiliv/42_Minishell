@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 11:06:53 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:54:05 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,10 @@ int	run_simple_cmd(t_alloc *mllcd)
 	int		c;
 
 	init_simple_cmd(&mllcd->simple_cmd);
+	mllcd->pipex_m.cmd = NULL;
+	mllcd->pipex_m.poss_paths = NULL;
+	mllcd->pipex_m.cmdpath = NULL;
+	mllcd->pipex_m.poss_path = NULL;
 	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
 	if (!(cmd))
 		return (1);
@@ -140,15 +144,13 @@ int	run_simple_cmd(t_alloc *mllcd)
 		//printf("created child %d with compil res %d\n", i, compil_res);
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
 		mllcd->exit_status = mllcd->simple_cmd.compil_res;
-		printf("Exit status: [%d]\n", mllcd->exit_status);
 		if (mllcd->simple_cmd.compil_res != 0)
 		{
 			free_strstr(mllcd->in_pars.m_argv);
 			free_cmd_table(&mllcd->in_pars);
 		}
 		// break ; //should break the loop in order to prevent child process from building pther processes
-		if (ft_strncmp("cd", cmd[0], 2) && ft_strncmp("export", cmd[0], 6) && ft_strncmp("unset", cmd[0], 5) && ft_strncmp("exit", cmd[0], 4))
-			exit (mllcd->exit_status); // because otherwise env > out will not work f.e.
+		exit (mllcd->exit_status);
 	}
 	waitpid(pid, &mllcd->simple_cmd.compil_res, 0);
 	mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);

@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/30 14:54:01 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:56:56 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,25 @@ static int	validate_input(char *input)
 
 int	exiting(t_alloc *mllcd, char *input, int argc)
 {
-	if (argc > 2)
-	{
-		ft_putstr_fd("exit: too many arguments\n", 2);
-		mllcd->exit_status = 1;
-		return (1);
-	}
-	if (validate_input(input) == 1)
-	{
-		ft_putstr_fd("exit: numeric argument required\n", 2);
-		mllcd->exit_status = 2;
-		return (2);
-	}
 	if (input)
-		mllcd->exit_status = ft_atoi_minishell(input);
+	{
+		if (validate_input(input) == 1)
+		{
+			ft_putstr_fd("exit: ", 2);
+			ft_putstr_fd(input, 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			mllcd->exit_status = 2;
+			return (2);
+		}
+		else if (argc > 2)
+		{
+			ft_putstr_fd("exit: too many arguments\n", 2);
+			mllcd->exit_status = 1;
+			return (1);
+		}
+		else
+			mllcd->exit_status = ft_atoi_minishell(input);
+	}
 	exit_program(mllcd);
 	return (0);
 }
