@@ -48,6 +48,9 @@ typedef struct s_alloc
 }	t_alloc;
 
 // PIA
+// signals
+void signals(void);
+
 //print prompt
 char	*read_input_print_prompt(void);
 

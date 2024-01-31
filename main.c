@@ -47,9 +47,10 @@ static int preparing_minishell(t_alloc *mllcd)
 	char    *input_str;
 
     input_str = read_input_print_prompt();
+	// input_str = ft_strdup("cat <<-h"); //fill in stuff from EXTRA/input_parser_testing
+    // signals();
     if (pre_check_input(input_str))
         return (1);
-	// input_str = ft_strdup("cat << o | grep \"he\" > out"); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
         return (1);
     if (!input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
@@ -101,6 +102,8 @@ int main(int argc, char **argv, char **envv)
         free_strstr(mllcd.in_pars.m_argv);
         free_cmd_table(&mllcd.in_pars);
     }
-    ft_lstclear(&mllcd.env_list);
+    close(mllcd.saved_stdin);
+    clear_history();
+    ft_lstclear(&mllcd.env_list); // this is the only thing that is not freedwhen pressing CTRL+C
     return (retval);
 }
