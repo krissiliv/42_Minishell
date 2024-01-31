@@ -12,11 +12,43 @@
 
 #include "minishell.h"
 
+static int	is_space(char str)
+{
+	if (str == 32 || (9 <= str && str <= 13) || str == '\n')
+		return (1);
+	return (0);
+}
+
+static int  pre_check_input(char *input_str)
+{
+    int i;
+    int check_only_spaces;
+
+    // printf("input_str: %s has length %zu\n", input_str, ft_strlen(input_str));
+    if (!input_str || ft_strlen(input_str) == 0)
+    {
+        printf("\n");
+        return (1);
+    }
+    i = 0;
+    check_only_spaces = 1;
+    while (input_str[i])
+    {
+        if (!is_space(input_str[i++]))
+            check_only_spaces = 0;
+    }
+    if (check_only_spaces)
+        return (1);
+    return (0);
+}
+
 static int preparing_minishell(t_alloc *mllcd)
 {
 	char    *input_str;
 
     input_str = read_input_print_prompt();
+    if (pre_check_input(input_str))
+        return (1);
 	// input_str = ft_strdup("cat << o | grep \"he\" > out"); //fill in stuff from EXTRA/input_parser_testing
     if (expander(&input_str, mllcd))
         return (1);
@@ -52,7 +84,10 @@ int main(int argc, char **argv, char **envv)
     while (1)
     {
         if (preparing_minishell(&mllcd))
+        {
             mllcd.exit_status = 1;
+            continue;
+        }
         // if (mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
         //     outredir_appendmode(&mllcd);
         if (mllcd.in_pars.cmd_table[0][3])
