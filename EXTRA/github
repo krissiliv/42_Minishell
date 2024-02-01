@@ -8,3 +8,6 @@ stage file
 keep their version
 git commit -m "pia's commit 2.0"
 git push
+
+if you have this yellow error when you try to pull, do that:
+git config pull.rebase false
