@@ -47,7 +47,7 @@ static int preparing_minishell(t_alloc *mllcd)
 	char    *input_str;
 
     input_str = read_input_print_prompt();
-	// input_str = ft_strdup("cat <<-h"); //fill in stuff from EXTRA/input_parser_testing
+	// input_str = ft_strdup("nonex"); //fill in stuff from EXTRA/input_parser_testing
     // signals();
     if (pre_check_input(input_str))
         return (1);

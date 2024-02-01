@@ -139,12 +139,13 @@ int	run_simple_cmd(t_alloc *mllcd)
 	else if (pid == 0) // means we are in child process
 	{
 		if (simple_execute_interpreter(mllcd, &cmd))
-			return (free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_lstclear(&mllcd->env_list), 1);
+			return (free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_lstclear(&mllcd->env_list), 1);
 		//printf("created child %d with compil res %d\n", i, compil_res);
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
 		mllcd->exit_status = mllcd->simple_cmd.compil_res;
 		if (mllcd->simple_cmd.compil_res != 0)
 		{
+			free_strstr(cmd);
 			free_strstr(mllcd->in_pars.m_argv);
 			free_cmd_table(&mllcd->in_pars);
 		}
@@ -153,7 +154,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 	}
 	waitpid(pid, &mllcd->simple_cmd.compil_res, 0);
 	mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
-	return (mllcd->exit_status);
+	return (free_strstr(cmd), mllcd->exit_status);
 }
 
 //cc -Wall -Wextra -Werror simple_cmd_execution.c find_cmd.c finish.c libft/*.c -lreadline -g
