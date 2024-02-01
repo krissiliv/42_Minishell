@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 11:47:50 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:07:22 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 
 	envv = convert_linkedlst_to_table(mllcd);
 	// ft_lstclear(&mllcd->env_list);
+	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
+	if (res != -1)
+		return (printf("res: %d\n", res), perror("builtins in pipes"), free_env_table(envv), res);
 	
 	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
@@ -71,11 +74,8 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	if (access(mllcd->pipex_m.cmdpath, F_OK) == 0 && \
 		access(mllcd->pipex_m.cmdpath, X_OK) != 0)
 		return (free_env_table(envv), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
-				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 1, &mllcd->pipex_m));
+				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 126, &mllcd->pipex_m));
 
-	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
-	if (res != -1)
-		return (free_env_table(envv), res);
 
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
 		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m));
@@ -237,7 +237,8 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 		i++;
 	}
 	waitpid(pid[i], &(mllcd->pipex_m.status), 0); // last pipes status code
-	return (pipex_free_all(&mllcd->pipex_m, NULL), WEXITSTATUS(mllcd->pipex_m.status)); // left to free but not here: mllcd->in_pars.cmd_table
+	mllcd->exit_status = WEXITSTATUS(mllcd->pipex_m.status);
+	return (pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status); // left to free but not here: mllcd->in_pars.cmd_table
 }
 
 // cc -Wall -Wextra -Werror pipex_multipipe.c pipex_multipipe_interpreter.c finish.c find_cmd.c error.c input_parser_utils.c libft/*.c -lreadline
