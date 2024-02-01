@@ -124,8 +124,13 @@ static int processing_read(t_input_parsing *in_pars)
 		// }
 		else if (ft_strcmp(in_pars->m_argv[i], ">") == 0) // && inside_qu(in_pars) == false) // output redirection >
 			in_pars->cmd_table[curr_cmdnum][2] = ft_strdup(in_pars->m_argv[++i]); // output file should not generally be in last position in a-s-t (abstract synax tree) - it should be on last position of the resp command that it belongs to as it should mimic shell
-		else if (ft_strcmp(in_pars->m_argv[i], "<<") == 0) // input reading until delimiter
-			in_pars->cmd_table[curr_cmdnum][3] = ft_strdup(in_pars->m_argv[++i]);
+		else if (ft_strncmp(in_pars->m_argv[i], "<<", 2) == 0) // input reading until delimiter
+		{
+			if (ft_strlen(in_pars->m_argv[i]) == 2)
+				in_pars->cmd_table[curr_cmdnum][3] = ft_strdup(in_pars->m_argv[++i]);
+			else
+				in_pars->cmd_table[curr_cmdnum][3] = ft_strtrim(ft_strdup(in_pars->m_argv[i++] + 2), "\"\'");
+		}
 		else if (ft_strcmp(in_pars->m_argv[i], ">>") == 0)
 			in_pars->cmd_table[curr_cmdnum][4] = ft_strdup(in_pars->m_argv[++i]);
 		else if (ft_strcmp(in_pars->m_argv[i], "|") == 0 && in_pars->m_argv[i + 1])
