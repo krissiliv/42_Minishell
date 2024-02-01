@@ -81,6 +81,7 @@ static void	child(int *pipe_ends, t_alloc *mllcd)
 		free(gnl);
 	}
 	close(pipe_ends[1]);
+	close(mllcd->saved_stdin);
 	free(mllcd->simple_cmd.cmdpath);
 	free_strstr(mllcd->simple_cmd.cmd);
 	free_strstr(mllcd->in_pars.m_argv);

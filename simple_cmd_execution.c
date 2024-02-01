@@ -133,12 +133,9 @@ int	run_simple_cmd(t_alloc *mllcd)
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
 		free_strstr(cmd);
 		mllcd->exit_status = mllcd->simple_cmd.compil_res;
-		if (mllcd->simple_cmd.compil_res != 0)
-		{
-			ft_lstclear(&mllcd->env_list);
-			free_strstr(mllcd->in_pars.m_argv);
-			free_cmd_table(&mllcd->in_pars);
-		}
+		ft_lstclear(&mllcd->env_list);
+		free_strstr(mllcd->in_pars.m_argv);
+		free_cmd_table(&mllcd->in_pars);
 		// break ; //should break the loop in order to prevent child process from building pther processes
 		close(mllcd->saved_stdin);
 		exit (mllcd->exit_status);
