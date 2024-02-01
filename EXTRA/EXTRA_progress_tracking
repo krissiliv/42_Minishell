@@ -1,6 +1,12 @@
 
 PIA and NASTYA current testing:
 
+cat _textfile | nonex           leaks
+exit                            leaks
+
+
+out < ls -l                     free invlid pointer. in bash it says: "bash: ls: no such file or directory"
+
 
 
 
