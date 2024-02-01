@@ -23,27 +23,10 @@ void	init_simple_cmd(t_pipex_m *simple_cmd)
 	simple_cmd->status = 0;
 }
 
-static int	simple_execute_interpreter(t_alloc *mllcd, char ***cmd)
+static int	simple_execute_interpreter(t_alloc *mllcd)
 {
 	int out;
 	int in;
-	int c;
-
-	*cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
-	if (!(*cmd))
-		return (1);
-	c = 0; // now remove "" from everywhere
-	while ((*cmd)[c] && c < 6)
-	{
-		(*cmd)[c] = ft_strtrim((*cmd)[c], "\"\'");
-		c++;
-	}
-
-	printf("cmd = ["); // PRINTING FOR DEBUGGING
-	int i = -1;
-	while ((*cmd)[++i])
-		printf("%s,", (*cmd)[i]);
-	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
 	if (mllcd->in_pars.cmd_table[0][1]) // input redirection
 	{
@@ -89,24 +72,23 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 
 	res = builtins_2(cmd, mllcd);
 	if (res != -1)
-		return (free_strstr(cmd), perror("builtins2"), res);
+		return (perror("builtins2"), res);
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 	{
 		// cmdpath = cmd[0]; //try if this command is right here in the current directory
-		free_strstr(cmd);
 		free_env_table(envv);
 		return (ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	}
 	if (access(cmdpath, F_OK) != 0)
-		return (free_strstr(cmd), free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
-		return (free_strstr(cmd), free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 126);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 126);
 	
 	if (execve(cmdpath, cmd, envv) == -1)
-		return (free_strstr(cmd), free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 2);
-	return (free_strstr(cmd), free_env_table(envv), ft_putstr_fd("Something went wrong", 2), 0);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 2);
+	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), 0);
 }
 
 int	run_simple_cmd(t_alloc *mllcd)
@@ -130,6 +112,13 @@ int	run_simple_cmd(t_alloc *mllcd)
 		cmd[c] = ft_strtrim(cmd[c], "\"\'");
 		c++;
 	}
+
+	printf("cmd = ["); // PRINTING FOR DEBUGGING
+	int i = -1;
+	while (cmd[++i])
+		printf("%s,", cmd[i]);
+	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
+
 	res = builtins_1(cmd, mllcd);
 	if (res != -1)
 		return (perror("builtins1"), res);
@@ -138,10 +127,11 @@ int	run_simple_cmd(t_alloc *mllcd)
 		return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0) // means we are in child process
 	{
-		if (simple_execute_interpreter(mllcd, &cmd))
+		if (simple_execute_interpreter(mllcd))
 			return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_lstclear(&mllcd->env_list), 1);
 		//printf("created child %d with compil res %d\n", i, compil_res);
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
+		free_strstr(cmd);
 		mllcd->exit_status = mllcd->simple_cmd.compil_res;
 		if (mllcd->simple_cmd.compil_res != 0)
 		{
