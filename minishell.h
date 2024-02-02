@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gektorklassiceskij <gektorklassiceskij@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 11:47:08 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:17:10 by gektorklass      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h> // bool
 # include "readline/readline.h" //readline
 # include "readline/history.h" //readline
+# include <signal.h>
 
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
