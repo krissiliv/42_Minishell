@@ -47,14 +47,12 @@ static int preparing_minishell(t_alloc *mllcd)
 	char    *input_str;
 
     input_str = read_input_print_prompt();
-	// input_str = ft_strdup("out < ls -l"); //fill in stuff from EXTRA/input_parser_testing
+	// input_str = ft_strdup("echo -\"$SHELL-\"-"); //fill in stuff from EXTRA/input_parser_testing
     // signals();
-    if (pre_check_input(input_str))
-        return (1);
+    if (pre_check_input(input_str) || !input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
+		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
     if (expander(&input_str, mllcd))
         return (1);
-    if (!input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
-		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
     // printf("input_str expanded: %s\n", input_str);
     // remove_quotes_from_argv(&input_str); // not possible to put this here because then cmds like grep "ho < _test" do not work correctly
 

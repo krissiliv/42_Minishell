@@ -99,17 +99,13 @@ int	run_simple_cmd(t_alloc *mllcd)
 	int		c;
 
 	init_simple_cmd(&mllcd->simple_cmd);
-	mllcd->pipex_m.cmd = NULL;
-	mllcd->pipex_m.poss_paths = NULL;
-	mllcd->pipex_m.cmdpath = NULL;
-	mllcd->pipex_m.poss_path = NULL;
 	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
 	if (!cmd)
 		return (1);
 	c = 0; // now remove "" from everywhere
 	while (cmd[c] && c < 6)
 	{
-		cmd[c] = ft_strtrim(cmd[c], "\"\'");
+		cmd[c] = ft_remove_quotes(cmd[c]);
 		c++;
 	}
 

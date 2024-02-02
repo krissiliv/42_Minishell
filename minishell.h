@@ -56,7 +56,6 @@ char	*read_input_print_prompt(void);
 
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);
-void	free_env_table(char **envv);
 void	free_before_exit(t_alloc *mllcd);
 
 // simple cmd execution
@@ -86,10 +85,11 @@ int		builtins_all(char **cmd, t_alloc *mllcd);
 
 // NASTYA
 //store environment
-char	**convert_linkedlst_to_table(t_alloc *mllcd);
 int		get_env(char **envv, t_env **head);
 void	ft_lstclear(t_env **env_list);
-void 	prntlist(t_env *head);
+char	**convert_linkedlst_to_table(t_alloc *mllcd);
+void	free_env_table(char **envv);
+// void 	prntlist(t_env *head);
 
 //built-ins:
 int		echo(char *cmd[]);
