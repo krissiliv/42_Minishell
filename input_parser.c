@@ -77,7 +77,7 @@ static int	look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, int curr_cmd
 	return (i);
 }
 
-static int processing_read(t_input_parsing *in_pars)
+static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table is filled with in_pars->m_argv
 {
 	int i;
 	int curr_cmdnum;
@@ -151,6 +151,25 @@ static int processing_read(t_input_parsing *in_pars)
 	return (0);  // next step: 
 }
 
+static void 	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i <= in_pars->pipenum)
+	{
+		j = 0;
+		while (j <= 4)
+		{
+			if (in_pars->cmd_table[i][j])
+				in_pars->cmd_table[i][j] = ft_remove_quotes(in_pars->cmd_table[i][j]);
+			j++;
+		}
+		i++;
+	}
+}
+
 int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 {
 	if (!input_str || ft_strlen(input_str) == 0)
@@ -171,6 +190,9 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 
 	if (processing_read(in_pars))
 		return (1);
+
+	remove_quotes_from_cmd_table(in_pars);
+	
 	// free(input_str);
 	return (0);
 }
