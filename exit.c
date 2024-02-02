@@ -14,11 +14,9 @@
 
 static void	exit_program(t_alloc *mllcd)
 {
-	// printf("exit\n");
+	printf("exit\n");
 	// close all fds;
-	free_everything(mllcd, NULL);
-	ft_lstclear(&mllcd->env_list);
-	close(mllcd->saved_stdin);
+	free_before_exit(mllcd);
 	exit(mllcd->exit_status);
 }
 

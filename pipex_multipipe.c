@@ -133,11 +133,8 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 	if (cmd_file != -1)
 		close(cmd_file);
 	i = execute(pipe_ends, mllcd);
-	ft_lstclear(&mllcd->env_list);
-	free_strstr(mllcd->in_pars.m_argv);
-	free_cmd_table(&mllcd->in_pars);
-	close(mllcd->saved_stdin);
-	exit (i);
+	free_before_exit(mllcd);
+	exit(i);
 }
 // when you call the pipe syscall like pipe(array), then array[0] is for reading and array[1] is for writing.
 
@@ -180,11 +177,8 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 	if (outfile != -1)
 		close(outfile);
 	i = execute(pipe_ends, mllcd);
-	ft_lstclear(&mllcd->env_list);
-	free_strstr(mllcd->in_pars.m_argv);
-	free_cmd_table(&mllcd->in_pars);
-	close(mllcd->saved_stdin);
-	exit (i);
+	free_before_exit(mllcd);
+	exit(i);
 }
 
 int	pipex(int **pipe_ends, t_alloc *mllcd)

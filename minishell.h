@@ -57,8 +57,7 @@ char	*read_input_print_prompt(void);
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);
 void	free_env_table(char **envv);
-void	free_everything(t_alloc *mllcd, int **pipe_ends);
-// void	general_free_all(char **m_argv);
+void	free_before_exit(t_alloc *mllcd);
 
 // simple cmd execution
 void    init_simple_cmd(t_pipex_m *simple_cmd);

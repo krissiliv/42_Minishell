@@ -124,21 +124,22 @@ int	run_simple_cmd(t_alloc *mllcd)
 		return (perror("builtins1"), res);
 	pid = fork();
 	if (pid < 0)
-		return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
+		return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0) // means we are in child process
 	{
 		if (simple_execute_interpreter(mllcd))
-			return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), free_strstr(mllcd->in_pars.m_argv), free_cmd_table(&mllcd->in_pars), ft_lstclear(&mllcd->env_list), 1);
+		{
+			free_strstr(cmd);
+			free_before_exit(mllcd);
+			exit(mllcd->exit_status);
+		}
 		//printf("created child %d with compil res %d\n", i, compil_res);
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
-		free_strstr(cmd);
 		mllcd->exit_status = mllcd->simple_cmd.compil_res;
-		ft_lstclear(&mllcd->env_list);
-		free_strstr(mllcd->in_pars.m_argv);
-		free_cmd_table(&mllcd->in_pars);
+		free_strstr(cmd);
+		free_before_exit(mllcd);
 		// break ; //should break the loop in order to prevent child process from building pther processes
-		close(mllcd->saved_stdin);
-		exit (mllcd->exit_status);
+		exit(mllcd->exit_status);
 	}
 	waitpid(pid, &mllcd->simple_cmd.compil_res, 0);
 	mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);

@@ -81,12 +81,10 @@ static void	child(int *pipe_ends, t_alloc *mllcd)
 		free(gnl);
 	}
 	close(pipe_ends[1]);
-	close(mllcd->saved_stdin);
 	free(mllcd->simple_cmd.cmdpath);
 	free_strstr(mllcd->simple_cmd.cmd);
-	free_strstr(mllcd->in_pars.m_argv);
-	free_cmd_table(&mllcd->in_pars);
-	ft_lstclear(&mllcd->env_list);
+	
+	free_before_exit(mllcd);
 	exit(0);
 }
 
@@ -122,7 +120,10 @@ int	handle_heredocs(t_alloc *mllcd)
 	init_simple_cmd(&mllcd->simple_cmd);
 	c = pipe(pipe_ends);
 	if (c == -1)
-		exit (1);
+	{
+		free_before_exit(mllcd);
+		exit(1);
+	}
 	pid = fork();
 	if (pid == 0)
 		child(pipe_ends, mllcd);
