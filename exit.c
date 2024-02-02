@@ -14,9 +14,11 @@
 
 static void	exit_program(t_alloc *mllcd)
 {
-	printf("exit\n");
+	// printf("exit\n");
 	// close all fds;
 	free_everything(mllcd, NULL);
+	ft_lstclear(&mllcd->env_list);
+	close(mllcd->saved_stdin);
 	exit(mllcd->exit_status);
 }
 
@@ -39,14 +41,14 @@ static int	validate_input(char *input)
 	return (0);
 }
 
-int	exiting(t_alloc *mllcd, char *input, int argc)
+int	exiting(t_alloc *mllcd, char **cmd, int argc)
 {
-	if (input)
+	if (cmd[1])
 	{
-		if (validate_input(input) == 1)
+		if (validate_input(cmd[1]) == 1)
 		{
 			ft_putstr_fd("exit: ", 2);
-			ft_putstr_fd(input, 2);
+			ft_putstr_fd(cmd[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
 			mllcd->exit_status = 2;
 			return (2);
@@ -58,8 +60,9 @@ int	exiting(t_alloc *mllcd, char *input, int argc)
 			return (1);
 		}
 		else
-			mllcd->exit_status = ft_atoi_minishell(input);
+			mllcd->exit_status = ft_atoi_minishell(cmd[1]);
 	}
+	free_strstr(cmd);
 	exit_program(mllcd);
 	return (0);
 }

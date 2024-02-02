@@ -99,7 +99,7 @@ int		pwd();
 int		env(char **cmd, t_alloc mllcd);
 int		exporting(char **cmd, t_alloc *mllcd);
 int		unset(char **cmd, t_alloc *mllcd);
-int		exiting(t_alloc *mllcd, char *input, int argc);
+int		exiting(t_alloc *mllcd, char **cmd, int argc);
 
 //atoi for exit builtin
 int		is_num(char str);

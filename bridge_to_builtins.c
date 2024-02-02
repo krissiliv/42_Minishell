@@ -31,7 +31,7 @@ int	builtins_1(char **cmd, t_alloc *mllcd) // this is actually like execute or e
 	else if (!ft_strcmp("unset", cmd[0]))
 		unset(cmd, mllcd);
 	else if (!ft_strcmp("exit", cmd[0]))
-		exiting(mllcd, cmd[1], count_cmd_args(cmd));
+		exiting(mllcd, cmd, count_cmd_args(cmd));
 	else
 		return (-1);
 	return (0);
@@ -63,7 +63,7 @@ int	builtins_all(char **cmd, t_alloc *mllcd) // this is actually like execute or
 	else if (!ft_strcmp("unset", cmd[0]))
 		return (unset(cmd, mllcd));
 	else if (!ft_strcmp("exit", cmd[0]))
-		return (exiting(mllcd, cmd[1], count_cmd_args(cmd)));
+		return (exiting(mllcd, cmd, count_cmd_args(cmd)));
 	else if (!ft_strcmp("cd", cmd[0]))
 		return (cd(cmd[1], count_cmd_args(cmd), mllcd));
 	else
