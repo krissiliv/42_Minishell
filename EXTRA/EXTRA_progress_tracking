@@ -1,5 +1,10 @@
 
 PIA and NASTYA current testing:
+"cat" < "_testfile" | cat | cat | cat | wc -l
+
+
+
+
 
 
 

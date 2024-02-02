@@ -72,7 +72,7 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 
 	res = builtins_2(cmd, mllcd);
 	if (res != -1)
-		return (perror("builtins2"), res);
+		return (free_env_table(envv), perror("builtins2"), res);
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
