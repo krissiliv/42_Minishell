@@ -20,9 +20,17 @@ char *ft_remove_quotes(char *str)
 
 	i = 0;
 	j = 0;
-	new = (char *)malloc((ft_strlen(str) + 1) * sizeof(char));
+	while (str[i])
+	{
+		if (str[i] != '\"' && str[i] != '\'')
+			j++;
+		i++;
+	}
+	new = (char *)malloc((j + 1) * sizeof(char));
 	if (!new)
-		return (NULL);
+		return (free(str), NULL);
+	i = 0;
+	j = 0;
 	while (str[i])
 	{
 		if (str[i] != '\"' && str[i] != '\'')
@@ -31,8 +39,7 @@ char *ft_remove_quotes(char *str)
 	}
 	new[j] = '\0';
 	free(str);
-	str = new;
-	return (str);
+	return (new);
 }
 
 int	special_operator(char *str)
