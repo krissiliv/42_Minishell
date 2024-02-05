@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 12:04:39 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 15:38:45 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,42 @@ static int  pre_check_input(char *input_str)
     return (0);
 }
 
+static int put_space_before_special_operator(char **input_str)
+{
+    int i;
+    int k;
+
+    i = 0;
+    k = 0;
+    while ((*input_str)[i])
+    {
+        k = special_operator((*input_str) + i);
+        if (k != -1)
+        {
+            if (i > 0 && !is_space((*input_str)[i - 1]))
+            {
+                (*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), " "), ft_substr((*input_str), i, ft_strlen((*input_str)) - i));
+                // printf("new input_str: %s\n", (*input_str));
+                if (!(*input_str))
+                    return (1);
+            }
+            i += k;
+            // printf("k = %d\n", k);
+            if ((*input_str)[i + 1] && !is_space((*input_str)[i + 1]))
+            {
+                (*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i + 1), " "), ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1));
+                // printf("new input_str: %s\n", (*input_str));
+                if (!(*input_str))
+                    return (1);
+            }
+            k = 0;
+        }
+        i++;
+    }
+    printf("input_str after put_space_before_special_operator: %s\n", (*input_str));
+	return (0);
+}
+
 static int preparing_minishell(t_alloc *mllcd, char *input_str)
 {
 	// char    *input_str;
@@ -50,6 +86,8 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
     // signals();
     if (pre_check_input(input_str) || !input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
+    if (put_space_before_special_operator(&input_str) == 1)
+        return (1);
     if (expander(&input_str, mllcd))
         return (1);
     // printf("input_str expanded: %s\n", input_str);
@@ -82,6 +120,7 @@ int main(int argc, char **argv, char **envv)
 	//prntlist(mllcd.env_list);
     while (1)
     {
+        // input_str = ft_strdup("cat <_testfile|wc -l");;
         if (isatty(fileno(stdin)))
             input_str = read_input_print_prompt();
         else
@@ -92,9 +131,7 @@ int main(int argc, char **argv, char **envv)
             free(line);
         }
         if (!input_str)
-        {
             exit(1);
-        }
         if (preparing_minishell(&mllcd, input_str))
         {
             mllcd.exit_status = 1;

@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:18:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:07 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 15:10:46 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ char *ft_remove_quotes(char *str)
 
 int	special_operator(char *str)
 {
-	if (ft_strcmp(str, "<") == 0)
-		return (1);
-	else if (ft_strcmp(str, ">") == 0)
+	if (ft_strncmp(str, "<<", 2) == 0)
 		return (2);
-	else if (ft_strcmp(str, "|") == 0)
-		return (3);
-	else if (ft_strcmp(str, "<<") == 0)
-		return (4);
-	else if (ft_strcmp(str, ">>") == 0)
-		return (6);
+	else if (ft_strncmp(str, ">>", 2) == 0)
+		return (2);
+	else if (ft_strncmp(str, "<", 1) == 0)
+		return (1);
+	else if (ft_strncmp(str, ">", 1) == 0)
+		return (1);
+	else if (ft_strncmp(str, "|", 1) == 0)
+		return (1);
 	return (-1);
 }
 
