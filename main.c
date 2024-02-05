@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 16:30:21 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:48:49 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int main(int argc, char **argv, char **envv)
     {
         // input_str = ft_strdup("cat <_testfile|wc -l");;
         if (isatty(fileno(stdin)))
-            input_str = readline("");
+            input_str = read_input_print_prompt();
         else
         {
             char *line;
