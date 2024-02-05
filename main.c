@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 17:02:46 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 17:06:41 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,6 @@ int main(int argc, char **argv, char **envv)
         free_strstr(mllcd.in_pars.m_argv);
         free_cmd_table(&mllcd.in_pars);
     }
-    // free_before_exit(&mllcd); // this is the only thing that is not freedwhen pressing CTRL+C
+    free_before_exit(&mllcd); // this is the only thing that is not freedwhen pressing CTRL+C
     return (retval);
 }
