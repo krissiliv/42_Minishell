@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 17:52:39 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 10:41:32 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static int preparing_minishell(t_alloc *mllcd)
     // while (i++ < mllcd->in_pars.m_argc)
     //     printf("m_argv[%d] = %s\n", i, mllcd->in_pars.m_argv[i]);
 
-    mllcd->exit_status = 0;
     mllcd->saved_stdin = dup(0);
     return (0);
 }
@@ -77,6 +76,7 @@ int main(int argc, char **argv, char **envv)
     t_alloc         mllcd;
 
     retval = 0;
+    mllcd.exit_status = 0;
 	mllcd.env_list = (t_env *)malloc(sizeof(t_env));
     get_env(envv, &mllcd.env_list);
 	//prntlist(mllcd.env_list);
