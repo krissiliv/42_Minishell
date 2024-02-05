@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:38:23 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 12:40:57 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ char	*pipex_find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 		free(pipex_m->cmdpath);
 		pipex_m->cmdpath = NULL;
 	}
+	if (access(cmd, F_OK | X_OK) == 0)
+		return (cmd);
 	return (pipex_free_all(pipex_m, NULL), NULL);
 }

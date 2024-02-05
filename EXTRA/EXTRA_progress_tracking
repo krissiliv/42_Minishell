@@ -1,26 +1,5 @@
 
 PIA and NASTYA current testing:
 
- /bin/cat 42
 ls| cat
-echo "<<| echo wtf"
 
-
-
-
-
-FOR LATER - ADDITIONALLY TO TEST:_______________________________________________________
-
-grep "h" _testfile >> _testfile 
-grep: _testfile: input file is also the output
-
-echo $?
-2
-______________________
-
- <<h cat
-
-______________________
-
-cat << s | cat > out                        not working
-cat < _testfile | wc -l > out

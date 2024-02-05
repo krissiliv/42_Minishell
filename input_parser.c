@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 11:54:04 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 12:49:07 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str)
 {
 	int		i;
 	int		j;
+	bool 	singlequote_open;
+	bool 	doublequote_open;
 	// char	**test_m_argv;
 
+	singlequote_open = false;
+	doublequote_open = false;
 	in_pars->pipenum = 0;
 	// test_m_argv = ft_split_w_quotes(input_str, ' '); // this is wrong as f.e. the cmd grep "ho" | < _test does not work in bash eigther
 	// if ((ft_strcmp(test_m_argv[0], "<") == 0 || 
@@ -29,7 +33,11 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str)
 	// free_strstr(test_m_argv);
 	while (*input_str)
 	{
-		if (*input_str == '|')
+		if (*input_str == '\"')
+			doublequote_open = !doublequote_open;
+		if (*input_str == '\'')
+			singlequote_open = !singlequote_open;
+		if (*input_str == '|' && singlequote_open == false && doublequote_open == false)
 			in_pars->pipenum++;
 		input_str++;
 	}

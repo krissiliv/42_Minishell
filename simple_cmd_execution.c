@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 12:22:50 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 12:42:29 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		free_env_table(envv);
 		return (ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	}
+	printf("cmdpath = %s\n", cmdpath);
 	if (access(cmdpath, F_OK) != 0)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
