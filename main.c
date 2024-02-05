@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 15:38:45 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:00:12 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int put_space_before_special_operator(char **input_str)
                 if (!(*input_str))
                     return (1);
             }
-            i += k;
+            i += k - 1;
             // printf("k = %d\n", k);
             if ((*input_str)[i + 1] && !is_space((*input_str)[i + 1]))
             {
@@ -138,7 +138,7 @@ int main(int argc, char **argv, char **envv)
             continue;
         }
         printf("pipenum: %d\n", mllcd.in_pars.pipenum);
-        // if (mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
+        // if (m./mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
         //     outredir_appendmode(&mllcd);
         if (mllcd.in_pars.cmd_table[0][3])
             handle_heredocs(&mllcd);
