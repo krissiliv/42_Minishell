@@ -1,0 +1,13 @@
+
+
+suppress valgrind errors with
+1)  create val.supp file (could name it how I want)
+2) content of val.supp file
+{
+    leak readline
+    Memcheck:Leak 
+    ...
+    fun:readline
+}
+3) run valgrind 
+ valgrind --suppressions=val.supp ./minishell

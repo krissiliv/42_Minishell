@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:07:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:43 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:25:39 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ char *read_input_print_prompt(void)
 {
     char    *line;
     
-    ft_putstr_fd("~/minishell> ", 1);
-    line = readline(NULL);
+    line = readline("~/minishell> ");
     add_history(line);
     return (line);
 }

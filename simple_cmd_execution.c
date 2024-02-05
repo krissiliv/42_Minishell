@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 12:42:29 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:04:16 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		free_env_table(envv);
 		return (ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	}
-	printf("cmdpath = %s\n", cmdpath);
+	// printf("cmdpath = %s\n", cmdpath);
 	if (access(cmdpath, F_OK) != 0)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
@@ -110,11 +110,11 @@ int	run_simple_cmd(t_alloc *mllcd)
 		c++;
 	}
 
-	printf("cmd = ["); // PRINTING FOR DEBUGGING
-	int i = -1;
-	while (cmd[++i])
-		printf("%s,", cmd[i]);
-	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
+	// printf("cmd = ["); // PRINTING FOR DEBUGGING
+	// int i = -1;
+	// while (cmd[++i])
+	// 	printf("%s,", cmd[i]);
+	// printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
 	res = builtins_1(cmd, mllcd);
 	if (res != -1) // perror("builtins1"), 

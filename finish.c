@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 12:02:53 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:03:44 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_cmd_table(t_input_parsing *in_pars) //parsing
 			if (in_pars->cmd_table[i])
 			{
 				j = 0;
-				printf("freeing cmd_table[%d]: [%s, %s, %s, %s, %s] \n", i, in_pars->cmd_table[i][0], in_pars->cmd_table[i][1], in_pars->cmd_table[i][2], in_pars->cmd_table[i][3], in_pars->cmd_table[i][4]);
+				// printf("freeing cmd_table[%d]: [%s, %s, %s, %s, %s] \n", i, in_pars->cmd_table[i][0], in_pars->cmd_table[i][1], in_pars->cmd_table[i][2], in_pars->cmd_table[i][3], in_pars->cmd_table[i][4]);
 				while (j <= 4)
 				{	
 					if (in_pars->cmd_table[i][j])

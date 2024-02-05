@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/05 12:31:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:38:24 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	exit_program(t_alloc *mllcd)
 {
-	ft_putstr_fd("exit\n", 1);
+	// ft_putstr_fd("exit\n", 1);  //JUST FOR TESTER, need to add it for submission
 	// close all fds;
 	free_before_exit(mllcd);
 	exit(mllcd->exit_status);
