@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/01 15:07:22 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:25:06 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 		c++;
 	}
 
-    printf("cmd = ["); // PRINTING FOR DEBUGGING
-    int i = -1;
-    while ((mllcd->pipex_m.cmd)[++i])
-        printf("%s,", (mllcd->pipex_m.cmd)[i]);
-    printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
+    // printf("cmd = ["); // PRINTING FOR DEBUGGING
+    // int i = -1;
+    // while ((mllcd->pipex_m.cmd)[++i])
+    //     printf("%s,", (mllcd->pipex_m.cmd)[i]);
+    // printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
 	in = -1;
 	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1]) // input redirection
@@ -59,8 +59,8 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	envv = convert_linkedlst_to_table(mllcd);
 	// ft_lstclear(&mllcd->env_list);
 	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
-	if (res != -1)
-		return (printf("res: %d\n", res), perror("builtins in pipes"), free_env_table(envv), res);
+	if (res != -1) // printf("res: %d\n", res), perror("builtins in pipes"), 
+		return (free_env_table(envv), res);
 	
 	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)

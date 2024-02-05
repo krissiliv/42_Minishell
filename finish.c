@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 13:44:54 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:02:53 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	free_before_exit(t_alloc *mllcd)
 		free_strstr(mllcd->in_pars.m_argv);
 	if (mllcd->in_pars.cmd_table)
 		free_cmd_table(&mllcd->in_pars);
-	close(mllcd->saved_stdin);
+	if (mllcd->saved_stdin)
+		close(mllcd->saved_stdin);
 	clear_history();
 }

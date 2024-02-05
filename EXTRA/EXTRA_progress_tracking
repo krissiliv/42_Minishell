@@ -1,10 +1,9 @@
 
 PIA and NASTYA current testing:
 
-
-
-
-
+ /bin/cat 42
+ls| cat
+echo "<<| echo wtf"
 
 
 

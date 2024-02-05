@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:15 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 11:54:04 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ static void 	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
 	i = 0;
 	while (i <= in_pars->pipenum)
 	{
-		j = 0;
+		j = 1;
 		while (j <= 4)
 		{
 			if (in_pars->cmd_table[i][j])
@@ -181,12 +181,12 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	//printf("m_argc = %d\n", m_argc);
 	in_pars->m_argv = ft_split_w_quotes(input_str, ' ');
 
-	int i = 0;
-	while (i < in_pars->m_argc)
-	{
-		printf("m_argv[%d] = %s\n", i, in_pars->m_argv[i]);
-		i++;
-	}
+	// int i = 0;
+	// while (i < in_pars->m_argc)
+	// {
+	// 	printf("m_argv[%d] = %s\n", i, in_pars->m_argv[i]);
+	// 	i++;
+	// }
 
 	if (processing_read(in_pars))
 		return (1);

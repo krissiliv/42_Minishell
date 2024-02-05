@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 13:24:16 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/30 17:26:39 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:22:58 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int pwd()
         perror("pwd");
         return (1);
     }
-    printf("%s\n", cwd);
+    // printf("%s\n", cwd);
     free(cwd);
     return (0);
 }

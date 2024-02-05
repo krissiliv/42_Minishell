@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 15:19:38 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:22:50 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 	envv = convert_linkedlst_to_table(mllcd);
 
 	res = builtins_2(cmd, mllcd);
-	if (res != -1)
-		return (free_env_table(envv), perror("builtins2"), res);
+	if (res != -1) // perror("builtins2"), 
+		return (free_env_table(envv), res);
 
 	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
@@ -116,8 +116,8 @@ int	run_simple_cmd(t_alloc *mllcd)
 	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
 
 	res = builtins_1(cmd, mllcd);
-	if (res != -1)
-		return (perror("builtins1"), res);
+	if (res != -1) // perror("builtins1"), 
+		return (res);
 	pid = fork();
 	if (pid < 0)
 		return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
