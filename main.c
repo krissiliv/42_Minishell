@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 16:48:49 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 17:02:46 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ int main(int argc, char **argv, char **envv)
             mllcd.exit_status = 1;
             continue;
         }
+        if (!mllcd.in_pars.cmd_table[0][0])
+            continue;
         // printf("pipenum: %d\n", mllcd.in_pars.pipenum);
         // if (m./mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
         //     outredir_appendmode(&mllcd);
