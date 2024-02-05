@@ -1,2 +1,22 @@
 
-PIA and NASTYA current testing:
+The following are leaking acc to tester:
+
+/bin/echo hi >./outfiles/outfile01 | /bin/echo bye
+exit_code
+
+export L=amazing L=ok L=cool
+echo $L
+
+export L=amazing L=ok L=cool
+export L=ok
+echo $L
+
+exit 9223372036854775805
+
+exit 123"123"
+
+<| echo ok
+
+>| echo sure
+
+cd --
