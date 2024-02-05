@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 17:06:41 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 17:22:17 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,21 @@ static int put_space_before_special_operator(char **input_str)
 {
     int i;
     int k;
+    bool single_quotes_open;
+    bool double_quotes_open;
 
     i = 0;
     k = 0;
+    single_quotes_open = false;
+    double_quotes_open = false;
     while ((*input_str)[i])
     {
+        if ((*input_str)[i] == '\'' && !double_quotes_open)
+            single_quotes_open = !single_quotes_open;
+        if ((*input_str)[i] == '\"' && !single_quotes_open)
+            double_quotes_open = !double_quotes_open;
         k = special_operator((*input_str) + i);
-        if (k != -1)
+        if (k != -1 && !single_quotes_open && !double_quotes_open)
         {
             if (i > 0 && !is_space((*input_str)[i - 1]))
             {

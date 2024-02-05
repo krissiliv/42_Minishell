@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 13:51:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 17:21:44 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str)
 	// free_strstr(test_m_argv);
 	while (*input_str)
 	{
-		if (*input_str == '\"')
+		if (*input_str == '\"' && singlequote_open == false)
 			doublequote_open = !doublequote_open;
-		if (*input_str == '\'')
+		if (*input_str == '\'' && doublequote_open == false)
 			singlequote_open = !singlequote_open;
 		if (*input_str == '|' && singlequote_open == false && doublequote_open == false)
 			in_pars->pipenum++;
