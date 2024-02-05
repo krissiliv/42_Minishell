@@ -1,5 +1,4 @@
-https://github.com/zstenger93/42_minishell_tester/tree/master
-
+1) https://github.com/zstenger93/42_minishell_tester/tree/master
 download this, write this in the beginning of while loop
 if (isatty(fileno(stdin)))
     input_str = readline("");
@@ -13,8 +12,10 @@ else
 if (!input_str)
     exit(1);
 
+2) run tester with 
+mtest m
 
-to see the segfaults run tester and look for exit code 139 (=segfault)
+3) to see the segfaults run tester and look for exit code 139 (=segfault)
 mstest m | grep 139
 
 
