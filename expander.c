@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 18:50:06 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 20:15:11 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,50 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	return (free(envvar), free(envvar_value), j);
 }
 
+static void	expand_tilde(char **input_str, t_alloc *mllcd)
+{
+	int i;
+	bool single_quotes_open;
+	bool double_quotes_open;
+
+	single_quotes_open = false;
+	double_quotes_open = false;
+	i = 0;
+	while ((*input_str)[i])
+	{
+		if ((*input_str)[i] == '~' && !single_quotes_open && !double_quotes_open)
+		{
+			if ((*input_str)[i + 1] && (is_space((*input_str)[i + 1]) || (int)ft_strlen((*input_str)) == i + 1))
+			{
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2));
+				if (!(*input_str))
+					return ;
+			}
+			else if ((*input_str)[i + 1] && ((*input_str)[i + 1] == '+' || (*input_str)[i + 1] == '-'))
+			{
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("PWD", mllcd)), ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2));
+				if (!(*input_str))
+					return ;
+			}
+			else if ((*input_str)[i + 1] && ft_strncmp((*input_str) + i + 1, find_envvar_value("USER", mllcd), ft_strlen(find_envvar_value("USER", mllcd)) - 1) == 0)
+			{
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 2 + ft_strlen(find_envvar_value("USER", mllcd)), ft_strlen((*input_str)) - i - 2 - ft_strlen(find_envvar_value("USER", mllcd))));
+				if (!(*input_str))
+					return ;
+				i += ft_strlen(find_envvar_value("USER", mllcd));
+			}
+		}
+		i++;
+	}
+}
+
 int expander(char **input_str, t_alloc *mllcd)
 {
 	int dsign;
 	int i;
 
+	expand_tilde(input_str, mllcd);
+	printf("input_str after expand_tilde: %s\n", *input_str);
 	dsign = 0;
 	i = 0;
 	// if (!(*input_str))
