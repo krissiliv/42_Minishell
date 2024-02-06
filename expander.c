@@ -108,7 +108,7 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 	{
 		if ((*input_str)[i] == '~' && !single_quotes_open && !double_quotes_open)
 		{
-			if ((*input_str)[i + 1] && (is_space((*input_str)[i + 1]) || (int)ft_strlen((*input_str)) == i + 1))
+			if ((*input_str)[i + 1] == '\0' || is_space((*input_str)[i + 1]))
 			{
 				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2));
 				if (!(*input_str))

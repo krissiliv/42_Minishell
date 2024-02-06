@@ -110,12 +110,10 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 int main(int argc, char **argv, char **envv)
 {
-	int		retval;
 	t_alloc	mllcd;
 	char	*input_str;
 	char	*cmdpath;
 
-	retval = 0;
 	mllcd.exit_status = 0;
 	mllcd.env_list = (t_env *)malloc(sizeof(t_env));
 	get_env(envv, &mllcd.env_list);
@@ -152,9 +150,9 @@ int main(int argc, char **argv, char **envv)
 		if (mllcd.in_pars.cmd_table[0][3])
 			handle_heredocs(&mllcd);
 		if (mllcd.in_pars.pipenum > 0)
-			retval = run_pipex_multipipe(&mllcd, argc, argv);
+			run_pipex_multipipe(&mllcd, argc, argv);
 		else
-			retval = run_simple_cmd(&mllcd);
+			run_simple_cmd(&mllcd);
 		if (mllcd.in_pars.cmd_table[0][3])
 			dup2(mllcd.saved_stdin, 0);
 		if (g_sigint == SIGINT)
