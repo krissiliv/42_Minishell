@@ -12,6 +12,24 @@
 
 #include "minishell.h"
 
+int	handle_heredocs(t_alloc *mllcd)
+{
+	int fd;
+	char *gnl;
+
+	fd = open("heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	init_simple_cmd(&mllcd->simple_cmd);
+	while (ft_strcmp(gnl, mllcd->in_pars.cmd_table[0][3]) != 0) // input reading until delimiter
+	{
+		gnl = readline("> ");
+		ft_putstr_fd(gnl, fd); //made pipe_ends[1] to stdout
+		ft_putstr_fd("\n", fd);
+	}
+	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), mllcd->exit_status);
+}
+
+
+
 // static int process_cmd(char **envv, t_alloc *mllcd)
 // {
 // 	int	c;
@@ -66,72 +84,75 @@
 // 	return (ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->simple_cmd, &pipe_ends), 0);
 // }
 
-static void	child(int *pipe_ends, t_alloc *mllcd)
-{
-	char	*gnl;
+// _________________________________________________________________
 
-	close(pipe_ends[0]); // close reading pipeend
-	while (1) // input reading until delimiter
-	{
-		gnl = readline("> ");
-		if (ft_strcmp(gnl, mllcd->in_pars.cmd_table[0][3]) == 0)
-			break;
-		ft_putstr_fd(gnl, pipe_ends[1]); //made pipe_ends[1] to stdout
-		ft_putstr_fd("\n", pipe_ends[1]);
-		free(gnl);
-	}
-	close(pipe_ends[1]);
-	free(mllcd->simple_cmd.cmdpath);
-	free_strstr(mllcd->simple_cmd.cmd);
+// static void	child(int *pipe_ends, t_alloc *mllcd)
+// {
+// 	char	*gnl;
+
+// 	close(pipe_ends[0]); // close reading pipeend
+// 	while (1) // input reading until delimiter
+// 	{
+// 		gnl = readline("> ");
+// 		if (ft_strcmp(gnl, mllcd->in_pars.cmd_table[0][3]) == 0)
+// 			break;
+// 		ft_putstr_fd(gnl, pipe_ends[1]); //made pipe_ends[1] to stdout
+// 		ft_putstr_fd("\n", pipe_ends[1]);
+// 		free(gnl);
+// 	}
+// 	close(pipe_ends[1]);
+// 	free(mllcd->simple_cmd.cmdpath);
+// 	free_strstr(mllcd->simple_cmd.cmd);
 	
-	free_before_exit(mllcd);
-	exit(0);
-}
+// 	free_before_exit(mllcd);
+// 	exit(0);
+// }
 
-static int	parent(int *pipe_ends, t_alloc *mllcd)
-{
-	// wait(&mllcd->simple_cmd.status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
-	close(pipe_ends[1]); // close writing end of pipe
-	dup2(pipe_ends[0], 0); // made pipe_ends[0] to stdin
-	// line = get_next_line(pipe_ends[0]); // made pipe_ends[0] to stdin
-	// while(line)
-	// {
-	// 	ft_putstr_fd(line, 0); //go on with printing here
-	// 	free(line);
-	// 	line = get_next_line(pipe_ends[0]);
-	// }
-	// if (mllcd->in_pars.cmd_table[0][4])
-	// 	outredir_appendmode(mllcd, 0);
-	close(pipe_ends[0]);
-	// execute_cmd(pipe_ends, mllcd);
-	// free_strstr(mllcd->in_pars.m_argv);
-	// free_cmd_table(&mllcd->in_pars);
-	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
-		return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
-	return (WEXITSTATUS(mllcd->simple_cmd.status));
-}
+// static int	parent(int *pipe_ends, t_alloc *mllcd)
+// {
+// 	// wait(&mllcd->simple_cmd.status); // wait for (any) chil d--> Return Value: The PID of the terminated child, or -1 on error.
+// 	close(pipe_ends[1]); // close writing end of pipe
+// 	dup2(pipe_ends[0], 0); // made pipe_ends[0] to stdin
+// 	// line = get_next_line(pipe_ends[0]); // made pipe_ends[0] to stdin
+// 	// while(line)
+// 	// {
+// 	// 	ft_putstr_fd(line, 0); //go on with printing here
+// 	// 	free(line);
+// 	// 	line = get_next_line(pipe_ends[0]);
+// 	// }
+// 	// if (mllcd->in_pars.cmd_table[0][4])
+// 	// 	outredir_appendmode(mllcd, 0);
+// 	close(pipe_ends[0]);
+// 	// execute_cmd(pipe_ends, mllcd);
+// 	// free_strstr(mllcd->in_pars.m_argv);
+// 	// free_cmd_table(&mllcd->in_pars);
+// 	if (WEXITSTATUS(mllcd->simple_cmd.status) == 1)
+// 		return (ft_putstr_fd("Child process failed: exited with 1.\n", 2), 1);
+// 	return (WEXITSTATUS(mllcd->simple_cmd.status));
+// }
 
-int	handle_heredocs(t_alloc *mllcd)
-{
-	int	c;
-	int	pid;
-	int	pipe_ends[2];
+// int	handle_heredocs(t_alloc *mllcd)
+// {
+// 	int	c;
+// 	int	pid;
+// 	int	pipe_ends[2];
 
-	init_simple_cmd(&mllcd->simple_cmd);
-	c = pipe(pipe_ends);
-	if (c == -1)
-	{
-		free_before_exit(mllcd);
-		exit(1);
-	}
-	pid = fork();
-	if (pid == 0)
-		child(pipe_ends, mllcd);
-	waitpid(pid, &mllcd->simple_cmd.status , 0);
-	mllcd->exit_status = parent(pipe_ends, mllcd);
-	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), mllcd->exit_status);
-}
+// 	init_simple_cmd(&mllcd->simple_cmd);
+// 	c = pipe(pipe_ends);
+// 	if (c == -1)
+// 	{
+// 		free_before_exit(mllcd);
+// 		exit(1);
+// 	}
+// 	pid = fork();
+// 	if (pid == 0)
+// 		child(pipe_ends, mllcd);
+// 	waitpid(pid, &mllcd->simple_cmd.status , 0);
+// 	mllcd->exit_status = parent(pipe_ends, mllcd);
+// 	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), mllcd->exit_status);
+// }
 
+// _________________________________________________________________
 
 // int	handle_heredocs(t_alloc *mllcd)
 // {
