@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:18:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 17:38:42 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 18:08:28 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,17 @@ char *ft_remove_quotes(char *str)
 		if (str[i] == '\"' && (!single_quotes_open || double_quotes_open))
 		{
 			str = ft_strjoin_w_free(ft_substr(str, 0, i), ft_substr(str, i + 1, ft_strlen(str) - i - 1));
+			// printf("str: %s\n", str);
 			double_quotes_open = !double_quotes_open;
 		}
-		if (str[i] == '\'' && (!double_quotes_open || single_quotes_open))
+		else if (str[i] == '\'' && (!double_quotes_open || single_quotes_open))
 		{
 			str = ft_strjoin_w_free(ft_substr(str, 0, i), ft_substr(str, i + 1, ft_strlen(str) - i - 1));
+			// printf("str: %s\n", str);
 			single_quotes_open = !single_quotes_open;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (str);
 }
