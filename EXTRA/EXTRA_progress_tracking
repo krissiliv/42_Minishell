@@ -1,12 +1,14 @@
 
 TO DO:
 
-expander with tilde
+- expander with tilde
 
-quotes inside quotes                to test
+- quotes inside quotes                to test
 
-heredocs
+- heredocs
 
-valgrind errors
+- valgrind errors
 
-signals exit status
+- signals exit status
+
+- echo $"HOM"E$USER - in this case dollar sign should not be printed
