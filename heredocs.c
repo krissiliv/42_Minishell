@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/31 16:32:49 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:44:29 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int	handle_heredocs(t_alloc *mllcd)
 
 	fd = open("heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	init_simple_cmd(&mllcd->simple_cmd);
+	gnl = readline("> ");
 	while (ft_strcmp(gnl, mllcd->in_pars.cmd_table[0][3]) != 0) // input reading until delimiter
 	{
-		gnl = readline("> ");
 		ft_putstr_fd(gnl, fd); //made pipe_ends[1] to stdout
 		ft_putstr_fd("\n", fd);
+		gnl = readline("> ");
 	}
 	return (free(mllcd->simple_cmd.cmdpath), free_strstr(mllcd->simple_cmd.cmd), mllcd->exit_status);
 }

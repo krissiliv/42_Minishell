@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:18:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 15:10:46 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 17:38:42 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,27 @@
 char *ft_remove_quotes(char *str)
 {
 	int i;
-	int j;
-	char *new;
-
+	bool single_quotes_open;
+	bool double_quotes_open;
+	
+	single_quotes_open = false;
+	double_quotes_open = false;
 	i = 0;
-	j = 0;
 	while (str[i])
 	{
-		if (str[i] != '\"' && str[i] != '\'')
-			j++;
+		if (str[i] == '\"' && (!single_quotes_open || double_quotes_open))
+		{
+			str = ft_strjoin_w_free(ft_substr(str, 0, i), ft_substr(str, i + 1, ft_strlen(str) - i - 1));
+			double_quotes_open = !double_quotes_open;
+		}
+		if (str[i] == '\'' && (!double_quotes_open || single_quotes_open))
+		{
+			str = ft_strjoin_w_free(ft_substr(str, 0, i), ft_substr(str, i + 1, ft_strlen(str) - i - 1));
+			single_quotes_open = !single_quotes_open;
+		}
 		i++;
 	}
-	new = (char *)malloc((j + 1) * sizeof(char));
-	if (!new)
-		return (free(str), NULL);
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] != '\"' && str[i] != '\'')
-			new[j++] = str[i];
-		i++;
-	}
-	new[j] = '\0';
-	free(str);
-	return (new);
+	return (str);
 }
 
 int	special_operator(char *str)

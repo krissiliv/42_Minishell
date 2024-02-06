@@ -1,22 +1,12 @@
 
-The following are leaking acc to tester:
+TO DO:
 
-/bin/echo hi >./outfiles/outfile01 | /bin/echo bye
-exit_code
+expander with tilde
 
-export L=amazing L=ok L=cool
-echo $L
+quotes inside quotes                to test
 
-export L=amazing L=ok L=cool
-export L=ok
-echo $L
+heredocs
 
-exit 9223372036854775805
+valgrind errors
 
-exit 123"123"
-
-<| echo ok
-
->| echo sure
-
-cd --
+signals exit status
