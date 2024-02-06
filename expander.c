@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/30 12:39:32 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:50:06 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	}
 	if (pos != NULL && ft_strncmp(pos->env_var, envvar, len) == 0)
 		return (ft_strdup(pos->env_var + len + 1)); // + 1 to jump over "="
-	return (ft_strdup("\n"));
+	return (ft_strdup(""));
 }
 
 static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)

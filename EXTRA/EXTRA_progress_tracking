@@ -2,8 +2,8 @@
 TO DO:
 
 - expander with tilde
-
-- quotes inside quotes                to test
+- echo $"HOM"E$USER - in this case dollar sign should not be printed
+-echo $whatever                 there should be a newline printed in the echo fct
 
 - heredocs
 
@@ -11,6 +11,5 @@ TO DO:
 
 - signals exit status
 
-- echo $"HOM"E$USER - in this case dollar sign should not be printed
 
 - echo hi >./outfiles/outfile01 | echo bye
