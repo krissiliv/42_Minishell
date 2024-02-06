@@ -12,3 +12,5 @@ TO DO:
 - signals exit status
 
 - echo $"HOM"E$USER - in this case dollar sign should not be printed
+
+- echo hi >./outfiles/outfile01 | echo bye
