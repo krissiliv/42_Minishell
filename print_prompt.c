@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:07:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 16:25:39 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 18:36:12 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ char *read_input_print_prompt(void)
 {
     char    *line;
     
+	signals(1);
     line = readline("~/minishell> ");
+	signals(2);
     add_history(line);
     return (line);
 }

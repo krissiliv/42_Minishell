@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 17:22:17 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:09:27 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,12 @@ int main(int argc, char **argv, char **envv)
 			// free(line);
 		}
 		if (!input_str)
-			exit(1);
+			exit(mllcd.exit_status);
+		if (g_sigint == SIGINT)
+		{
+			mllcd.exit_status = 130;
+			g_sigint = 0;
+		}
 		if (preparing_minishell(&mllcd, input_str))
 		{
 			mllcd.exit_status = 1;
@@ -159,6 +164,11 @@ int main(int argc, char **argv, char **envv)
 			retval = run_simple_cmd(&mllcd);
 		if (mllcd.in_pars.cmd_table[0][3])
 			dup2(mllcd.saved_stdin, 0);
+		if (g_sigint == SIGINT)
+		{
+			mllcd.exit_status = 130;
+			g_sigint = 0;
+		}
 		if (mllcd.in_pars.cmd_table[0][3])
 		{
 			cmdpath = pipex_find_cmd_path("rm", envv, &mllcd.simple_cmd);
@@ -168,5 +178,5 @@ int main(int argc, char **argv, char **envv)
 		free_cmd_table(&mllcd.in_pars);
 	}
 	free_before_exit(&mllcd); // this is the only thing that is not freedwhen pressing CTRL+C
-	return (retval);
+	return (mllcd.exit_status);
 }

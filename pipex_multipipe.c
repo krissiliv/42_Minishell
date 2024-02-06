@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 09:25:06 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 19:14:44 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,8 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 	i = 0;
 	while (i < mllcd->pipex_m.pipenum)
 	{
-		close (pipe_ends[i][0]);
-		close (pipe_ends[i][1]);
+		close(pipe_ends[i][0]);
+		close(pipe_ends[i][1]);
 		i++;
 	}
 	if (pipe_ends)
@@ -191,11 +191,13 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 	while (i < mllcd->pipex_m.pipenum) // within each pipe there is one command => the number of the cmd < pipenum and the last command is pipenum
 	{
 		mllcd->pipex_m.cmdnum = i;
+		signals(2);
 		pid[i] = fork();
 		if (pid[i] < 0)
 			return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m));
 		else if (pid[i] == 0) // means we are in child process number i
 		{
+			//signals(3);
 			//printf("created child %d with compil res %d\n", i, mllcd->pipex_m.compil_res);
 			mllcd->pipex_m.compil_res = child(pipe_ends, mllcd);
 			if (mllcd->pipex_m.compil_res != 0)
@@ -215,11 +217,13 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 	}
 	// last child --> should but this until ___ into if (pid[i] !=  0 for all i) in order to prevent child processes that broke while loop to form other child processes
 	mllcd->pipex_m.cmdnum = i;
+	signals(2);
 	pid[i] = fork();
 	if (pid[i] < 0)
 		return (pipex_error_handling(pipe_ends, i, 6, &mllcd->pipex_m));
 	else if (pid[i] == 0)
 	{
+		//signals(2);
 		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd);
 		if (mllcd->pipex_m.compil_res != 0)
 			return (pipex_free_all(&mllcd->pipex_m, pipe_ends), mllcd->pipex_m.compil_res);
@@ -241,7 +245,10 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 		i++;
 	}
 	waitpid(pid[i], &(mllcd->pipex_m.status), 0); // last pipes status code
-	mllcd->exit_status = WEXITSTATUS(mllcd->pipex_m.status);
+	/* if (WIFSIGNALED(mllcd->simple_cmd.compil_res))
+		mllcd->exit_status = WTERMSIG(mllcd->simple_cmd.compil_res);
+	else */
+		mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
 	return (pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status); // left to free but not here: mllcd->in_pars.cmd_table
 }
 

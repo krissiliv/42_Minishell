@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gektorklassiceskij <gektorklassiceskij@    +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/02 16:17:10 by gektorklass      ###   ########.fr       */
+/*   Updated: 2024/02/05 18:32:50 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_alloc
 
 // PIA
 // signals
-void signals(void);
+void 		signals(int mode);
+extern int	g_sigint;
 
 //print prompt
 char	*read_input_print_prompt(void);

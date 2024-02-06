@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 16:04:16 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/05 19:14:53 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 		return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0) // means we are in child process
 	{
+		signals(2);
 		if (simple_execute_interpreter(mllcd))
 		{
 			free_strstr(cmd);
@@ -139,7 +140,13 @@ int	run_simple_cmd(t_alloc *mllcd)
 		exit(mllcd->exit_status);
 	}
 	waitpid(pid, &mllcd->simple_cmd.compil_res, 0);
-	mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
+	/* if (WIFSIGNALED(mllcd->simple_cmd.compil_res))
+	{
+		mllcd->exit_status = WTERMSIG(mllcd->simple_cmd.compil_res);
+		printf("exit status from ctrl c%d\n", mllcd->exit_status);
+	}
+	else */
+		mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
 	return (free_strstr(cmd), mllcd->exit_status);
 }
 
