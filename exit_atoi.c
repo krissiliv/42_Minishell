@@ -6,18 +6,11 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:57:46 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/18 13:57:03 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 19:17:14 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_space(char str)
-{
-	if (str == 32 || (9 <= str && str <= 13))
-		return (1);
-	return (0);
-}
 
 int	is_num(char str)
 {

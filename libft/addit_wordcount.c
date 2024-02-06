@@ -6,18 +6,11 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:58:54 by pgober            #+#    #+#             */
-/*   Updated: 2023/12/14 15:39:39 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 19:17:14 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	is_space(char c)
-{
-	if ((c <= '\t' && c >= '\r') || c == 32)
-		return (1);
-	return (0);
-}
 
 int	wordcount(char *str)
 {

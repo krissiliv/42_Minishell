@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 16:09:27 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:17:14 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_space(char str)
-{
-	if (str == 32 || (9 <= str && str <= 13) || str == '\n')
-		return (1);
-	return (0);
-}
 
 static int  pre_check_input(char *input_str)
 {

@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:36:38 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/05 09:56:10 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 19:18:13 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		ft_isascii(int c);
 int		ft_isprint(int i);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
+int		is_space(char str);
 int		ft_atoi(const char *nptr);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

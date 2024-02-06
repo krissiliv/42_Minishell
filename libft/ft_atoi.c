@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:57:46 by pgober            #+#    #+#             */
-/*   Updated: 2023/09/08 12:26:32 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/06 19:17:14 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	is_space(char str)
+int	is_space(char str)
 {
 	if (str == 32 || (9 <= str && str <= 13))
 		return (1);
