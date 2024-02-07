@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 20:15:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/07 20:04:46 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 				if (!(*input_str))
 					return ;
 			}
-			else if (ft_strncmp((*input_str) + i + 1, find_envvar_value("USERNAME", mllcd), ft_strlen(find_envvar_value("USERNAME", mllcd)) - 1) == 0)
+			else if (ft_strncmp((*input_str) + i + 1, find_envvar_value("USER", mllcd), ft_strlen(find_envvar_value("USER", mllcd)) - 1) == 0)
 			{
 				// printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(find_envvar_value("USERNAME", mllcd)), ft_strlen((*input_str)) - i - 1 - ft_strlen(find_envvar_value("USERNAME", mllcd))));
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(find_envvar_value("USER", mllcd)), ft_strlen((*input_str)) - i - 1 - ft_strlen(find_envvar_value("USER", mllcd))));
 				if (!(*input_str))
 					return ;
 				i += ft_strlen(find_envvar_value("HOME", mllcd));
