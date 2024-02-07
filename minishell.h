@@ -69,7 +69,8 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd);
 int     expander(char **input_str, t_alloc *mllcd);
 
 // heredocs
-int		handle_heredocs(t_alloc *mllcd);
+void	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
+int		finish_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
 void	outredir_appendmode(t_alloc *mllcd, int cmdnum);

@@ -201,6 +201,8 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 
 	remove_quotes_from_cmd_table(in_pars);
 	
+	adapt_cmd_tble_to_heredocs(in_pars);
+
 	// free(input_str);
 	return (0);
 }

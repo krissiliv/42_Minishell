@@ -112,7 +112,6 @@ int main(int argc, char **argv, char **envv)
 {
 	t_alloc	mllcd;
 	char	*input_str;
-	char	*cmdpath;
 
 	mllcd.exit_status = 0;
 	mllcd.env_list = (t_env *)malloc(sizeof(t_env));
@@ -147,23 +146,15 @@ int main(int argc, char **argv, char **envv)
 		// printf("pipenum: %d\n", mllcd.in_pars.pipenum);
 		// if (m./mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
 		//	 outredir_appendmode(&mllcd);
-		if (mllcd.in_pars.cmd_table[0][3])
-			handle_heredocs(&mllcd);
 		if (mllcd.in_pars.pipenum > 0)
 			run_pipex_multipipe(&mllcd, argc, argv);
 		else
 			run_simple_cmd(&mllcd);
-		if (mllcd.in_pars.cmd_table[0][3])
-			dup2(mllcd.saved_stdin, 0);
+		finish_heredocs(&mllcd);
 		if (g_sigint == SIGINT)
 		{
 			mllcd.exit_status = 130;
 			g_sigint = 0;
-		}
-		if (mllcd.in_pars.cmd_table[0][3])
-		{
-			cmdpath = pipex_find_cmd_path("rm", envv, &mllcd.simple_cmd);
-			execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, envv);
 		}
 		free_strstr(mllcd.in_pars.m_argv);
 		free_cmd_table(&mllcd.in_pars);
