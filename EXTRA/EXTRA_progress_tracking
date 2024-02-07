@@ -11,5 +11,6 @@ TO DO:
 
 - signals exit status
 
+- echo $USER$TESTNOTFOUND$HOME$
 
 - echo hi >./outfiles/outfile01 | echo bye

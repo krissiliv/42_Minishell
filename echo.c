@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:28 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/30 17:24:32 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:43:01 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,21 @@ int echo(char *cmd[])
 {
     int i;
 
-	if (!validate_n_flag(cmd[1]))
-    	i = 2;
-	else
-		i = 1;
-    if (!cmd[1] && !cmd[1][0])
-        write(1, "\n", 1);
-	else
-	{
-		while (cmd[i])
-		{
-			ft_putstr_fd(cmd[i], 1);
-			if (cmd[i + 1])
-				ft_putchar_fd(' ', 1);
-			i++;
-		}
-		if (validate_n_flag(cmd[1]) == 1)
-			write(1, "\n", 1);
+	i = 1;
+    if (!cmd[1]) {
+        return (write(1, "\n", 1), 0);
 	}
+	while (!validate_n_flag(cmd[i]))
+    	i++;
+	while (cmd[i])
+	{
+		ft_putstr_fd(cmd[i], 1);
+		if (cmd[i + 1])
+			ft_putchar_fd(' ', 1);
+		i++;
+	}
+	if (validate_n_flag(cmd[1]) == 1)
+		write(1, "\n", 1);
     return (0);
 }
 
