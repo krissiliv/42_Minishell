@@ -65,10 +65,17 @@ int finish_heredocs(t_alloc *mllcd)
 	}
 	if (!here_doc_exists)
 		return (0);
-	env_table = convert_linkedlst_to_table(mllcd);
-	cmdpath = pipex_find_cmd_path("rm", env_table, &mllcd->simple_cmd);
-	free_before_exit(mllcd);
-	execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
+	i = fork();
+	if (i == -1)
+		return (ft_putstr_fd("Pipex-Error: Could not fork for heredoc.\n", 2), 1);
+	if (i == 0) // child
+	{
+		env_table = convert_linkedlst_to_table(mllcd);
+		cmdpath = pipex_find_cmd_path("rm", env_table, &mllcd->simple_cmd);
+		free_before_exit(mllcd);
+		execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
+	}
+	waitpid(i, &mllcd->exit_status, 0);
 	return (0);
 }
 
