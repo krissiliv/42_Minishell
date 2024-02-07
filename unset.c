@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:02:57 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/31 14:56:28 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:00:37 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,7 @@ int	unset_one(t_env **env_list, char *input, t_alloc *mllcd)
 		temp = head;
 		head = head->next;
 	}
-	if (head == NULL)
-	{
-		mllcd->exit_status = 1;
-		return (ft_putstr_fd("No variable was found\n", 2), 1);
-	}
-	else
+	if (head)
 	{
 		if (!ft_strncmp(input, (*env_list)->env_var, ft_strlen(input)))
 		{
@@ -41,8 +36,8 @@ int	unset_one(t_env **env_list, char *input, t_alloc *mllcd)
 			free(head->env_var);
 		free(head);
 		mllcd->exit_status = 0;
-		return (0);
 	}
+	return (0);
 }
 
 int unset(char **cmd, t_alloc *mllcd)
@@ -50,6 +45,20 @@ int unset(char **cmd, t_alloc *mllcd)
 	int	i;
 
 	i = 0;
+	if (!cmd[1])
+	{
+		mllcd->exit_status = 0;
+		return (0);
+	}
+	if (cmd[1][0] == '-')
+	{
+		ft_putstr_fd("unset: ", 2);
+		ft_putchar_fd(cmd[1][0], 2);
+		ft_putchar_fd(cmd[1][1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		mllcd->exit_status = 2;
+		return (2);
+	}
 	while (cmd[++i])
 		unset_one(&mllcd->env_list, cmd[i], mllcd);
 	return (0);

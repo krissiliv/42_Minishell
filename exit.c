@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/05 16:38:24 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/07 18:10:49 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	exit_program(t_alloc *mllcd)
 	exit(mllcd->exit_status);
 }
 
-static int	validate_input(char *input)
+int	validate_input(char *input)
 {
 	int	i;
 

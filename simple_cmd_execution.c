@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 19:14:53 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:26:11 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 	/* if (simple_execute_interpreter(mllcd, &cmd))
 		return (ft_lstclear(&mllcd->env_list), 1); */
 	envv = convert_linkedlst_to_table(mllcd);
-
 	res = builtins_2(cmd, mllcd);
 	if (res != -1) // perror("builtins2"), 
 		return (free_env_table(envv), res);
@@ -81,15 +80,15 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		free_env_table(envv);
 		return (ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	}
-	// printf("cmdpath = %s\n", cmdpath);
-	if (access(cmdpath, F_OK) != 0)
+	//printf("cmdpath = %s\n", cmdpath);
+	if (access(cmdpath, F_OK) != 0 || !ft_strcmp(cmd[0], ".") || !ft_strcmp(cmd[0], ".."))
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Access to cmdpath denied\n", 2), 126);
 	
 	if (execve(cmdpath, cmd, envv) == -1)
-		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: No such process!\n", 2), 2);
-	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), 0);
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: Is a directory\n", 2), 126);
+	return (ft_putstr_fd(cmd[0], 2), ft_putstr_fd("\nSimplecmd-Error: cmd not found.\n", 2), 127);
 }
 
 int	run_simple_cmd(t_alloc *mllcd)

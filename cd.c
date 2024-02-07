@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/25 16:49:41 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:31:29 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int cd(char *path, int argc, t_alloc *mllcd)
 		mllcd->exit_status = 1;
         return (ft_putstr_fd("cd: too many arguments", 2), 1);
 	}
-    else if (argc == 1 || ft_strncmp(path, "~", 1) == 0)
+    else if (argc == 1)
     {
         if (chdir(find_envvar_value("HOME", mllcd)) == -1)
 		{
