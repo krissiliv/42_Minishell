@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/07 15:52:48 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:59:17 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	**get_cmd_paths(char **envv)
 	i = 0;
 	while (envv[i] && ft_strncmp(envv[i], "PATH=", 5) != 0)
 		i++;
-	/* if (!envv[i])
-		return (NULL); */
+	if (!envv[i])
+		return (NULL);
 	paths = ft_split(envv[i] + 5, ':');
 	return (paths);
 }
