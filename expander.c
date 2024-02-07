@@ -50,6 +50,8 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	t_env	*pos;
 	int		len;
 
+	if (ft_strcmp(envvar, "USER") == 0)
+		envvar = ft_strjoin(envvar, "NAME"); // there is only USERNAME and not USER
 	if (ft_strcmp(envvar, "?") == 0)
 		return (ft_itoa(mllcd->exit_status));
     pos = mllcd->env_list;
@@ -108,24 +110,28 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 	{
 		if ((*input_str)[i] == '~' && !single_quotes_open && !double_quotes_open)
 		{
-			if ((*input_str)[i + 1] == '\0' || is_space((*input_str)[i + 1]))
+			if ((*input_str)[i + 1] == '\0' || is_space((*input_str)[i + 1]) || (*input_str)[i + 1] == '/')
 			{
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2));
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1));
 				if (!(*input_str))
 					return ;
 			}
-			else if ((*input_str)[i + 1] && ((*input_str)[i + 1] == '+' || (*input_str)[i + 1] == '-'))
+			else if (((*input_str)[i + 1] == '+' || (*input_str)[i + 1] == '-'))
 			{
 				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("PWD", mllcd)), ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2));
 				if (!(*input_str))
 					return ;
 			}
-			else if ((*input_str)[i + 1] && ft_strncmp((*input_str) + i + 1, find_envvar_value("USER", mllcd), ft_strlen(find_envvar_value("USER", mllcd)) - 1) == 0)
+			else if (ft_strncmp((*input_str) + i + 1, find_envvar_value("USER", mllcd), ft_strlen(find_envvar_value("USER", mllcd)) - 1) == 0)
 			{
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 2 + ft_strlen(find_envvar_value("USER", mllcd)), ft_strlen((*input_str)) - i - 2 - ft_strlen(find_envvar_value("USER", mllcd))));
+				printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(find_envvar_value("USER", mllcd)), ft_strlen((*input_str)) - i - 1 - ft_strlen(find_envvar_value("USER", mllcd))));
 				if (!(*input_str))
 					return ;
-				i += ft_strlen(find_envvar_value("USER", mllcd));
+				i += ft_strlen(find_envvar_value("HOME", mllcd)) - 1;
+				// printf("strlen( envvar) = %ld\n", ft_strlen(find_envvar_value("HOME", mllcd)) - 1);
+				// printf("envvar_value = %s\n", find_envvar_value("HOME", mllcd));
+				// printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
 			}
 		}
 		i++;
