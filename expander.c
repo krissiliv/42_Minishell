@@ -50,8 +50,6 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	t_env	*pos;
 	int		len;
 
-	if (ft_strcmp(envvar, "USER") == 0)
-		envvar = ft_strjoin(envvar, "NAME"); // there is only USERNAME and not USER
 	if (ft_strcmp(envvar, "?") == 0)
 		return (ft_itoa(mllcd->exit_status));
     pos = mllcd->env_list;
@@ -122,13 +120,13 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 				if (!(*input_str))
 					return ;
 			}
-			else if (ft_strncmp((*input_str) + i + 1, find_envvar_value("USER", mllcd), ft_strlen(find_envvar_value("USER", mllcd)) - 1) == 0)
+			else if (ft_strncmp((*input_str) + i + 1, find_envvar_value("USERNAME", mllcd), ft_strlen(find_envvar_value("USERNAME", mllcd)) - 1) == 0)
 			{
-				printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(find_envvar_value("USER", mllcd)), ft_strlen((*input_str)) - i - 1 - ft_strlen(find_envvar_value("USER", mllcd))));
+				// printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(find_envvar_value("USERNAME", mllcd)), ft_strlen((*input_str)) - i - 1 - ft_strlen(find_envvar_value("USERNAME", mllcd))));
 				if (!(*input_str))
 					return ;
-				i += ft_strlen(find_envvar_value("HOME", mllcd)) - 1;
+				i += ft_strlen(find_envvar_value("HOME", mllcd));
 				// printf("strlen( envvar) = %ld\n", ft_strlen(find_envvar_value("HOME", mllcd)) - 1);
 				// printf("envvar_value = %s\n", find_envvar_value("HOME", mllcd));
 				// printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
@@ -144,7 +142,7 @@ int expander(char **input_str, t_alloc *mllcd)
 	int i;
 
 	expand_tilde(input_str, mllcd);
-	printf("input_str after expand_tilde: %s\n", *input_str);
+	// printf("input_str after expand_tilde: %s\n", *input_str);
 	dsign = 0;
 	i = 0;
 	// if (!(*input_str))
