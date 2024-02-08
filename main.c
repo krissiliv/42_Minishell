@@ -158,6 +158,7 @@ int main(int argc, char **argv, char **envv)
 		}
 		free_strstr(mllcd.in_pars.m_argv);
 		free_cmd_table(&mllcd.in_pars);
+		close(mllcd.saved_stdin);
 	}
 	free_before_exit(&mllcd); // this is the only thing that is not freedwhen pressing CTRL+C
 	return (mllcd.exit_status);

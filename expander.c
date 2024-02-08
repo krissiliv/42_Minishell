@@ -86,13 +86,14 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	while ((*input_str)[i] && (ft_isalpha((*input_str)[i]) || (*input_str)[i] == '?')) //determine envvar size
 		i++;
 	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1); // fill in envvar with $ variable
-	printf("envvar = %ss\n", envvar);
+	// printf("envvar = %ss\n", envvar);
 	envvar_value = find_envvar_value(envvar, mllcd);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
 	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + i - dsign - 1); // fill in rest of (*input_str)
 	free((*input_str));
 	*input_str = new_str;
-	return (free(envvar), free(envvar_value), ft_strlen(envvar_value));
+	i = ft_strlen(envvar);
+	return (free(envvar), free(envvar_value), i);
 }
 
 static void	expand_tilde(char **input_str, t_alloc *mllcd)

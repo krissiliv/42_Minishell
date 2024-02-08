@@ -17,6 +17,8 @@ char *ft_remove_quotes(char *str)
 	int i;
 	bool single_quotes_open;
 	bool double_quotes_open;
+	char *new;
+	char *tmp;
 	
 	single_quotes_open = false;
 	double_quotes_open = false;
@@ -25,14 +27,20 @@ char *ft_remove_quotes(char *str)
 	{
 		if (str[i] == '\"' && (!single_quotes_open || double_quotes_open))
 		{
-			str = ft_strjoin_w_free(ft_substr(str, 0, i), ft_substr(str, i + 1, ft_strlen(str) - i - 1));
-			// printf("str: %s\n", str);
+			tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+			new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
+			free(str);
+			free(tmp);
+			str = new;
 			double_quotes_open = !double_quotes_open;
 		}
 		else if (str[i] == '\'' && (!double_quotes_open || single_quotes_open))
 		{
-			str = ft_strjoin_w_free(ft_substr(str, 0, i), ft_substr(str, i + 1, ft_strlen(str) - i - 1));
-			// printf("str: %s\n", str);
+			tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+			new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
+			free(str);
+			free(tmp);
+			str = new;
 			single_quotes_open = !single_quotes_open;
 		}
 		else
