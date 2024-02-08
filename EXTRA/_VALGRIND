@@ -10,4 +10,4 @@ suppress valgrind errors with
     fun:readline
 }
 3) run valgrind 
- valgrind --suppressions=val.supp ./minishell
+valgrind --suppressions=minishell.supp --leak-check=full --show-leak-kinds=all -s ./minishell

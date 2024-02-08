@@ -61,6 +61,7 @@ int finish_heredocs(t_alloc *mllcd)
 	int		child_status;
 
 	i = 0;
+	here_doc_exists = false;
 	while (i < mllcd->in_pars.pipenum + 1)
 	{
 		if (mllcd->in_pars.cmd_table[i][3])

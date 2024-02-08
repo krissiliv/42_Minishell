@@ -38,7 +38,8 @@ static int find_dollar_sign(char *str, int starting_pt)
 		else if (str[i] == '\"' && !single_quotes_open)
 			double_quotes_open = !double_quotes_open;
 		if (single_quotes_open == false && \
-			str[i + 1] && str[i] == '$' && (ft_isalpha(str[i + 1]) != 0 || str[i + 1] == '?'))
+			str[i + 1] && str[i] == '$' && (ft_isalpha(str[i + 1]) != 0 \
+			|| str[i + 1] == '?' || str[i + 1] == '\"' || str[i + 1] == '\''))
 			return (i);
 		i++;
 	}
@@ -69,30 +70,29 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	char	*envvar;
 	char	*envvar_value;
 	int		i;
-	int		j;
 
+	if ((*input_str)[dsign + 1] == '\"' || (*input_str)[dsign + 1] == '\'')
+	{
+		new_str = ft_substr((*input_str), 0, dsign);
+		new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1);
+		free((*input_str));
+		*input_str = new_str;
+		printf("input_str = %s\n", *input_str);
+		return (1);
+	}	
 	// here it is already clear that there is sth after the $ (not a blankspace)
-	new_str = (char *)malloc((dsign + 1) * sizeof(char)); // dsign is exactly the index where $ is
-	i = -1;
-	while (++i < dsign) // first bis dahin einsetzen, dann strjoin mit path var und dann  rest des input str
-		new_str[i] = (*input_str)[i];
-	new_str[i] = '\0';
-	i++;
-	// then i = dsign + 1
-	while ((*input_str)[i] && ft_isalpha((*input_str)[i]) != 0) //determine envvar size
-		i++;
-	envvar = (char *)malloc((i - dsign) * sizeof(char));
+	new_str = ft_substr((*input_str), 0, dsign); // fill in new_str with everything before $ variable
 	i = dsign + 1;
-	j = 0;
-	while ((*input_str)[i] && (ft_isalpha((*input_str)[i]) || (*input_str)[i] == '?')) // fill in envvar
-		envvar[j++] = (*input_str)[i++];
-	envvar[j] = '\0';
+	while ((*input_str)[i] && (ft_isalpha((*input_str)[i]) || (*input_str)[i] == '?')) //determine envvar size
+		i++;
+	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1); // fill in envvar with $ variable
+	printf("envvar = %ss\n", envvar);
 	envvar_value = find_envvar_value(envvar, mllcd);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
-	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + j); // fill in rest of (*input_str)
+	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + i - dsign - 1); // fill in rest of (*input_str)
 	free((*input_str));
 	*input_str = new_str;
-	return (free(envvar), free(envvar_value), j);
+	return (free(envvar), free(envvar_value), ft_strlen(envvar_value));
 }
 
 static void	expand_tilde(char **input_str, t_alloc *mllcd)

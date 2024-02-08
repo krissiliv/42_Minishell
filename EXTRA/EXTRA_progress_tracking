@@ -1,13 +1,12 @@
 
 TO DO:
 
-- echo $"HOM"E$USER - in this case dollar sign should not be printed
+++ echo $"HOM"E$USER                - should be fixed
+++ echo $USER$TESTNOTFOUND$HOME$    - should be fixed
 
 - valgrind errors - f.e. for input_str = "echo "
 
 - signals exit status
-
-- echo $USER$TESTNOTFOUND$HOME$
 
 - echo hi >./outfiles/outfile01 | echo bye
 
