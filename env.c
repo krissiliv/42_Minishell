@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:22:39 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/30 17:29:13 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:09:26 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void prntlist(t_env *head)
 int	env(char **cmd, t_alloc mllcd)
 {
 	if (cmd[1])
-		return (127);
+		return (ft_putstr_fd("env: No such file or directory\n", 2), 127);
 	else
 		prntlist(mllcd.env_list);
 	return (0);
