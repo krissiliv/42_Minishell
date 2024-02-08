@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 16:44:29 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/08 15:34:27 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int finish_heredocs(t_alloc *mllcd)
 	char	**env_table;
 	bool	here_doc_exists;
 	int		i;
+	int		child_status;
 
 	i = 0;
 	while (i < mllcd->in_pars.pipenum + 1)
@@ -73,9 +74,11 @@ int finish_heredocs(t_alloc *mllcd)
 		env_table = convert_linkedlst_to_table(mllcd);
 		cmdpath = pipex_find_cmd_path("rm", env_table, &mllcd->simple_cmd);
 		free_before_exit(mllcd);
-		execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
+		if (access("heredoc.tmp", F_OK) == 0)
+			execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
+		exit(0);
 	}
-	waitpid(i, &mllcd->exit_status, 0);
+	waitpid(i, &child_status, 0);
 	return (0);
 }
 

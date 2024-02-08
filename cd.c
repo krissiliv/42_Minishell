@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/07 16:31:29 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:01:56 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int cd(char *path, int argc, t_alloc *mllcd)
     if (argc > 2)
 	{
 		mllcd->exit_status = 1;
-        return (ft_putstr_fd("cd: too many arguments", 2), 1);
+        return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	}
     else if (argc == 1)
     {
@@ -60,6 +60,11 @@ int cd(char *path, int argc, t_alloc *mllcd)
     }
     else
     {
+		if (!ft_strcmp(path, "-"))
+		{
+			path = find_envvar_value("OLDPWD", mllcd);
+			pwd();
+		}
         if (chdir(path) == -1)
 		{
 			mllcd->exit_status = 1;
