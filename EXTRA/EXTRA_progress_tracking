@@ -1,13 +1,8 @@
 
 TO DO:
 
-++ echo $"HOM"E$USER                - should be fixed
-++ echo $USER$TESTNOTFOUND$HOME$    - should be fixed
-
 - valgrind errors - f.e. for input_str = "echo "
 
 - signals exit status
-
-- echo hi >./outfiles/outfile01 | echo bye
 
 if i export TEST+=100, it is not an error, but the variable has to be TEST=100

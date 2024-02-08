@@ -16,6 +16,7 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 {
 	int c;
 	int in;
+	int out;
 
     mllcd->pipex_m.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0], ' '); // on the cmd-position 0 there is always the command
 	if (!(mllcd->pipex_m.cmd))
@@ -45,6 +46,19 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
             return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
         }
     }
+
+	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2]) // input redirection
+    {
+		out = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2], O_WRONLY | O_CREAT | O_TRUNC, 0777); // on the 2nd position of the last command there will always be what is interpreted as the outfile by the parser
+		if (out == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2] != NULL)
+			return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
+		if (out != -1 && dup2(out, 1) == -1) //the stdout will always be the outfile
+		{
+			close(out);
+			return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
+		}
+	}
+
 	return (0);
 }
 
