@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/07 18:11:10 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:42:18 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "readline/readline.h" //readline
 # include "readline/history.h" //readline
 # include <signal.h>
+ #include <sys/ioctl.h>
 
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"

@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 19:14:44 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:42:53 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 	/* if (WIFSIGNALED(mllcd->simple_cmd.compil_res))
 		mllcd->exit_status = WTERMSIG(mllcd->simple_cmd.compil_res);
 	else */
-		mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
+	mllcd->exit_status = WEXITSTATUS(mllcd->pipex_m.status);
 	return (pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status); // left to free but not here: mllcd->in_pars.cmd_table
 }
 

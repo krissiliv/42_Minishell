@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/08 15:34:27 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:45:46 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@ static void	handle_heredocs(t_input_parsing *in_pars, int cmdnum)
 	fd_here_document = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (fd_here_document == -1)
 		return (ft_putstr_fd("Pipex-Error: Could not open file for heredoc.\n", 2));
+	signals(3);
 	gnl = readline("> ");
-	while (ft_strcmp(gnl, in_pars->cmd_table[cmdnum][3]) != 0) // input reading until delimiter
+	while ((ft_strcmp(gnl, in_pars->cmd_table[cmdnum][3]) != 0) && g_sigint != SIGINT) // input reading until delimiter
 	{
 		ft_putstr_fd(gnl, fd_here_document); //made pipe_ends[1] to stdout
 		ft_putstr_fd("\n", fd_here_document);
 		free(gnl);
 		gnl = readline("> ");
+		if (g_sigint == SIGINT)
+			break;
 	}
 	free(gnl);
 	free(in_pars->cmd_table[cmdnum][1]);
