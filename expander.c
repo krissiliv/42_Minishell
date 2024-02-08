@@ -38,7 +38,7 @@ static int find_dollar_sign(char *str, int starting_pt)
 		else if (str[i] == '\"' && !single_quotes_open)
 			double_quotes_open = !double_quotes_open;
 		if (single_quotes_open == false && \
-			str[i + 1] && str[i] == '$' && (ft_isalpha(str[i + 1]) != 0 || str[i + 1] == '?'))
+			str[i + 1] && str[i] == '$' && (ft_isalpha(str[i + 1]) != 0 || str[i + 1] == '?' || str[i + 1] == '\"' || str[i + 1] == '\''))
 			return (i);
 		i++;
 	}
@@ -50,6 +50,8 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	t_env	*pos;
 	int		len;
 
+	if (envvar[0] == '\"' || envvar[0] == '\'')
+		return (ft_strdup(""));
 	if (ft_strcmp(envvar, "?") == 0)
 		return (ft_itoa(mllcd->exit_status));
     pos = mllcd->env_list;
