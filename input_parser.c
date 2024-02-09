@@ -6,13 +6,13 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 12:21:35 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 13:04:14 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	init_input_parser(t_input_parsing *in_pars, char *input_str)
+static void	init_input_parser(t_input_parsing *in_pars, char *input_str) // initializing cmd table and pipenum
 {
 	int		i;
 	int		j;
@@ -156,6 +156,8 @@ static void 	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
 
 int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 {
+	int exit_status;
+
 	if (!input_str || ft_strlen(input_str) == 0)
 		return (ft_putstr_fd("Error: Input parser did nnnnot receive input.\n", 2), 1);
 	
@@ -165,6 +167,9 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	//printf("m_argc = %d\n", m_argc);
 	in_pars->m_argv = ft_split_w_quotes(input_str, ' ');
 
+	exit_status = syntax_checker(in_pars->m_argv, in_pars->m_argc);
+	if (exit_status != 0)
+		return (exit_status); // will always be = 2, which is syntax error
 	// int i = 0;
 	// while (i < in_pars->m_argc)
 	// {

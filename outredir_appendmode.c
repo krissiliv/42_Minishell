@@ -6,26 +6,25 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:28 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:30 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 14:06:48 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	outredir_appendmode(t_alloc *mllcd, int cmdnum)
+int	outredir_appendmode(t_alloc *mllcd, int cmdnum)
 {
 	int fd;
 
 	fd = open(mllcd->in_pars.cmd_table[cmdnum][4], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd("Error: Output redirection iun append mode failed.\n", 2);
 		mllcd->exit_status = 1;
-		return ;
+		return (1);
 	}
 	dup2(fd, 1);
 	close(fd);
-	return ;
+	return (0);
 }
 
 // cc -Wall -Wextra -Werror outredir_appendmode.c expander.c input_parser.c input_parser_ft_split_w_quotes.c input_parser_utils.c finish.c libft/*.c -lreadline -g

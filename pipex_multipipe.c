@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/08 16:42:53 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:49:50 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "pipex_multipipe.h"
 #include "minishell.h"
 
 static int	multi_execute_interpreter(t_alloc *mllcd)
@@ -171,7 +172,10 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 		}
 	}
 	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][4])
-		outredir_appendmode(mllcd, mllcd->pipex_m.cmdnum);
+	{
+		if (outredir_appendmode(mllcd, mllcd->pipex_m.cmdnum))
+			return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
+	}
 	//printf("in child %d make %s to stdout\n", mllcd->pipex_m.cmdnum, mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2]);
 	if (dup2(pipe_ends[mllcd->pipex_m.cmdnum - 1][0], 0) == -1) //for last child, the stdin will always be the reading pipeend to the last child
 		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.pipenum, 1, &mllcd->pipex_m));

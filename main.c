@@ -6,34 +6,11 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 19:17:14 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 13:45:58 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int  pre_check_input(char *input_str)
-{
-	int i;
-	int check_only_spaces;
-
-	// printf("input_str: %s has length %zu\n", input_str, ft_strlen(input_str));
-	if (!input_str || ft_strlen(input_str) == 0)
-	{
-		printf("\n");
-		return (1);
-	}
-	i = 0;
-	check_only_spaces = 1;
-	while (input_str[i])
-	{
-		if (!is_space(input_str[i++]))
-			check_only_spaces = 0;
-	}
-	if (check_only_spaces)
-		return (1);
-	return (0);
-}
 
 static int put_space_before_special_operator(char **input_str)
 {
@@ -81,6 +58,7 @@ static int put_space_before_special_operator(char **input_str)
 
 static int preparing_minishell(t_alloc *mllcd, char *input_str)
 {
+	int exit_status;
 	// char	*input_str;
 
 	// input_str = ft_strdup("echo -\"$SHELL-\"-"); //fill in stuff from EXTRA/input_parser_testing
@@ -94,7 +72,10 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	// printf("input_str expanded: %s\n", input_str);
 	// remove_quotes_from_argv(&input_str); // not possible to put this here because then cmds like grep "ho < _test" do not work correctly
 
-	if (cmdline_input_parser(&mllcd->in_pars, input_str))
+	exit_status = cmdline_input_parser(&mllcd->in_pars, input_str);
+	if (exit_status == 2)
+		mllcd->exit_status = 2; // this is for syntax errors
+	if (exit_status)
 		return (1);
 	free(input_str);
 
@@ -137,10 +118,7 @@ int main(int argc, char **argv, char **envv)
 			g_sigint = 0;
 		}
 		if (preparing_minishell(&mllcd, input_str))
-		{
-			mllcd.exit_status = 1;
 			continue;
-		}
 		if (!mllcd.in_pars.cmd_table[0][0])
 			continue;
 		// printf("pipenum: %d\n", mllcd.in_pars.pipenum);

@@ -6,14 +6,12 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:39 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 13:37:24 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_MULTIPIPE_H
 # define PIPEX_MULTIPIPE_H
-
-#include "minishell.h"
 
 typedef struct s_pipex_m
 {

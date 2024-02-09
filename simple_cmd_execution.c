@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/07 16:26:11 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:48:57 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ static int	simple_execute_interpreter(t_alloc *mllcd)
 	}
 
 	if (mllcd->in_pars.cmd_table[0][4])
-		outredir_appendmode(mllcd, 0);
+	{
+		if (outredir_appendmode(mllcd, 0))
+			return (perror("Simplecmd-Error: Access to outfile denied\n"), 1);
+	}
 
 	if (mllcd->in_pars.cmd_table[0][2]) // output redirection
 	{

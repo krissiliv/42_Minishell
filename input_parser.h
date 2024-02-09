@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:18 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 12:45:50 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,9 @@ char	*ft_remove_quotes(char *str);
 int		special_operator(char *str);
 char	*ft_strjoin_w_free(char *s1, char *s2);
 int		input_check_adapt(char *input);
+
+// syntax check
+int		syntax_checker(char **m_argv, int m_argc);
+int		pre_check_input(char *input_str);
 
 #endif

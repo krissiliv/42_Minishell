@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/08 17:42:18 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:36:57 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
 int		finish_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
-void	outredir_appendmode(t_alloc *mllcd, int cmdnum);
+int		outredir_appendmode(t_alloc *mllcd, int cmdnum);
 
 //pipex multipipe
 int		pipex(int **pipe_ends, t_alloc *mllcd);

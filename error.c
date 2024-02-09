@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:58:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:38:09 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 13:50:04 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m 
 	}
 	if (err_code == 127)
 		perror("Pipex-Error: command not found\n");
-
 	else if (err_code == 1)
 		perror("Pipex-Error: Access to cmdpath denied\n");
 	else if (err_code == 2)
@@ -35,7 +34,6 @@ int	pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m 
 		perror("Pipex-Error: dup2 failed\n");
 	else if (err_code == 10)
 		perror("Pipex-Error: Access to outfile denied\n");
- 
 	else if (err_code == 3)
 		perror("Pipex-Error: No such process!\n");
 	else if (err_code == 4)
