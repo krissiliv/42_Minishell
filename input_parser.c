@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 17:21:44 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 12:21:35 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,30 +96,6 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 	//cmd_position = 0;
 	while (i < in_pars->m_argc) // next step: need to find way to fill "r" next to grep
 	{
-		// if (in_pars->m_argv[i][0] == '\"' || in_pars->m_argv[i][0] == '\'') // not finished yet but work on it a little later as it is not in current command "< infile | cat | wc -l > out"
-		// {
-		// 	i = look_for_free_spot_in_cmdtable(in_pars, curr_cmdnum, i);
-		// 	if (i == -1)
-		// 		return (1);
-		// 	// if (in_pars->cmd_table[curr_cmdnum][0] == NULL)
-		// 	// 	cmd_position = 0;
-		// 	// else if (in_pars->cmd_table[curr_cmdnum][1] == NULL)
-		// 	// 	cmd_position = 1;
-		// 	// else if (in_pars->cmd_table[curr_cmdnum][2] == NULL)
-		// 	// 	cmd_position = 2;
-		// 	// else
-		// 	// {
-		// 	// 	ft_putstr_fd("Error: too many arguments\n, 2");
-		// 	// 	return (1);
-		// 	// } //problem to solve: what is in between the quotes can be a command or an argument (filename)...	
-		// 	// if (ft_strlen(in_pars->m_argv[i]) > 1)
-		// 	// {
-		// 	// 	if (ft_strcmp(in_pars->cmd_table[curr_cmdnum][0], "grep") == 0 || ft_strcmp(in_pars->cmd_table[curr_cmdnum][0], "\"grep\"") == 0 || ft_strcmp(in_pars->cmd_table[curr_cmdnum][0], "\'grep\'") == 0) // grep is the only cmd that needs/takes a string as an argument, right?? no?
-		// 	// 		in_pars->cmd_table[curr_cmdnum][0] = ft_strjoin_w_free(ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], " "), in_pars->m_argv[i]);
-		// 	// 	else
-		// 	// 		in_pars->cmd_table[curr_cmdnum][cmd_position] = ft_strdup(in_pars->m_argv[i]); //done: what if quote closure is included in this string as well?? --> handled with ft_split_w_quotes
-		// 	// }
-		// }
 		if ((ft_strcmp(in_pars->m_argv[i], "<") == 0)) // && inside_qu(in_pars) == false)) // input redirection <
 			in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[++i]); // input file should not generally be in first position in a-s-t (abstract synax tree) - it should be on first position of the resp command that it belongs to as it should mimic shell
 		// else if (i == 1 && ft_strchr(in_pars->input_str, (int)'<') == NULL && ft_strcmp(in_pars->m_argv[1], "|") != 0) // no input redirection
