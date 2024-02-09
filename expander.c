@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 14:25:28 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 15:09:52 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,21 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 {
 	t_env	*pos;
 	int		len;
+	char	*envvar_w_equalsign;
 
 	if (ft_strcmp(envvar, "?") == 0)
 		return (ft_itoa(mllcd->exit_status));
     pos = mllcd->env_list;
-	len = ft_strlen(envvar);
-    while (pos != NULL && ft_strncmp(pos->env_var, envvar, len) != 0)
+	envvar_w_equalsign = ft_strjoin(envvar, "=");
+	len = ft_strlen(envvar_w_equalsign);
+	// printf("envvar_w_equalsign = %s\n", envvar_w_equalsign);
+    while (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) != 0)
     {
 		pos = pos->next;
 	}
-	if (pos != NULL && ft_strncmp(pos->env_var, envvar, len) == 0)
-		return (ft_strdup(pos->env_var + len + 1)); // + 1 to jump over "="
-	return (ft_strdup(""));
+	if (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) == 0)
+		return (free(envvar_w_equalsign), ft_strdup(pos->env_var + len)); // + 1 to jump over "="
+	return (free(envvar_w_equalsign), ft_strdup(""));
 }
 
 static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
@@ -85,13 +88,12 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	while ((*input_str)[i] && (ft_isalpha((*input_str)[i]) || (*input_str)[i] == '?')) //determine envvar size
 		i++;
 	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1); // fill in envvar with $ variable
-	// printf("envvar = %ss\n", envvar);
 	envvar_value = find_envvar_value(envvar, mllcd);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
 	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + i - dsign - 1); // fill in rest of (*input_str)
 	free((*input_str));
 	*input_str = new_str;
-	i = ft_strlen(envvar);
+	i = ft_strlen(envvar_value);
 	return (free(envvar), free(envvar_value), i);
 }
 
