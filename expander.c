@@ -6,11 +6,10 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 14:21:33 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/09 14:25:28 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "minishell.h"
 
 static int find_dollar_sign(char *str, int starting_pt)
