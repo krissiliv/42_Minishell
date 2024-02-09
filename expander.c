@@ -101,6 +101,7 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 	int i;
 	bool single_quotes_open;
 	bool double_quotes_open;
+	char *tmp;
 
 	single_quotes_open = false;
 	double_quotes_open = false;
@@ -109,6 +110,7 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 	{
 		if ((*input_str)[i] == '~' && !single_quotes_open && !double_quotes_open)
 		{
+			tmp = find_envvar_value("USER", mllcd);
 			if ((*input_str)[i + 1] == '\0' || is_space((*input_str)[i + 1]) || (*input_str)[i + 1] == '/')
 			{
 				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1));
@@ -121,10 +123,10 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 				if (!(*input_str))
 					return ;
 			}
-			else if (ft_strncmp((*input_str) + i + 1, find_envvar_value("USER", mllcd), ft_strlen(find_envvar_value("USER", mllcd)) - 1) == 0)
+			else if (ft_strncmp((*input_str) + i + 1, tmp, ft_strlen(tmp) - 1) == 0)
 			{
 				// printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(find_envvar_value("USER", mllcd)), ft_strlen((*input_str)) - i - 1 - ft_strlen(find_envvar_value("USER", mllcd))));
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1 + ft_strlen(tmp), ft_strlen((*input_str)) - i - 1 - ft_strlen(tmp)));
 				if (!(*input_str))
 					return ;
 				i += ft_strlen(find_envvar_value("HOME", mllcd));
@@ -132,6 +134,7 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 				// printf("envvar_value = %s\n", find_envvar_value("HOME", mllcd));
 				// printf("input_str[i + 1] = %c\n", (*input_str)[i + 1]);
 			}
+			free(tmp);
 		}
 		i++;
 	}
