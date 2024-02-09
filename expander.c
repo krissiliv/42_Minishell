@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/07 20:04:46 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:07:29 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 		new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1);
 		free((*input_str));
 		*input_str = new_str;
-		printf("input_str = %s\n", *input_str);
+		// printf("input_str = %s\n", *input_str);
 		return (1);
 	}	
 	// here it is already clear that there is sth after the $ (not a blankspace)
