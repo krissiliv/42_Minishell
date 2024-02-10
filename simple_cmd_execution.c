@@ -131,7 +131,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 		{
 			free_strstr(cmd);
 			free_before_exit(mllcd);
-			exit(mllcd->exit_status);
+			exit(1);
 		}
 		//printf("created child %d with compil res %d\n", i, compil_res);
 		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
