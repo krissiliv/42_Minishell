@@ -76,7 +76,7 @@ int finish_heredocs(t_alloc *mllcd)
 	if (i == 0) // child
 	{
 		env_table = convert_linkedlst_to_table(mllcd);
-		cmdpath = pipex_find_cmd_path("rm", env_table, &mllcd->simple_cmd);
+		cmdpath = find_cmd_path("rm", env_table, &mllcd->simple_cmd);
 		free_before_exit(mllcd);
 		if (access("heredoc.tmp", F_OK) == 0)
 			execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
@@ -105,7 +105,7 @@ int finish_heredocs(t_alloc *mllcd)
 // 	while (mllcd->simple_cmd.cmd[++i])
 // 		printf("%s,", mllcd->simple_cmd.cmd[i]);
 // 	printf("]\n"); //printf("should be: (char *[]){\"grep\",\"ho\",\"_testfile\", NULL}\n");
-// 	mllcd->simple_cmd.cmdpath = pipex_find_cmd_path(mllcd->simple_cmd.cmd[0], envv, &mllcd->simple_cmd);
+// 	mllcd->simple_cmd.cmdpath = find_cmd_path(mllcd->simple_cmd.cmd[0], envv, &mllcd->simple_cmd);
 // 	free_strstr(mllcd->simple_cmd.poss_paths);
 // 	free(mllcd->simple_cmd.poss_path);
 // 	if (mllcd->simple_cmd.cmdpath == NULL)

@@ -26,8 +26,7 @@ typedef struct s_pipex_m
 }	t_pipex_m;
 
 // cmd finder
-char	**get_cmd_paths(char **envv);
-char	*pipex_find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m);
+char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m);
 
 // error
 int		pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m *pipex_m);

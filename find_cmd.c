@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**get_cmd_paths(char **envv)
+static char	**get_cmd_paths(char **envv)
 {
 	int		i;
 	char	**paths;
@@ -26,12 +26,31 @@ char	**get_cmd_paths(char **envv)
 	return (paths);
 }
 
-char	*pipex_find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
+static char	**find_pwd(char **envv)
+{
+	int		i;
+	char	**paths;
+
+	i = 0;
+	while (envv[i] && ft_strncmp(envv[i], "PWD=", 5) != 0)
+		i++;
+	if (!envv[i])
+		return (NULL);
+	paths = (char **)malloc(2 * sizeof(char *));
+	paths[0] = ft_strdup(envv[i]);
+	paths[1] = NULL;
+	return (paths);
+}
+
+char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 {
 	int		i;
 
 	i = 0;
-	pipex_m->poss_paths = get_cmd_paths(envv);
+	if (cmd[0] == '.')
+		pipex_m->poss_paths = find_pwd(envv);
+	else
+		pipex_m->poss_paths = get_cmd_paths(envv);
 	if (!pipex_m->poss_paths)
 		return (pipex_free_all(pipex_m, NULL), NULL);
 	while (pipex_m->poss_paths[i])

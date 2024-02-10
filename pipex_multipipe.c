@@ -77,7 +77,7 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	if (res != -1) // printf("res: %d\n", res), perror("builtins in pipes"), 
 		return (free_env_table(envv), res);
 	
-	mllcd->pipex_m.cmdpath = pipex_find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
+	mllcd->pipex_m.cmdpath = find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
 	{
 		// mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];

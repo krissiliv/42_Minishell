@@ -76,7 +76,7 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 	if (res != -1) // perror("builtins2"), 
 		return (free_env_table(envv), res);
 
-	cmdpath = pipex_find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
+	cmdpath = find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 	{
 		// cmdpath = cmd[0]; //try if this command is right here in the current directory
