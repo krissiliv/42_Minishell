@@ -6,24 +6,24 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:22:39 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/27 17:05:28 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:09:26 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	prntlist(t_env *head)
+void prntlist(t_env *head)
 {
-	t_env	*pos;
+    t_env *pos;
 
-	pos = head;
+    pos = head;
 	if (pos == NULL)
 		printf("NULL\n");
-	while (pos != NULL)
-	{
-		printf("%s\n", pos->env_var);
-		pos = pos->next;
-	}
+    while (pos != NULL)
+    {
+        printf("%s\n", pos->env_var);
+        pos = pos->next;
+    }
 }
 
 int	env(char **cmd, t_alloc mllcd)

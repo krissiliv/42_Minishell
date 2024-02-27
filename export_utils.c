@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:52:29 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/27 15:10:51 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/01/29 11:35:00 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ static void	swap_nodes_mid(t_env **env_list)
 
 void	prnt_sortedlist(t_env *head)
 {
-	t_env	*pos;
+	t_env *pos;
 
-	pos = head;
+    pos = head;
 	if (pos == NULL)
 		printf("NULL\n");
-	while (pos != NULL)
-	{
-		printf("declare -x %s\n", pos->env_var);
-		pos = pos->next;
-	}
+    while (pos != NULL)
+    {
+        printf("declare -x %s\n", pos->env_var);
+        pos = pos->next;
+    }
 }
 
 t_env	*sort_list(t_env *env_list)
@@ -62,7 +62,7 @@ t_env	*sort_list(t_env *env_list)
 	t_env	*head;
 
 	head = env_list;
-	while (env_list && env_list->next && env_list->next->next)
+	while (env_list->next && env_list->next->next)
 	{
 		if (env_list == head)
 		{
@@ -72,8 +72,7 @@ t_env	*sort_list(t_env *env_list)
 				head = env_list;
 			}
 		}
-		if (ft_strcmp(env_list->next->env_var,
-				env_list->next->next->env_var) > 0)
+		if (ft_strcmp(env_list->next->env_var, env_list->next->next->env_var) > 0)
 		{
 			swap_nodes_mid(&env_list);
 			env_list = head;
