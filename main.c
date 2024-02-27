@@ -95,7 +95,7 @@ int main(int argc, char **argv, char **envv)
 	char	*input_str;
 
 	mllcd.exit_status = 0;
-	mllcd.env_list = (t_env *)malloc(sizeof(t_env));
+	mllcd.env_list = NULL;
 	get_env(envv, &mllcd.env_list);
 	//prntlist(mllcd.env_list);
 	while (1)

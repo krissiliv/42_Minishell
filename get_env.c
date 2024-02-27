@@ -17,10 +17,11 @@ int	get_env(char **envv, t_env **head)
 	int		i;
 	t_env	*temp;
 
-	temp = *head;
 	i = 0;
-	if (!envv[i])
+	if (!envv[i] && *head)
 		free(*head);
+	*head = (t_env *)malloc(sizeof(t_env));
+	temp = *head;
 	while (envv[i])
 	{
 		(*head)->env_var = envv[i];

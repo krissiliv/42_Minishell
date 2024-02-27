@@ -26,27 +26,21 @@ static char	**get_cmd_paths(char **envv)
 	return (paths);
 }
 
-static char	**translated_pathsign(char *cmd, char **envv)
+static char	**translated_pathsign(char *cmd)
 {
-	int		i;
 	char	**paths;
 
-	i = 0;
 	if (cmd[0] == '.')
 	{
-		while (envv[i] && ft_strncmp(envv[i], "PWD=", 5) != 0)
-			i++;
-		if (!envv[i])
-			return (NULL);
-		paths = (char **)malloc(2 * sizeof(char *));
-		paths[0] = ft_strdup(envv[i]);
+		paths = (char **)malloc(1 * sizeof(char *));
+		paths[0] = NULL; //file is in current dir
 	}
 	else
 	{
 		paths = (char **)malloc(2 * sizeof(char *));
 		paths[0] = ft_strdup("/");
+		paths[1] = NULL;
 	}
-	paths[1] = NULL;
 	return (paths);
 }
 
@@ -56,7 +50,7 @@ char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 
 	i = 0;
 	if (cmd[0] == '.' || cmd[0] == '/')
-		pipex_m->poss_paths = translated_pathsign(cmd, envv);
+		pipex_m->poss_paths = translated_pathsign(cmd);
 	else
 		pipex_m->poss_paths = get_cmd_paths(envv);
 	if (!pipex_m->poss_paths)

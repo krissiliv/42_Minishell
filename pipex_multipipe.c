@@ -91,7 +91,7 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 		return (free_env_table(envv), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 126, &mllcd->pipex_m));
 
-
+	// printf("cmdpath: %s\n", mllcd->pipex_m.cmdpath);
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
 		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m));
 	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
