@@ -56,6 +56,25 @@ static int put_space_before_special_operator(char **input_str)
 	return (0);
 }
 
+static void expand_parsed_input(t_alloc *mllcd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i <= mllcd->in_pars.pipenum)
+	{
+		j = 0;
+		while (j <= 4)
+		{	
+			if (mllcd->in_pars.cmd_table[i][j])
+				expander(&(mllcd->in_pars.cmd_table[i][j]), mllcd);
+			j++;
+		}
+		i++;
+	}
+}
+
 static int preparing_minishell(t_alloc *mllcd, char *input_str)
 {
 	int exit_status;
@@ -70,8 +89,10 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
 	if (put_space_before_special_operator(&input_str) == 1)
 		return (1);
-	if (expander(&input_str, mllcd))
-		return (1);
+
+	// if (expander(&input_str, mllcd))
+	// 	return (1);
+
 	// printf("input_str expanded: %s\n", input_str);
 	// remove_quotes_from_argv(&input_str); // not possible to put this here because then cmds like grep "ho < _test" do not work correctly
 
@@ -87,6 +108,7 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 		return (1);
 	free(input_str);
 
+	expand_parsed_input(mllcd);
 	// printf("print m_argv again:\n");
 	// int i = -1;
 	// while (i++ < mllcd->in_pars.m_argc)
