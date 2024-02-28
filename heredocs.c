@@ -6,24 +6,24 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/26 16:13:50 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:36:51 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_heredocs(t_input_parsing *in_pars, int cmdnum)
+static int	handle_heredocs(t_input_parsing *in_pars, int cmdnum)
 {
 	char *gnl;
 	int fd_here_document;
 
 	fd_here_document = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (fd_here_document == -1)
-		return (ft_putstr_fd("Pipex-Error: Could not open file for heredoc.\n", 2));
+		return (ft_putstr_fd("Pipex-Error: Could not open file for heredoc.\n", 2), 1);
 	signals(3);
 	gnl = readline("> ");
 	if (!gnl)
-		exit(0);
+		return (1);
 	while ((ft_strcmp(gnl, in_pars->cmd_table[cmdnum][3]) != 0) && g_sigint != SIGINT) // input reading until delimiter
 	{
 		ft_putstr_fd(gnl, fd_here_document); //made pipe_ends[1] to stdout
@@ -31,18 +31,19 @@ static void	handle_heredocs(t_input_parsing *in_pars, int cmdnum)
 		free(gnl);
 		gnl = readline("> ");
 		if (!gnl)
-			exit(0);
+			return (1);
 		if (g_sigint == SIGINT)
 			break;
 	}
 	free(gnl);
 	free(in_pars->cmd_table[cmdnum][1]);
 	in_pars->cmd_table[cmdnum][1] = ft_strdup("heredoc.tmp");
+	return (0);
 	// dup2(fd_here_document, 0); // make fd_here_document to stdin
 	// close(fd_here_document);
 }
 
-void	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars)
+int	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars)
 
 {
 	int i;
@@ -51,9 +52,13 @@ void	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars)
 	while (i < in_pars->pipenum + 1)
 	{
 		if (in_pars->cmd_table[i][3])
-			handle_heredocs(in_pars, i);
+		{
+			if (handle_heredocs(in_pars, i) == 1)
+				return (1);
+		}
 		i++;
 	}
+	return (0);
 }
 
 int finish_heredocs(t_alloc *mllcd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 13:36:57 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/28 16:31:38 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd);
 int     expander(char **input_str, t_alloc *mllcd);
 
 // heredocs
-void	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
+int	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
 int		finish_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
@@ -93,7 +93,7 @@ int		get_env(char **envv, t_env **head);
 void	ft_lstclear(t_env **env_list);
 char	**convert_linkedlst_to_table(t_alloc *mllcd);
 void	free_env_table(char **envv);
-// void 	prntlist(t_env *head);
+void 	prntlist(t_env *head);
 
 //built-ins:
 int		echo(char *cmd[]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 14:35:50 by pgober           ###   ########.fr       */
+/*   Updated: 2024/02/28 17:49:55 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ static int put_space_before_special_operator(char **input_str)
 static int preparing_minishell(t_alloc *mllcd, char *input_str)
 {
 	int exit_status;
+	int	temp;
+
+	exit_status = 0;
 	// char	*input_str;
 
 	// input_str = ft_strdup("echo -\"$SHELL-\"-"); //fill in stuff from EXTRA/input_parser_testing
@@ -72,7 +75,12 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	// printf("input_str expanded: %s\n", input_str);
 	// remove_quotes_from_argv(&input_str); // not possible to put this here because then cmds like grep "ho < _test" do not work correctly
 
-	exit_status = cmdline_input_parser(&mllcd->in_pars, input_str);
+	temp = cmdline_input_parser(&mllcd->in_pars, input_str);
+	if (temp == 3)
+		return (1);
+	else
+		exit_status = temp;
+	
 	if (exit_status == 2)
 		mllcd->exit_status = 2; // this is for syntax errors
 	if (exit_status)
