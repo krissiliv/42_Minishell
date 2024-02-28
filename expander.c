@@ -85,7 +85,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	// here it is already clear that there is sth after the $ (not a blankspace)
 	new_str = ft_substr((*input_str), 0, dsign); // fill in new_str with everything before $ variable
 	i = dsign + 1;
-	while ((*input_str)[i] && (ft_isalpha((*input_str)[i]) || (*input_str)[i] == '?')) //determine envvar size
+	while ((*input_str)[i] && (ft_isalnum((*input_str)[i]) || (*input_str)[i] == '_' || (*input_str)[i] == '?')) //determine envvar size
 		i++;
 	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1); // fill in envvar with $ variable
 	envvar_value = find_envvar_value(envvar, mllcd);

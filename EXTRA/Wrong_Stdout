@@ -14,7 +14,7 @@ echo -n test1		test2
 echo $USER'$USER'text oui oui     oui  oui $USER oui      $USER ''
 
 _________________HEREDOCS______________________________________________
-ls | cat << stop | grep "asd"
+ls | cat << stop | grep "asd"           #works normally - the others too?
 is this good
 stop
 
