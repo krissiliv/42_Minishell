@@ -17,6 +17,6 @@ mtest m
 
 3) to see the segfaults run tester and look for exit code 139 (=segfault)
 mstest m | grep minishell\(139\)
-
+mstest m | grep ❌
 
 ________________________________________________________________________________________________________
