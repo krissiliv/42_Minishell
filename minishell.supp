@@ -4,3 +4,9 @@
     ...
     fun:readline
 }
+{
+    leak readline history leaks
+    Memcheck:Leak 
+    ...
+    fun:add_history
+}

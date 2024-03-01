@@ -103,6 +103,9 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 	bool single_quotes_open;
 	bool double_quotes_open;
 	char *tmp;
+	char *tmp2;
+	char *tmp3;
+	char *tmp4;
 
 	single_quotes_open = false;
 	double_quotes_open = false;
@@ -114,13 +117,25 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 			tmp = find_envvar_value("USER", mllcd);
 			if ((*input_str)[i + 1] == '\0' || is_space((*input_str)[i + 1]) || (*input_str)[i + 1] == '/')
 			{
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("HOME", mllcd)), ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1));
+				tmp2 = ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1);
+				tmp3 = find_envvar_value("HOME", mllcd);
+				tmp4 = ft_substr((*input_str), 0, i);
+				free(*input_str);
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(tmp4, tmp3), tmp2);
+				free(tmp2);
+				free(tmp3);
 				if (!(*input_str))
 					return ;
 			}
 			else if (((*input_str)[i + 1] == '+' || (*input_str)[i + 1] == '-'))
 			{
-				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), find_envvar_value("PWD", mllcd)), ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2));
+				tmp2 = ft_substr((*input_str), i + 2, ft_strlen((*input_str)) - i - 2);
+				tmp3 = find_envvar_value("PWD", mllcd);
+				tmp4 = ft_substr((*input_str), 0, i);
+				free(*input_str);
+				*input_str = ft_strjoin_w_free(ft_strjoin_w_free(tmp4, tmp3), tmp2);
+				free(tmp2);
+				free(tmp3);
 				if (!(*input_str))
 					return ;
 			}

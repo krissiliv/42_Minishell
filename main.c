@@ -18,6 +18,7 @@ static int put_space_before_special_operator(char **input_str)
 	int k;
 	bool single_quotes_open;
 	bool double_quotes_open;
+	char *temp;
 
 	i = 0;
 	k = 0;
@@ -34,8 +35,10 @@ static int put_space_before_special_operator(char **input_str)
 		{
 			if (i > 0 && !is_space((*input_str)[i - 1]))
 			{
-				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), " "), ft_substr((*input_str), i, ft_strlen((*input_str)) - i));
+				temp = ft_substr((*input_str), i, ft_strlen((*input_str)) - i);
+				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), " "), temp);
 				// printf("new input_str: %s\n", (*input_str));
+				free(temp);
 				if (!(*input_str))
 					return (1);
 			}
@@ -43,8 +46,10 @@ static int put_space_before_special_operator(char **input_str)
 			// printf("k = %d\n", k);
 			if ((*input_str)[i + 1] && !is_space((*input_str)[i + 1]))
 			{
-				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i + 1), " "), ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1));
+				temp = ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1);
+				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i + 1), " "), temp);
 				// printf("new input_str: %s\n", (*input_str));
+				free(temp);
 				if (!(*input_str))
 					return (1);
 			}
@@ -81,14 +86,17 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	int	temp;
 
 	exit_status = 0;
+	mllcd->saved_stdin = dup(0);
 	// char	*input_str;
 
 	// input_str = ft_strdup("echo -\"$SHELL-\"-"); //fill in stuff from EXTRA/input_parser_testing
 	// signals();
-	if (pre_check_input(input_str) || !input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
+	if (!input_str)
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
+	if (pre_check_input(input_str) || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
+		return (ft_putstr_fd("Error: Input is invalid.\n", 2), free(input_str), 1);
 	if (put_space_before_special_operator(&input_str) == 1)
-		return (1);
+		return (free(input_str), 1);
 
 	// if (expander(&input_str, mllcd))
 	// 	return (1);
@@ -97,6 +105,7 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	// remove_quotes_from_argv(&input_str); // not possible to put this here because then cmds like grep "ho < _test" do not work correctly
 
 	temp = cmdline_input_parser(&mllcd->in_pars, input_str);
+	free(input_str);
 	if (temp == 3)
 		return (1);
 	else
@@ -106,7 +115,6 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 		mllcd->exit_status = 2; // this is for syntax errors
 	if (exit_status)
 		return (1);
-	free(input_str);
 
 	expand_parsed_input(mllcd);
 	// printf("print m_argv again:\n");
@@ -114,7 +122,6 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	// while (i++ < mllcd->in_pars.m_argc)
 	//	 printf("m_argv[%d] = %s\n", i, mllcd->in_pars.m_argv[i]);
 
-	mllcd->saved_stdin = dup(0);
 	return (0);
 }
 
@@ -125,6 +132,7 @@ int main(int argc, char **argv, char **envv)
 	char	*input_str;
 
 	mllcd.exit_status = 0;
+	mllcd.saved_stdin = -1;
 	mllcd.env_list = NULL;
 	get_env(envv, &mllcd.env_list);
 	//prntlist(mllcd.env_list);
@@ -141,7 +149,11 @@ int main(int argc, char **argv, char **envv)
 			// free(line);
 		}
 		if (!input_str)
+		{
+			ft_lstclear(&mllcd.env_list);
+			// rl_clear_history();
 			exit(mllcd.exit_status);
+		}
 		if (g_sigint == SIGINT)
 		{
 			mllcd.exit_status = 130;

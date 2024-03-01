@@ -120,7 +120,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 
 	res = builtins_1(cmd, mllcd);
 	if (res != -1) // perror("builtins1"), 
-		return (res);
+		return (free_strstr(cmd), res);
 	pid = fork();
 	if (pid < 0)
 		return (ft_lstclear(&mllcd->env_list), free_strstr(cmd), ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
