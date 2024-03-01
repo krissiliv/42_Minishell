@@ -52,9 +52,9 @@ char *ft_remove_quotes(char *str)
 int	special_operator(char *str)
 {
 	if (ft_strncmp(str, "<<", 2) == 0)
-		return (2);
+		return (3);
 	else if (ft_strncmp(str, ">>", 2) == 0)
-		return (2);
+		return (3);
 	else if (ft_strncmp(str, "<", 1) == 0)
 		return (1);
 	else if (ft_strncmp(str, ">", 1) == 0)

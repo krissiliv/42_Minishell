@@ -92,5 +92,6 @@ typedef struct s_charlist
 void	prntlist_char(t_charlist *head);
 void	free_strstr(char **str);
 void	free_intarr(int **arr, int number);
+int		str_is_empty(char *str);
 
 #endif

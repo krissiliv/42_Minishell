@@ -40,11 +40,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
     {
         in = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1], O_RDONLY);
         if (in == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL)
-            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 2, &mllcd->pipex_m));
+            return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 2, &mllcd->pipex_m));
         if (in != -1 && dup2(in, 0) == -1) //the stdin will always be the in
         {
             close(in);
-            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
+            return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
         }
     }
 
@@ -52,11 +52,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
     {
 		out = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2], O_WRONLY | O_CREAT | O_TRUNC, 0777); // on the 2nd position of the last command there will always be what is interpreted as the outfile by the parser
 		if (out == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2] != NULL)
-			return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
+			return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
 		if (out != -1 && dup2(out, 1) == -1) //the stdout will always be the outfile
 		{
 			close(out);
-			return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
+			return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
 		}
 	}
 
@@ -75,26 +75,27 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	// ft_lstclear(&mllcd->env_list);
 	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
 	if (res != -1) // printf("res: %d\n", res), perror("builtins in pipes"), 
-		return (free_env_table(envv), res);
+		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), res);
 	
 	mllcd->pipex_m.cmdpath = find_cmd_path(mllcd->pipex_m.cmd[0], envv, &mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
 	{
 		// mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
 		free_env_table(envv);
+		free_strstr(mllcd->pipex_m.cmd);
 		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m));
 	}
 	if (access(mllcd->pipex_m.cmdpath, F_OK) != 0)
-		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m));
+		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m));
 	if (access(mllcd->pipex_m.cmdpath, F_OK) == 0 && \
 		access(mllcd->pipex_m.cmdpath, X_OK) != 0)
-		return (free_env_table(envv), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
+		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 126, &mllcd->pipex_m));
 
 	// printf("cmdpath: %s\n", mllcd->pipex_m.cmdpath);
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
-		return (free_env_table(envv), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m));
-	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
+		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 3, &mllcd->pipex_m));
+	return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), ft_putstr_fd("Something went wrong", 2), pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
 }
 
 int	child(int **pipe_ends, t_alloc *mllcd)

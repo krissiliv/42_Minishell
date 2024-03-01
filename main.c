@@ -95,9 +95,10 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
 	if (pre_check_input(input_str) || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), free(input_str), 1);
+	// printf("input_str: %s\n", input_str);
 	if (put_space_before_special_operator(&input_str) == 1)
 		return (free(input_str), 1);
-
+	// printf("input_str after put_space_before_special_operator: %s\n", input_str);
 	// if (expander(&input_str, mllcd))
 	// 	return (1);
 
@@ -160,9 +161,19 @@ int main(int argc, char **argv, char **envv)
 			g_sigint = 0;
 		}
 		if (preparing_minishell(&mllcd, input_str))
+		{
+			free_strstr(mllcd.in_pars.m_argv);
+			free_cmd_table(&mllcd.in_pars);
+			close(mllcd.saved_stdin);
 			continue;
-		if (!mllcd.in_pars.cmd_table[0][0])
+		}
+		if (str_is_empty(mllcd.in_pars.cmd_table[0][0]))
+		{
+			free_strstr(mllcd.in_pars.m_argv);
+			free_cmd_table(&mllcd.in_pars);
+			close(mllcd.saved_stdin);
 			continue;
+		}
 		// printf("pipenum: %d\n", mllcd.in_pars.pipenum);
 		// if (m./mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
 		//	 outredir_appendmode(&mllcd);

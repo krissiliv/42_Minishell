@@ -54,7 +54,9 @@ static int	check_exist_var(t_alloc *mllcd, char *input)
 		if (!compare_env_var(temp->env_var, input))
 		{
 			flag = 1;
-			temp->env_var = input;
+			if (temp->malloced)
+				free(temp->env_var);
+			temp->env_var = ft_strdup(input);
 		}
 		temp = temp->next;
 	}

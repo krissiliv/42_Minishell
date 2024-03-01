@@ -17,7 +17,7 @@ static int	validate_n_flag(char *flag)
 	int	i;
 
 	i = 1;
-	if (flag[0] == '-')
+	if (flag && flag[0] == '-')
 	{
 		if (!flag[1])
 			return (1);
