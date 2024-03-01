@@ -70,8 +70,7 @@ char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 		free(pipex_m->cmdpath);
 		pipex_m->cmdpath = NULL;
 	}
-	pipex_free_all(pipex_m, NULL);
 	if (access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
-	return (NULL);
+	return (pipex_free_all(pipex_m, NULL), NULL);
 }

@@ -64,13 +64,16 @@ int cd(char *path, int argc, t_alloc *mllcd)
     }
     else
     {
+		path = ft_strdup(path);
 		if (!ft_strcmp(path, "-"))
 		{
+			free(path);
 			path = find_envvar_value("OLDPWD", mllcd);
 			pwd();
 		}
         if (chdir(path) == -1)
-			return (cd_error_handler(mllcd, "chdir failed"), 1);
+			return (free(path), cd_error_handler(mllcd, "chdir failed"), 1);
+		free(path);
     }
 	update_pwds(&mllcd->env_list, "OLDPWD", mllcd);
 	update_pwds(&mllcd->env_list, "PWD", mllcd);

@@ -91,7 +91,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	envvar_value = find_envvar_value(envvar, mllcd);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
 	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + i - dsign - 1); // fill in rest of (*input_str)
-	free((*input_str));
+	free(*input_str);
 	*input_str = new_str;
 	i = ft_strlen(envvar_value);
 	return (free(envvar), free(envvar_value), i);
