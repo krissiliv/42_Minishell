@@ -133,6 +133,8 @@ int main(int argc, char **argv, char **envv)
 	char	*input_str;
 
 	mllcd.exit_status = 0;
+	mllcd.in_pars.m_argv = NULL;
+	mllcd.in_pars.cmd_table = NULL;
 	mllcd.saved_stdin = -1;
 	mllcd.env_list = NULL;
 	get_env(envv, &mllcd.env_list);
@@ -162,16 +164,12 @@ int main(int argc, char **argv, char **envv)
 		}
 		if (preparing_minishell(&mllcd, input_str))
 		{
-			free_strstr(mllcd.in_pars.m_argv);
-			free_cmd_table(&mllcd.in_pars);
-			close(mllcd.saved_stdin);
+			free_before_exit(&mllcd, false);
 			continue;
 		}
 		if (str_is_empty(mllcd.in_pars.cmd_table[0][0]))
 		{
-			free_strstr(mllcd.in_pars.m_argv);
-			free_cmd_table(&mllcd.in_pars);
-			close(mllcd.saved_stdin);
+			free_before_exit(&mllcd, false);
 			continue;
 		}
 		// printf("pipenum: %d\n", mllcd.in_pars.pipenum);
@@ -187,10 +185,8 @@ int main(int argc, char **argv, char **envv)
 			mllcd.exit_status = 130;
 			g_sigint = 0;
 		}
-		free_strstr(mllcd.in_pars.m_argv);
-		free_cmd_table(&mllcd.in_pars);
-		close(mllcd.saved_stdin);
+		free_before_exit(&mllcd, false);
 	}
-	free_before_exit(&mllcd); // this is the only thing that is not freedwhen pressing CTRL+C
+	free_before_exit(&mllcd, true); // this is the only thing that is not freedwhen pressing CTRL+C
 	return (mllcd.exit_status);
 }

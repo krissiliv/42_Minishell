@@ -75,15 +75,17 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
 		free_and_null((void *)pipex_m->poss_path);
 }
 
-void	free_before_exit(t_alloc *mllcd)
+void	free_before_exit(t_alloc *mllcd, bool end)
 {
-	if (mllcd->env_list)
-		ft_lstclear(&mllcd->env_list);
 	if (mllcd->in_pars.m_argv)
 		free_strstr(mllcd->in_pars.m_argv);
 	if (mllcd->in_pars.cmd_table)
 		free_cmd_table(&mllcd->in_pars);
-	if (mllcd->saved_stdin)
+	if (mllcd->saved_stdin != -1)
 		close(mllcd->saved_stdin);
+	if (end == false)
+		return ;
+	if (mllcd->env_list && end)
+		ft_lstclear(&mllcd->env_list);
 	clear_history();
 }

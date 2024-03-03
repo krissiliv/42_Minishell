@@ -86,7 +86,7 @@ int finish_heredocs(t_alloc *mllcd)
 	{
 		env_table = convert_linkedlst_to_table(mllcd);
 		cmdpath = find_cmd_path("rm", env_table, &mllcd->simple_cmd);
-		free_before_exit(mllcd);
+		free_before_exit(mllcd, true);
 		if (access("heredoc.tmp", F_OK) == 0)
 			execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
 		exit(0);

@@ -18,19 +18,10 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str) // init
 	int		j;
 	bool 	singlequote_open;
 	bool 	doublequote_open;
-	// char	**test_m_argv;
 
 	singlequote_open = false;
 	doublequote_open = false;
 	in_pars->pipenum = 0;
-	// test_m_argv = ft_split_w_quotes(input_str, ' '); // this is wrong as f.e. the cmd grep "ho" | < _test does not work in bash eigther
-	// if ((ft_strcmp(test_m_argv[0], "<") == 0 || 
-	// 	ft_strcmp(test_m_argv[0], ">") == 0) && 
-	// 	test_m_argv[2] && ft_strcmp(test_m_argv[2], "|") == 0) // If there is just "< infile" in front of the first pipe, then pipenum-- as the first pipe is not needed/counted
-	// 	in_pars->pipenum--;
-	// if (ft_strcmp(in_pars->input_str, ">") == 0 && ft_strcmp(in_pars->input_str, "|") != 0)
-	// 	in_pars->pipenum++;
-	// free_strstr(test_m_argv);
 	while (*input_str)
 	{
 		if (*input_str == '\"' && singlequote_open == false)
@@ -41,7 +32,6 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str) // init
 			in_pars->pipenum++;
 		input_str++;
 	}
-	//printf("true (needed) pipenum = %d\n", in_pars->pipenum); //first pipe excluded as "< infile | cat | wc -l > out" can be re-written as cat infile | wc -l > out
 	in_pars->m_argc = 0;
 	in_pars->m_argv = NULL;
 	in_pars->cmd_table = (char ***)malloc((in_pars->pipenum + 1) * 5 * sizeof(char *));  // in_pars->pipenum commands
@@ -98,14 +88,6 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 	{
 		if ((ft_strcmp(in_pars->m_argv[i], "<") == 0)) // && inside_qu(in_pars) == false)) // input redirection <
 			in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[++i]); // input file should not generally be in first position in a-s-t (abstract synax tree) - it should be on first position of the resp command that it belongs to as it should mimic shell
-		// else if (i == 1 && ft_strchr(in_pars->input_str, (int)'<') == NULL && ft_strcmp(in_pars->m_argv[1], "|") != 0) // no input redirection
-		// {
-		// 	//printf("%d", i); // ls > out   vs. cat infile | wc -l > out
-		// 	if (ft_strcmp(in_pars->m_argv[i], ">") == 0)
-		// 		in_pars->cmd_table[0][2] = ft_strdup(in_pars->m_argv[++i]);
-		// 	else
-		// 		in_pars->cmd_table[0][1] = ft_strdup(in_pars->m_argv[i]); // input file should be in first position in a-s-t (abstract synax tree)
-		// }
 		else if (ft_strcmp(in_pars->m_argv[i], ">") == 0) // && inside_qu(in_pars) == false) // output redirection >
 			in_pars->cmd_table[curr_cmdnum][2] = ft_strdup(in_pars->m_argv[++i]); // output file should not generally be in last position in a-s-t (abstract synax tree) - it should be on last position of the resp command that it belongs to as it should mimic shell
 		else if (ft_strncmp(in_pars->m_argv[i], "<<", 2) == 0) // input reading until delimiter
@@ -163,9 +145,8 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	
 	in_pars->input_str = input_str;
 	init_input_parser(in_pars, input_str);
-	in_pars->m_argc = count_words(input_str, ' ');
-	//printf("m_argc = %d\n", m_argc);
-	in_pars->m_argv = ft_split_w_quotes(input_str, ' ');
+	in_pars->m_argc = count_words(input_str, ' '); //argc is created
+	in_pars->m_argv = ft_split_w_quotes(input_str, ' '); //argv is created
 
 	exit_status = syntax_checker(in_pars->m_argv, in_pars->m_argc);
 	if (exit_status != 0)

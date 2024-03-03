@@ -40,11 +40,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
     {
         in = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1], O_RDONLY);
         if (in == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL)
-            return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 2, &mllcd->pipex_m));
+            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 2, &mllcd->pipex_m));
         if (in != -1 && dup2(in, 0) == -1) //the stdin will always be the in
         {
             close(in);
-            return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
+            return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
         }
     }
 
@@ -52,11 +52,11 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
     {
 		out = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2], O_WRONLY | O_CREAT | O_TRUNC, 0777); // on the 2nd position of the last command there will always be what is interpreted as the outfile by the parser
 		if (out == -1 && mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2] != NULL)
-			return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
+			return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 10, &mllcd->pipex_m));
 		if (out != -1 && dup2(out, 1) == -1) //the stdout will always be the outfile
 		{
 			close(out);
-			return (free_strstr(mllcd->pipex_m.cmd), pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
+			return (pipex_error_handling(NULL, mllcd->pipex_m.pipenum, 4, &mllcd->pipex_m));
 		}
 	}
 
@@ -82,7 +82,6 @@ static int	execute(int **pipe_ends, t_alloc *mllcd)
 	{
 		// mllcd->pipex_m.cmdpath = mllcd->pipex_m.cmd[0];
 		free_env_table(envv);
-		free_strstr(mllcd->pipex_m.cmd);
 		return (pipex_error_handling(pipe_ends, mllcd->pipex_m.cmdnum, 127, &mllcd->pipex_m));
 	}
 	if (access(mllcd->pipex_m.cmdpath, F_OK) != 0)
@@ -149,7 +148,7 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 	if (cmd_file != -1)
 		close(cmd_file);
 	i = execute(pipe_ends, mllcd);
-	free_before_exit(mllcd);
+	free_before_exit(mllcd, true);
 	exit(i);
 }
 // when you call the pipe syscall like pipe(array), then array[0] is for reading and array[1] is for writing.
@@ -196,7 +195,7 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 	if (outfile != -1)
 		close(outfile);
 	i = execute(pipe_ends, mllcd);
-	free_before_exit(mllcd);
+	free_before_exit(mllcd, true);
 	exit(i);
 }
 

@@ -17,7 +17,7 @@ static void	exit_program(t_alloc *mllcd)
 {
 	// ft_putstr_fd("exit\n", 1);  //JUST FOR TESTER, need to add it for submission
 	// close all fds;
-	free_before_exit(mllcd);
+	free_before_exit(mllcd, true);
 	exit(mllcd->exit_status);
 }
 
