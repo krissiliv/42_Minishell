@@ -57,6 +57,7 @@ static int	check_exist_var(t_alloc *mllcd, char *input)
 			if (temp->malloced)
 				free(temp->env_var);
 			temp->env_var = ft_strdup(input);
+			temp->malloced = true;
 		}
 		temp = temp->next;
 	}
