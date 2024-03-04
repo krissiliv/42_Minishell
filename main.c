@@ -19,6 +19,7 @@ static int put_space_before_special_operator(char **input_str)
 	bool single_quotes_open;
 	bool double_quotes_open;
 	char *temp;
+	char *temp2;
 
 	i = 0;
 	k = 0;
@@ -36,7 +37,9 @@ static int put_space_before_special_operator(char **input_str)
 			if (i > 0 && !is_space((*input_str)[i - 1]))
 			{
 				temp = ft_substr((*input_str), i, ft_strlen((*input_str)) - i);
-				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i), " "), temp);
+				temp2 = ft_substr((*input_str), 0, i);
+				free(*input_str);
+				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(temp2, " "), temp);
 				// printf("new input_str: %s\n", (*input_str));
 				free(temp);
 				if (!(*input_str))
@@ -47,7 +50,9 @@ static int put_space_before_special_operator(char **input_str)
 			if ((*input_str)[i + 1] && !is_space((*input_str)[i + 1]))
 			{
 				temp = ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1);
-				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(ft_substr((*input_str), 0, i + 1), " "), temp);
+				temp2 = ft_substr((*input_str), 0, i + 1);
+				free(*input_str);
+				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(temp2, " "), temp);
 				// printf("new input_str: %s\n", (*input_str));
 				free(temp);
 				if (!(*input_str))
