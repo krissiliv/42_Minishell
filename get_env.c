@@ -12,6 +12,35 @@
 
 #include "minishell.h"
 
+int	adapt_shlvl(t_alloc *mllcd)
+{
+	t_env	*temp;
+	char 	*temp2;
+
+	temp = mllcd->env_list;
+	while (temp)
+	{
+		temp = temp->next;
+		if (ft_strncmp(temp->env_var, "SHLVL=", 6) == 0)
+		{
+			// if (ft_atoi(temp->env_var + 6) > 1000)  can save the plase bc we will never get to that level
+			// {
+			// 	ft_putstr_fd("Error: Recursion level too deep.\n", 2);
+			// 	return (1);
+			// }
+			// printf("SHLVL: %s\n", temp->env_var);
+			temp2 = ft_itoa(ft_atoi(temp->env_var + 6) + 1);
+			temp->env_var = ft_strjoin("SHLVL=", temp2);
+			temp->malloced = true;
+			free(temp2);
+			// printf("new SHLVL: %s\n", temp->env_var);
+			break ;
+		}
+		temp = temp->next;
+	}
+	return (0);
+}
+
 int	get_env(char **envv, t_env **head)
 {
 	int		i;

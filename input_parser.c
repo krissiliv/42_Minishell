@@ -141,7 +141,7 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	int exit_status;
 
 	if (!input_str || ft_strlen(input_str) == 0)
-		return (ft_putstr_fd("Error: Input parser did nnnnot receive input.\n", 2), 1);
+		return (ft_putstr_fd("Error: Input parser did not receive input.\n", 2), 1);
 	
 	in_pars->input_str = input_str;
 	init_input_parser(in_pars, input_str);

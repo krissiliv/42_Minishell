@@ -103,7 +103,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 
 	init_simple_cmd(&mllcd->simple_cmd);
 	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
-	if (!cmd)
+	if (!cmd || !cmd[0])
 		return (1);
 	c = 0; // now remove "" from everywhere
 	while (cmd[c] && c < 6)

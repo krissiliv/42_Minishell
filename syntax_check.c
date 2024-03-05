@@ -34,11 +34,10 @@ int syntax_checker(char **m_argv, int m_argc) // syntax errror is always bash(2)
 	return (0);  // next step: 
 }
 
-
 int  pre_check_input(char *input_str)
 {
 	int i;
-	int check_only_spaces;
+	bool check_only_spaces_ops;
 
 	// printf("input_str: %s has length %zu\n", input_str, ft_strlen(input_str));
 	if (!input_str || ft_strlen(input_str) == 0)
@@ -47,13 +46,13 @@ int  pre_check_input(char *input_str)
 		return (1);
 	}
 	i = 0;
-	check_only_spaces = 1;
+	check_only_spaces_ops = true;
 	while (input_str[i])
 	{
-		if (!is_space(input_str[i++]))
-			check_only_spaces = 0;
+		if (!is_space(input_str[i++]) || special_operator(input_str + i) == -1)
+			check_only_spaces_ops = false;
 	}
-	if (check_only_spaces)
+	if (check_only_spaces_ops)
 		return (1);
 	return (0);
 }

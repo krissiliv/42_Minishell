@@ -37,6 +37,7 @@ void	free_cmd_table(t_input_parsing *in_pars) //parsing
 			i++;
 		}
 		free_and_null((void *)in_pars->cmd_table);
+		in_pars->cmd_table = NULL;
 	}
 }
 
@@ -78,14 +79,23 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
 void	free_before_exit(t_alloc *mllcd, bool end)
 {
 	if (mllcd->in_pars.m_argv)
+	{
 		free_strstr(mllcd->in_pars.m_argv);
+		mllcd->in_pars.m_argv = NULL;
+	}
 	if (mllcd->in_pars.cmd_table)
+	{
 		free_cmd_table(&mllcd->in_pars);
+		mllcd->in_pars.cmd_table = NULL;
+	}
 	if (mllcd->saved_stdin != -1)
 		close(mllcd->saved_stdin);
 	if (end == false)
 		return ;
 	if (mllcd->env_list && end)
+	{
 		ft_lstclear(&mllcd->env_list);
+		mllcd->env_list = NULL;
+	}
 	clear_history();
 }

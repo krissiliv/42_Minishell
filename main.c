@@ -143,6 +143,7 @@ int main(int argc, char **argv, char **envv)
 	mllcd.saved_stdin = -1;
 	mllcd.env_list = NULL;
 	get_env(envv, &mllcd.env_list);
+	adapt_shlvl(&mllcd);
 	//prntlist(mllcd.env_list);
 	while (1)
 	{

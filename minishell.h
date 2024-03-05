@@ -89,11 +89,11 @@ int		builtins_all(char **cmd, t_alloc *mllcd);
 
 // NASTYA
 //store environment
+int		adapt_shlvl(t_alloc *mllcd);
 int		get_env(char **envv, t_env **head);
 void	ft_lstclear(t_env **env_list);
 char	**convert_linkedlst_to_table(t_alloc *mllcd);
 void	free_env_table(char **envv);
-void 	prntlist(t_env *head);
 
 //built-ins:
 int		echo(char *cmd[]);
