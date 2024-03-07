@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/03/01 16:07:33 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:29:29 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,31 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 	char	*cur_cwd;
 	
 	temp = *env_list;
-	while (*env_list)
+	while (temp)
 	{
-		if (!ft_strncmp((*env_list)->env_var, pwd_var, ft_strlen(pwd_var)))
+		if (!ft_strncmp(temp->env_var, pwd_var, ft_strlen(pwd_var)))
 		{
 			if (!ft_strcmp(pwd_var, "OLDPWD"))
 			{
 				cur_cwd = find_envvar_value("PWD", mllcd);
-				(*env_list)->env_var = ft_strjoin("OLDPWD=", cur_cwd);
+				temp->env_var = ft_strjoin("OLDPWD=", cur_cwd);
 				free(cur_cwd);
-				if (!(*env_list)->env_var)
+				if (!temp->env_var)
 					return (1);
-				(*env_list)->malloced = true;
+				temp->malloced = true;
 			}
 			else if (!ft_strcmp(pwd_var, "PWD"))
 			{
 				cur_cwd = getcwd(NULL, 1024);
-				(*env_list)->env_var = ft_strjoin("PWD=", cur_cwd);
+				temp->env_var = ft_strjoin("PWD=", cur_cwd);
 				free(cur_cwd);
-				if (!(*env_list)->env_var)
+				if (!temp->env_var)
 					return (1);
-				(*env_list)->malloced = true;
+				temp->malloced = true;
 			}
 		}
-		*env_list = (*env_list)->next;
+		temp = temp->next;
 	}
-	*env_list = temp;
 	return (0);
 }
 
