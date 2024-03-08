@@ -28,18 +28,26 @@ char *ft_remove_quotes(char *str)
 		if (str[i] == '\"' && (!single_quotes_open || double_quotes_open))
 		{
 			tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+			if (!tmp)
+				return (free(str), NULL);
 			new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
 			free(str);
 			free(tmp);
+			if (!new)
+				return (NULL);
 			str = new;
 			double_quotes_open = !double_quotes_open;
 		}
 		else if (str[i] == '\'' && (!double_quotes_open || single_quotes_open))
 		{
 			tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+			if (!tmp)
+				return (free(str), NULL);
 			new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
 			free(str);
 			free(tmp);
+			if (!new)
+				return (NULL);
 			str = new;
 			single_quotes_open = !single_quotes_open;
 		}
@@ -52,9 +60,9 @@ char *ft_remove_quotes(char *str)
 int	special_operator(char *str)
 {
 	if (ft_strncmp(str, "<<", 2) == 0)
-		return (3);
+		return (2);
 	else if (ft_strncmp(str, ">>", 2) == 0)
-		return (3);
+		return (2);
 	else if (ft_strncmp(str, "<", 1) == 0)
 		return (1);
 	else if (ft_strncmp(str, ">", 1) == 0)
@@ -72,7 +80,7 @@ char	*ft_strjoin_w_free(char *s1, char *s2)
 
 	new = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!new)
-		return (NULL);
+		return (free(s1), NULL);
 	k = 0;
 	while (s1[k])
 	{

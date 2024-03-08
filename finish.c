@@ -97,5 +97,14 @@ void	free_before_exit(t_alloc *mllcd, bool end)
 		ft_lstclear(&mllcd->env_list);
 		mllcd->env_list = NULL;
 	}
-	clear_history();
+	rl_clear_history();
+}
+
+void	exit_mllcfail(t_alloc *mllcd)
+{
+	int i;
+
+	i = mllcd->exit_status;
+	free_before_exit(mllcd, true);
+	exit(i);
 }

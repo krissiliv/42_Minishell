@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	init_input_parser(t_input_parsing *in_pars, char *input_str) // initializing cmd table and pipenum
+static int	init_input_parser(t_input_parsing *in_pars, char *input_str) // initializing cmd table and pipenum
 {
 	int		i;
 	int		j;
@@ -35,10 +35,14 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str) // init
 	in_pars->m_argc = 0;
 	in_pars->m_argv = NULL;
 	in_pars->cmd_table = (char ***)malloc((in_pars->pipenum + 1) * 5 * sizeof(char *));  // in_pars->pipenum commands
+	if (in_pars->cmd_table == NULL)
+		return (1);
 	i = 0;
 	while (i <= in_pars->pipenum) // just these strings for testing
 	{
 		in_pars->cmd_table[i] = (char **)malloc(5 * sizeof(char *));
+		if (in_pars->cmd_table[i] == NULL)
+			return (1);
 		j = 0;
 		while (j <= 4)
 			in_pars->cmd_table[i][j++] = NULL;
@@ -47,29 +51,54 @@ static void	init_input_parser(t_input_parsing *in_pars, char *input_str) // init
 	in_pars->cmd_table[i] = NULL;
 	in_pars->doublequote_open = false;
 	in_pars->singlequote_open = false;
+	return (0);
 }
 
 static int	look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, int curr_cmdnum, int i)
 {
+	char *temp;
+
+	// printf("m_argv[%d] = %s\n", i, in_pars->m_argv[i]);
 	if (in_pars->cmd_table[curr_cmdnum][0] == NULL)
 	{
 		in_pars->cmd_table[curr_cmdnum][0] = ft_strdup(in_pars->m_argv[i]);
+		if (!in_pars->cmd_table[curr_cmdnum][0])
+			return (-1);
 		if (in_pars->m_argv[i + 1] && in_pars->m_argv[i + 1][0] == '-' && ft_strlen(in_pars->m_argv[i]) > 1)
 		{
-			in_pars->cmd_table[curr_cmdnum][0] = ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], " ");
-			in_pars->cmd_table[curr_cmdnum][0] = ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], in_pars->m_argv[++i]);
+			temp = ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], " ");
+			if (!temp)
+				return (-1);
+			in_pars->cmd_table[curr_cmdnum][0] = ft_strjoin_w_free(temp, in_pars->m_argv[++i]);
+			if (!in_pars->cmd_table[curr_cmdnum][0])
+				return (-1);
 		}
 	}
 	else if (in_pars->m_argv[i] && special_operator(in_pars->m_argv[i]) == -1)
 	{
 		while (in_pars->m_argv[i] && special_operator(in_pars->m_argv[i]) == -1)
-			in_pars->cmd_table[curr_cmdnum][0] = ft_strjoin_w_free(ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], " "), in_pars->m_argv[i++]);
+		{
+			temp = ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], " ");
+			if (!temp)
+				return (-1);
+			in_pars->cmd_table[curr_cmdnum][0] = ft_strjoin_w_free(temp, in_pars->m_argv[i++]);
+			if (!in_pars->cmd_table[curr_cmdnum][0])
+				return (-1);
+		}
 		i--; // bc argv[i] was not processed yet
 	}
 	else if (in_pars->cmd_table[curr_cmdnum][1] == NULL)
+	{
 		in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[i]);
+		if (!in_pars->cmd_table[curr_cmdnum][1])
+			return (-1);
+	}
 	else if (in_pars->cmd_table[curr_cmdnum][2] == NULL)
+	{
 		in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[i]);
+		if (!in_pars->cmd_table[curr_cmdnum][1])
+			return (-1);
+	}
 	else
 		return (ft_putstr_fd("Error: too many arguments\n", 2), -1);
 	return (i);
@@ -117,7 +146,7 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 	return (0);  // next step: 
 }
 
-static void 	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
+static int 	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
 {
 	int i;
 	int j;
@@ -129,11 +158,16 @@ static void 	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
 		while (j <= 4)
 		{
 			if (in_pars->cmd_table[i][j])
+			{
 				in_pars->cmd_table[i][j] = ft_remove_quotes(in_pars->cmd_table[i][j]);
+				if (!in_pars->cmd_table[i][j])
+					return (1);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (0);
 }
 
 int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
@@ -144,10 +178,12 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 		return (ft_putstr_fd("Error: Input parser did not receive input.\n", 2), 1);
 	
 	in_pars->input_str = input_str;
-	init_input_parser(in_pars, input_str);
+	if (init_input_parser(in_pars, input_str)) // returns 1 if malloc fails
+		return (-1);
 	in_pars->m_argc = count_words(input_str, ' '); //argc is created
 	in_pars->m_argv = ft_split_w_quotes(input_str, ' '); //argv is created
-
+	if (in_pars->m_argv == NULL)
+		return (-1);
 	exit_status = syntax_checker(in_pars->m_argv, in_pars->m_argc);
 	if (exit_status != 0)
 		return (exit_status); // will always be = 2, which is syntax error
@@ -161,7 +197,8 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	if (processing_read(in_pars))
 		return (1);
 
-	remove_quotes_from_cmd_table(in_pars);
+	if (remove_quotes_from_cmd_table(in_pars)) // returns 1 if malloc fails
+		return (-1);
 	
 	if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
 		return (3);

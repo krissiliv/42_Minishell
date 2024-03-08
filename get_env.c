@@ -20,7 +20,6 @@ int	adapt_shlvl(t_alloc *mllcd)
 	temp = mllcd->env_list;
 	while (temp)
 	{
-		temp = temp->next;
 		if (ft_strncmp(temp->env_var, "SHLVL=", 6) == 0)
 		{
 			// if (ft_atoi(temp->env_var + 6) > 1000)  can save the plase bc we will never get to that level
@@ -30,9 +29,13 @@ int	adapt_shlvl(t_alloc *mllcd)
 			// }
 			// printf("SHLVL: %s\n", temp->env_var);
 			temp2 = ft_itoa(ft_atoi(temp->env_var + 6) + 1);
+			if (temp2 == NULL)
+				return (1);
 			temp->env_var = ft_strjoin("SHLVL=", temp2);
-			temp->malloced = true;
 			free(temp2);
+			temp->malloced = true;
+			if (temp->env_var == NULL)
+				return (1);
 			// printf("new SHLVL: %s\n", temp->env_var);
 			break ;
 		}
@@ -50,6 +53,8 @@ int	get_env(char **envv, t_env **head)
 	if (!envv[i] && *head)
 		free(*head);
 	*head = (t_env *)malloc(sizeof(t_env));
+	if (*head == NULL)
+		return (1);
 	temp = *head;
 	while (envv[i])
 	{
@@ -101,12 +106,19 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 		i++;
 	}
 	env_table = (char **)malloc((i + 1) * sizeof(char *));
+	if (env_table == NULL)
+		return (NULL);
 	// printf("%d\n", i);
     pos = mllcd->env_list;
 	i = 0;
     while (pos != NULL)
     {
 		env_table[i] = ft_strdup(pos->env_var);
+		if (env_table[i] == NULL)
+		{
+			free_env_table(env_table);
+			return (NULL);
+		}
 		pos = pos->next;
 		i++;
 	}
@@ -119,6 +131,8 @@ void	free_env_table(char **envv_table)
 	int		i;
 
 	i = 0;
+	if (envv_table == NULL)
+		return ;
     while (envv_table[i] != NULL)
 		free_and_null(envv_table[i++]);
 	free_and_null(envv_table);

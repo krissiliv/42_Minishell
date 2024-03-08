@@ -33,12 +33,18 @@ static char	**translated_pathsign(char *cmd)
 	if (cmd[0] == '.')
 	{
 		paths = (char **)malloc(1 * sizeof(char *));
+		if (!paths)
+			return (NULL);
 		paths[0] = NULL; //file is in current dir
 	}
 	else
 	{
 		paths = (char **)malloc(2 * sizeof(char *));
+		if (!paths)
+			return (NULL);
 		paths[0] = ft_strdup("/");
+		if (!paths[0])
+			return (free(paths), NULL);
 		paths[1] = NULL;
 	}
 	return (paths);
@@ -53,7 +59,7 @@ char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 		pipex_m->poss_paths = translated_pathsign(cmd);
 	else
 		pipex_m->poss_paths = get_cmd_paths(envv);
-	if (!pipex_m->poss_paths)
+	if (!pipex_m->poss_paths) // malloc protection of above lines
 		return (pipex_free_all(pipex_m, NULL), NULL);
 	while (pipex_m->poss_paths[i])
 	{

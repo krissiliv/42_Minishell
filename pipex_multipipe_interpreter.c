@@ -42,10 +42,14 @@ int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv)
 
     mllcd->pipex_m.pipenum = mllcd->in_pars.pipenum;
 	pipe_ends = (int **)malloc(2 * mllcd->pipex_m.pipenum * sizeof(int)); //2 pipe ends per pipe
+	if (!pipe_ends)  //correct??
+		return (pipex_error_handling(NULL, 0, 9, NULL));
 	i = 0;
 	while (i < mllcd->pipex_m.pipenum)
 	{
 		pipe_ends[i] = (int *)malloc(2 * sizeof(int));
+		if (!pipe_ends[i])
+			return (pipex_error_handling(pipe_ends, i, 9, NULL));
 		i++;
 	}
 	// if (argc != 5 || (argc == 5 && !(argv[1][0])))

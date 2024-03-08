@@ -18,8 +18,10 @@ int	pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m 
 	{
 		while (pipenum >= 0)
 		{
-			close (pipe_ends[pipenum][0]);
-			close (pipe_ends[pipenum][1]);
+			if (pipe_ends[pipenum] && pipe_ends[pipenum][0] != -1)
+				close (pipe_ends[pipenum][0]);
+			if (pipe_ends[pipenum] && pipe_ends[pipenum][1] != -1)
+				close (pipe_ends[pipenum][1]);
 			pipenum--;
 		}
 		free(pipe_ends);

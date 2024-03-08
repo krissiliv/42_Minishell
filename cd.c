@@ -31,6 +31,8 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 			if (!ft_strcmp(pwd_var, "OLDPWD"))
 			{
 				cur_cwd = find_envvar_value("PWD", mllcd);
+				if (temp->malloced)
+					free(temp->env_var);
 				temp->env_var = ft_strjoin("OLDPWD=", cur_cwd);
 				free(cur_cwd);
 				if (!temp->env_var)
@@ -40,6 +42,8 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 			else if (!ft_strcmp(pwd_var, "PWD"))
 			{
 				cur_cwd = getcwd(NULL, 1024);
+				if (temp->malloced)
+					free(temp->env_var);
 				temp->env_var = ft_strjoin("PWD=", cur_cwd);
 				free(cur_cwd);
 				if (!temp->env_var)

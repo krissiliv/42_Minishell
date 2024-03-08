@@ -20,6 +20,11 @@ t_env	*ft_new_node(char *input)
 	if (!new_node)
 		return (NULL);
 	new_node->env_var = ft_strdup(input);
+	if (!new_node->env_var)
+	{
+		free(new_node);
+		return (NULL);
+	}
 	new_node->malloced = true;
 	new_node->next = NULL;
 	return (new_node);

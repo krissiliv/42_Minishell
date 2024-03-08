@@ -55,6 +55,8 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 		return (ft_itoa(mllcd->exit_status));
     pos = mllcd->env_list;
 	envvar_w_equalsign = ft_strjoin(envvar, "=");
+	if (!envvar_w_equalsign)
+		return (NULL);
 	len = ft_strlen(envvar_w_equalsign);
 	// printf("envvar_w_equalsign = %s\n", envvar_w_equalsign);
     while (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) != 0)
@@ -76,22 +78,34 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	if ((*input_str)[dsign + 1] == '\"' || (*input_str)[dsign + 1] == '\'')
 	{
 		new_str = ft_substr((*input_str), 0, dsign);
+		if (!new_str)
+			return (free((*input_str)), -1);
 		new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1);
 		free((*input_str));
+		if (!new_str)
+			return (-1);
 		*input_str = new_str;
 		// printf("in replace_dsign: input_str = %s\n", *input_str);
 		return (1);
 	}	
 	// here it is already clear that there is sth after the $ (not a blankspace)
 	new_str = ft_substr((*input_str), 0, dsign); // fill in new_str with everything before $ variable
+	if (!new_str)
+		return (free(*input_str), -1);
 	i = dsign + 1;
 	while ((*input_str)[i] && (ft_isalnum((*input_str)[i]) || (*input_str)[i] == '_' || (*input_str)[i] == '?')) //determine envvar size
 		i++;
 	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1); // fill in envvar with $ variable
 	envvar_value = find_envvar_value(envvar, mllcd);
+	if (!envvar_value)
+		return (free(envvar), free(*input_str), -1);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
+	if (!new_str)
+		return (free(envvar), free(envvar_value), free(*input_str), -1);
 	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + i - dsign - 1); // fill in rest of (*input_str)
 	free(*input_str);
+	if (!new_str)
+		return (free(envvar), free(envvar_value), -1);
 	*input_str = new_str;
 	i = ft_strlen(envvar_value);
 	return (free(envvar), free(envvar_value), i);
@@ -170,7 +184,11 @@ int expander(char **input_str, t_alloc *mllcd)
 	{
 		dsign = find_dollar_sign((*input_str), i); // only those $ with no blankspace righ after will be found, as echo $ simply outputs $
 		if (dsign != -1)
+		{
 			i += replace_dollar_sign(input_str, dsign, mllcd);
+			if (i == -1)
+				return (1);
+		}
 		else
 			i++; // go on looking from this spot on to find next $ and replace it
 	}

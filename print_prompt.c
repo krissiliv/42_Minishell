@@ -18,6 +18,10 @@ char *read_input_print_prompt(void)
     
 	signals(1);
     line = readline("~/minishell> ");
+    if (!line)
+    {
+        return (NULL);
+    }
 	signals(2);
     add_history(line);
     return (line);

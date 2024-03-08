@@ -37,8 +37,12 @@ static int put_space_before_special_operator(char **input_str)
 			if (i > 0 && !is_space((*input_str)[i - 1]))
 			{
 				temp = ft_substr((*input_str), i, ft_strlen((*input_str)) - i);
+				if (!temp)
+					return (free(*input_str), -1);
 				temp2 = ft_substr((*input_str), 0, i);
 				free(*input_str);
+				if (!temp2)
+					return (free(temp), -1);
 				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(temp2, " "), temp);
 				// printf("new input_str: %s\n", (*input_str));
 				free(temp);
@@ -50,8 +54,12 @@ static int put_space_before_special_operator(char **input_str)
 			if ((*input_str)[i + 1] && !is_space((*input_str)[i + 1]))
 			{
 				temp = ft_substr((*input_str), i + 1, ft_strlen((*input_str)) - i - 1);
+				if (!temp)
+					return (free(*input_str), -1);
 				temp2 = ft_substr((*input_str), 0, i + 1);
 				free(*input_str);
+				if (!temp2)
+					return (free(temp), -1);
 				(*input_str) = ft_strjoin_w_free(ft_strjoin_w_free(temp2, " "), temp);
 				// printf("new input_str: %s\n", (*input_str));
 				free(temp);
@@ -78,7 +86,10 @@ static void expand_parsed_input(t_alloc *mllcd)
 		while (j <= 4)
 		{	
 			if (mllcd->in_pars.cmd_table[i][j])
-				expander(&(mllcd->in_pars.cmd_table[i][j]), mllcd);
+			{
+				if(expander(&(mllcd->in_pars.cmd_table[i][j]), mllcd))
+					exit_mllcfail(mllcd);
+			}
 			j++;
 		}
 		i++;
@@ -101,8 +112,11 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	if (pre_check_input(input_str) || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), free(input_str), 1);
 	// printf("input_str: %s\n", input_str);
-	if (put_space_before_special_operator(&input_str) == 1)
+	temp = put_space_before_special_operator(&input_str);
+	if (temp == 1)
 		return (free(input_str), 1);
+	if (temp == -1)
+		exit_mllcfail(mllcd);
 	// printf("input_str after put_space_before_special_operator: %s\n", input_str);
 	// if (expander(&input_str, mllcd))
 	// 	return (1);
@@ -112,6 +126,8 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 
 	temp = cmdline_input_parser(&mllcd->in_pars, input_str);
 	free(input_str);
+	if (temp == -1)
+		exit_mllcfail(mllcd);
 	if (temp == 3)
 		return (1);
 	else
@@ -142,25 +158,31 @@ int main(int argc, char **argv, char **envv)
 	mllcd.in_pars.cmd_table = NULL;
 	mllcd.saved_stdin = -1;
 	mllcd.env_list = NULL;
-	get_env(envv, &mllcd.env_list);
-	adapt_shlvl(&mllcd);
+	if (get_env(envv, &mllcd.env_list) || adapt_shlvl(&mllcd))
+	{
+		ft_lstclear(&mllcd.env_list);
+		exit(1);
+	}
 	//prntlist(mllcd.env_list);
 	while (1)
 	{
-		// input_str = ft_strdup("cat <_testfile|wc -l");;
+		// input_str = ft_strdup("cat <_testfile|wc -l");
+		// input_str = read_input_print_prompt();
 		if (isatty(fileno(stdin)))
 			input_str = read_input_print_prompt();
 		else
 		{
 			char *line;
 			line = get_next_line(fileno(stdin));
+			if (!line)
+				exit_mllcfail(&mllcd);
 			input_str = ft_strtrim(line, "\n");
 			// free(line);
 		}
 		if (!input_str)
 		{
 			ft_lstclear(&mllcd.env_list);
-			// rl_clear_history();
+			rl_clear_history();
 			exit(mllcd.exit_status);
 		}
 		if (g_sigint == SIGINT)

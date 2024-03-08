@@ -86,6 +86,8 @@ char	**ft_split_w_quotes(char const *s, char c)
 	quotes.single_quotes_open = false;
 	quotes.double_quotes_open = false;
 	hst = (t_mystruct *)malloc(sizeof(t_mystruct));
+	if (!hst)
+		return (NULL);
 	words = (char **)malloc((count_words((char *)s, c) + 1) * sizeof(char *));
 	if (freeing_choice_struct(words, hst) == NULL)
 		return (NULL);

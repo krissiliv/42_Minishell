@@ -85,13 +85,18 @@ int finish_heredocs(t_alloc *mllcd)
 	if (i == 0) // child
 	{
 		env_table = convert_linkedlst_to_table(mllcd);
+		if (!env_table)
+			exit_mllcfail(mllcd);
 		cmdpath = find_cmd_path("rm", env_table, &mllcd->simple_cmd);
+		if (!cmdpath)
+			exit_mllcfail(mllcd);
 		free_before_exit(mllcd, true);
 		if (access("heredoc.tmp", F_OK) == 0)
 			execve(cmdpath, (char *[]){"rm", "heredoc.tmp", NULL}, env_table);
 		exit(0);
 	}
-	waitpid(i, &child_status, 0);
+	if (waitpid(i, &child_status, 0) == -1)
+		exit_mllcfail(mllcd);
 	return (0);
 }
 

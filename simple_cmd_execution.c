@@ -69,20 +69,14 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 	char	**envv;
 	int		res;
 
-	/* if (simple_execute_interpreter(mllcd, &cmd))
-		return (ft_lstclear(&mllcd->env_list), 1); */
-	envv = convert_linkedlst_to_table(mllcd);
 	res = builtins_2(cmd, mllcd);
 	if (res != -1) // perror("builtins2"), 
-		return (free_env_table(envv), res);
+		return (res);
 
+	envv = convert_linkedlst_to_table(mllcd);
 	cmdpath = find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
-	{
-		// cmdpath = cmd[0]; //try if this command is right here in the current directory
-		free_env_table(envv);
-		return (ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
-	}
+		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
 	//printf("cmdpath = %s\n", cmdpath);
 	if (access(cmdpath, F_OK) != 0 || !ft_strcmp(cmd[0], ".") || !ft_strcmp(cmd[0], ".."))
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
@@ -104,11 +98,19 @@ int	run_simple_cmd(t_alloc *mllcd)
 	init_simple_cmd(&mllcd->simple_cmd);
 	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
 	if (!cmd || !cmd[0])
-		return (1);
+	{
+		free_strstr(cmd);
+		exit_mllcfail(mllcd);
+	}
 	c = 0; // now remove "" from everywhere
 	while (cmd[c] && c < 6)
 	{
 		cmd[c] = ft_remove_quotes(cmd[c]);
+		if (!cmd[c])
+		{
+			free_strstr(cmd);
+			exit_mllcfail(mllcd);
+		}
 		c++;
 	}
 
@@ -141,14 +143,18 @@ int	run_simple_cmd(t_alloc *mllcd)
 		// break ; //should break the loop in order to prevent child process from building pther processes
 		exit(mllcd->exit_status);
 	}
-	waitpid(pid, &mllcd->simple_cmd.compil_res, 0);
+	if (waitpid(pid, &mllcd->simple_cmd.compil_res, 0) == -1)
+	{
+		free_strstr(cmd);
+		exit_mllcfail(mllcd);
+	}
 	/* if (WIFSIGNALED(mllcd->simple_cmd.compil_res))
 	{
 		mllcd->exit_status = WTERMSIG(mllcd->simple_cmd.compil_res);
 		printf("exit status from ctrl c%d\n", mllcd->exit_status);
 	}
 	else */
-		mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
+	mllcd->exit_status = WEXITSTATUS(mllcd->simple_cmd.compil_res);
 	return (free_strstr(cmd), mllcd->exit_status);
 }
 
