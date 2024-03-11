@@ -103,6 +103,11 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 
 	exit_status = 0;
 	mllcd->saved_stdin = dup(0);
+	if (mllcd->saved_stdin == -1)
+	{
+		free(input_str);
+		exit_mllcfail(mllcd);
+	}
 	// char	*input_str;
 
 	// input_str = ft_strdup("echo -\"$SHELL-\"-"); //fill in stuff from EXTRA/input_parser_testing
@@ -116,7 +121,10 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	if (temp == 1)
 		return (free(input_str), 1);
 	if (temp == -1)
+	{
+		free(input_str);
 		exit_mllcfail(mllcd);
+	}
 	// printf("input_str after put_space_before_special_operator: %s\n", input_str);
 	// if (expander(&input_str, mllcd))
 	// 	return (1);

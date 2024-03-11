@@ -98,7 +98,7 @@ void	free_env_table(char **envv);
 
 //built-ins:
 int		echo(char *cmd[]);
-int		cd(char *path, int argc, t_alloc *mllcd);
+int		cd(char **cmd, int argc, t_alloc *mllcd);
 int		pwd();
 int		env(char **cmd, t_alloc mllcd);
 int		exporting(char **cmd, t_alloc *mllcd);

@@ -44,6 +44,8 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 				cur_cwd = getcwd(NULL, 1024);
 				if (temp->malloced)
 					free(temp->env_var);
+				if (!cur_cwd)
+					return (1);
 				temp->env_var = ft_strjoin("PWD=", cur_cwd);
 				free(cur_cwd);
 				if (!temp->env_var)
@@ -56,8 +58,10 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 	return (0);
 }
 
-int cd(char *path, int argc, t_alloc *mllcd)
+int cd (char **cmd, int argc, t_alloc *mllcd)
 {
+	char	*path;
+
     if (argc > 2)
 		return (cd_error_handler(mllcd, "cd: too many arguments"), 1);
     else if (argc == 1)
@@ -67,7 +71,12 @@ int cd(char *path, int argc, t_alloc *mllcd)
     }
     else
     {
-		path = ft_strdup(path);
+		path = ft_strdup(cmd[1]);
+		if (!path)
+		{
+			free_strstr(cmd);
+			exit_mllcfail(mllcd);
+		}
 		if (!ft_strcmp(path, "-"))
 		{
 			free(path);
@@ -78,8 +87,12 @@ int cd(char *path, int argc, t_alloc *mllcd)
 			return (free(path), cd_error_handler(mllcd, "chdir failed"), 1);
 		free(path);
     }
-	update_pwds(&mllcd->env_list, "OLDPWD", mllcd);
-	update_pwds(&mllcd->env_list, "PWD", mllcd);
+	if (update_pwds(&mllcd->env_list, "OLDPWD", mllcd) == 1 || \
+		update_pwds(&mllcd->env_list, "PWD", mllcd))
+	{
+		free_strstr(cmd);
+		exit_mllcfail(mllcd);
+	}
 	mllcd->exit_status = 0;
     return (0);
 }

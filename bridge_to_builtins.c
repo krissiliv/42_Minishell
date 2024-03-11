@@ -25,7 +25,7 @@ static int  count_cmd_args(char **cmd)
 int	builtins_1(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
 {
 	if (!ft_strcmp("cd", cmd[0]))
-		cd(cmd[1], count_cmd_args(cmd), mllcd);
+		cd(cmd, count_cmd_args(cmd), mllcd);
 	else if (!ft_strcmp("export", cmd[0]))
 		exporting(cmd, mllcd); // should have no dollar signs
 	else if (!ft_strcmp("unset", cmd[0]))
@@ -65,7 +65,7 @@ int	builtins_all(char **cmd, t_alloc *mllcd) // this is actually like execute or
 	else if (!ft_strcmp("exit", cmd[0]))
 		return (exiting(mllcd, cmd, count_cmd_args(cmd)));
 	else if (!ft_strcmp("cd", cmd[0]))
-		return (cd(cmd[1], count_cmd_args(cmd), mllcd));
+		return (cd(cmd, count_cmd_args(cmd), mllcd));
 	else
 		return (-1);
 	return (0);

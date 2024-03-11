@@ -136,8 +136,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 			exit(1);
 		}
 		//printf("created child %d with compil res %d\n", i, compil_res);
-		mllcd->simple_cmd.compil_res = simple_execute(mllcd, cmd);
-		mllcd->exit_status = mllcd->simple_cmd.compil_res;
+		mllcd->exit_status = simple_execute(mllcd, cmd);
 		free_strstr(cmd);
 		free_before_exit(mllcd, true);
 		// break ; //should break the loop in order to prevent child process from building pther processes
