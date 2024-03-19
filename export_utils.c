@@ -86,7 +86,7 @@ t_env	*sort_list(t_env *env_list)
 
 void	ft_lstadd_front(t_env **env_list, t_env *new_node)
 {
-	if (env_list)
+	if (env_list && new_node)
 	{
 		if (*env_list)
 			new_node->next = *env_list;

@@ -51,6 +51,8 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	int		len;
 	char	*envvar_w_equalsign;
 
+	if (!envvar)
+		return (NULL);
 	if (ft_strcmp(envvar, "?") == 0)
 		return (ft_itoa(mllcd->exit_status));
     pos = mllcd->env_list;
