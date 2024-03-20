@@ -103,8 +103,16 @@ void	free_before_exit(t_alloc *mllcd, bool end)
 void	exit_mllcfail(t_alloc *mllcd)
 {
 	int i;
+	t_env *temp;
 
 	i = mllcd->exit_status;
 	free_before_exit(mllcd, true);
+	temp = mllcd->env_list;
+	while (temp)
+	{
+		if (temp->malloced == true)
+			free(temp->env_var);
+		temp = temp->next;
+	}
 	exit(i);
 }
