@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/20 16:06:32 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:44:46 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 {
 	int i;
 	int curr_cmdnum;
+	char *temp;
 	//int cmd_position;
 
 	i = 0;
@@ -116,18 +117,42 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 	while (i < in_pars->m_argc) // next step: need to find way to fill "r" next to grep
 	{
 		if ((ft_strcmp(in_pars->m_argv[i], "<") == 0)) // && inside_qu(in_pars) == false)) // input redirection <
+		{
 			in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[++i]); // input file should not generally be in first position in a-s-t (abstract synax tree) - it should be on first position of the resp command that it belongs to as it should mimic shell
+			if (!in_pars->cmd_table[curr_cmdnum][1])
+				return (1);
+		}
 		else if (ft_strcmp(in_pars->m_argv[i], ">") == 0) // && inside_qu(in_pars) == false) // output redirection >
+		{
 			in_pars->cmd_table[curr_cmdnum][2] = ft_strdup(in_pars->m_argv[++i]); // output file should not generally be in last position in a-s-t (abstract synax tree) - it should be on last position of the resp command that it belongs to as it should mimic shell
+			if (!in_pars->cmd_table[curr_cmdnum][2])
+				return (1);
+		}
 		else if (ft_strncmp(in_pars->m_argv[i], "<<", 2) == 0) // input reading until delimiter
 		{
 			if (ft_strlen(in_pars->m_argv[i]) == 2)
+			{
 				in_pars->cmd_table[curr_cmdnum][3] = ft_strdup(in_pars->m_argv[++i]);
+				if (!in_pars->cmd_table[curr_cmdnum][3])
+					return (1);
+			}
 			else
-				in_pars->cmd_table[curr_cmdnum][3] = ft_strtrim(ft_strdup(in_pars->m_argv[i++] + 2), "\"\'");
+			{
+				temp = ft_strdup(in_pars->m_argv[i++] + 2);
+				if (!temp)
+					return (1);
+				in_pars->cmd_table[curr_cmdnum][3] = ft_strtrim(temp, "\"\'");
+				free(temp);
+				if (!in_pars->cmd_table[curr_cmdnum][3])
+					return (1);
+			}
 		}
 		else if (ft_strcmp(in_pars->m_argv[i], ">>") == 0)
+		{
 			in_pars->cmd_table[curr_cmdnum][4] = ft_strdup(in_pars->m_argv[++i]);
+			if (!in_pars->cmd_table[curr_cmdnum][4])
+				return (1);
+		}
 		else if (ft_strcmp(in_pars->m_argv[i], "|") == 0 && in_pars->m_argv[i + 1])
 		{
 			if (in_pars->cmd_table[curr_cmdnum][0] == 0)

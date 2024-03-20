@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/20 16:02:46 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:57:56 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int put_space_before_special_operator(char **input_str)
 				// printf("new input_str: %s\n", (*input_str));
 				free(temp);
 				if (!(*input_str))
-					return (1);
+					return (-1);
 			}
 			i += k - 1;
 			// printf("k = %d\n", k);
@@ -64,7 +64,7 @@ static int put_space_before_special_operator(char **input_str)
 				// printf("new input_str: %s\n", (*input_str));
 				free(temp);
 				if (!(*input_str))
-					return (1);
+					return (-1);
 			}
 			k = 0;
 		}
@@ -118,8 +118,6 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), free(input_str), 1);
 	// printf("input_str: %s\n", input_str);
 	temp = put_space_before_special_operator(&input_str);
-	if (temp == 1)
-		return (free(input_str), 1);
 	if (temp == -1)
 	{
 		free(input_str);
