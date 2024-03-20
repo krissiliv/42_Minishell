@@ -6,12 +6,11 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 13:48:57 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/20 11:23:25 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 void	init_simple_cmd(t_pipex_m *simple_cmd)
 {

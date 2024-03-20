@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:04:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/01/24 15:28:13 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:20:27 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,23 @@ int	adapt_shlvl(t_alloc *mllcd)
 	return (0);
 }
 
+void	ft_lstclear(t_env **env_list)
+{
+	t_env	*temp;
+
+	if (!(*env_list))
+		return ;
+	while (*env_list)
+	{
+		temp = (*env_list)->next;
+		if ((*env_list)->malloced == true)
+			free_and_null((*env_list)->env_var);
+		free_and_null(*env_list);
+		*env_list = temp;
+	}
+	*env_list = NULL;
+}
+
 int	get_env(char **envv, t_env **head)
 {
 	int		i;
@@ -64,7 +81,7 @@ int	get_env(char **envv, t_env **head)
 		{
 			(*head)->next = (t_env *)malloc(sizeof(t_env));
 			if ((*head)->next == NULL)
-				return (1);
+				return (ft_lstclear(head), 1);
 			(*head) = (*head)->next;
 			(*head)->env_var = NULL;
 			(*head)->next = NULL;
@@ -73,23 +90,6 @@ int	get_env(char **envv, t_env **head)
 	}
 	*head = temp;
 	return (0);
-}
-
-void	ft_lstclear(t_env **env_list)
-{
-	t_env	*temp;
-
-	if (!(*env_list))
-		return ;
-	while (*env_list)
-	{
-		temp = (*env_list)->next;
-		if ((*env_list)->malloced == true)
-			free_and_null((*env_list)->env_var);
-		free_and_null(*env_list);
-		*env_list = temp;
-	}
-	*env_list = NULL;
 }
 
 char	**convert_linkedlst_to_table(t_alloc *mllcd)

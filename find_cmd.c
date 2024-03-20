@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/07 15:59:17 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:13:35 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,12 @@ char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 		pipex_m->poss_path = ft_strjoin(pipex_m->poss_paths[i++], "/");
 		if (!pipex_m->poss_path)
 			return (pipex_free_all(pipex_m, NULL), NULL);
-		pipex_m->cmdpath = ft_strjoin(pipex_m->poss_path, cmd);
+		pipex_m->cmdpath = ft_strjoin_w_free(pipex_m->poss_path, cmd);
+		pipex_m->poss_path = NULL;
 		if (!pipex_m->cmdpath)
 			return (pipex_free_all(pipex_m, NULL), NULL);
 		if (access(pipex_m->cmdpath, F_OK | X_OK) == 0)
-			return (pipex_m->cmdpath);
-		free(pipex_m->poss_path);
-		pipex_m->poss_path = NULL;
+			return (free_strstr(pipex_m->poss_paths), pipex_m->cmdpath);
 		free(pipex_m->cmdpath);
 		pipex_m->cmdpath = NULL;
 	}
