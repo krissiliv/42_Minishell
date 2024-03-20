@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/28 17:49:55 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:02:46 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,8 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 
 	temp = cmdline_input_parser(&mllcd->in_pars, input_str);
 	free(input_str);
-	if (temp == -1)
+	if (temp == 1)
 		exit_mllcfail(mllcd);
-	if (temp == 3)
-		return (1);
 	else
 		exit_status = temp;
 	
@@ -185,6 +183,8 @@ int main(int argc, char **argv, char **envv)
 			if (!line)
 				exit_mllcfail(&mllcd);
 			input_str = ft_strtrim(line, "\n");
+			if (!input_str)
+				exit_mllcfail(&mllcd);
 			// free(line);
 		}
 		if (!input_str)
@@ -208,9 +208,6 @@ int main(int argc, char **argv, char **envv)
 			free_before_exit(&mllcd, false);
 			continue;
 		}
-		// printf("pipenum: %d\n", mllcd.in_pars.pipenum);
-		// if (m./mllcd.in_pars.cmd_table[0][4]) // I put this inside the forked processes in order not to redir parents output no?
-		//	 outredir_appendmode(&mllcd);
 		if (mllcd.in_pars.pipenum > 0)
 			run_pipex_multipipe(&mllcd, argc, argv);
 		else
@@ -223,6 +220,6 @@ int main(int argc, char **argv, char **envv)
 		}
 		free_before_exit(&mllcd, false);
 	}
-	free_before_exit(&mllcd, true); // this is the only thing that is not freedwhen pressing CTRL+C
-	return (mllcd.exit_status);
+	// this is the only thing that is not freedwhen pressing CTRL+C:
+	return (free_before_exit(&mllcd, true), mllcd.exit_status);
 }

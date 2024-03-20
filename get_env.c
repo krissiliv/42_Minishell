@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:04:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/03/20 11:20:27 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:19:40 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ void	ft_lstclear(t_env **env_list)
 {
 	t_env	*temp;
 
-	if (!(*env_list))
-		return ;
 	while (*env_list)
 	{
 		temp = (*env_list)->next;
@@ -75,21 +73,32 @@ int	get_env(char **envv, t_env **head)
 	temp = *head;
 	while (envv[i])
 	{
-		(*head)->env_var = envv[i];
-		(*head)->malloced = false;
+		temp->env_var = envv[i];
+		temp->malloced = false;
 		if (envv[i + 1])
 		{
-			(*head)->next = (t_env *)malloc(sizeof(t_env));
-			if ((*head)->next == NULL)
+			temp->next = (t_env *)malloc(sizeof(t_env));
+			if (temp->next == NULL)
 				return (ft_lstclear(head), 1);
-			(*head) = (*head)->next;
-			(*head)->env_var = NULL;
-			(*head)->next = NULL;
+			temp = temp->next;
+			temp->env_var = NULL;
+			temp->next = NULL;
 		}
 		i++;
 	}
-	*head = temp;
 	return (0);
+}
+
+void	free_env_table(char **envv_table)
+{
+	int		i;
+
+	i = 0;
+	if (envv_table == NULL)
+		return ;
+    while (envv_table[i] != NULL)
+		free_and_null(envv_table[i++]);
+	free_and_null(envv_table);
 }
 
 char	**convert_linkedlst_to_table(t_alloc *mllcd)
@@ -114,7 +123,7 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
     while (pos != NULL)
     {
 		env_table[i] = ft_strdup(pos->env_var);
-		if (env_table[i] == NULL)
+		if (!env_table[i])
 		{
 			free_env_table(env_table);
 			return (NULL);
@@ -124,16 +133,4 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 	}
 	env_table[i] = NULL;
 	return (env_table);
-}
-
-void	free_env_table(char **envv_table)
-{
-	int		i;
-
-	i = 0;
-	if (envv_table == NULL)
-		return ;
-    while (envv_table[i] != NULL)
-		free_and_null(envv_table[i++]);
-	free_and_null(envv_table);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/28 16:41:40 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:06:32 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,10 +198,10 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 		return (1);
 
 	if (remove_quotes_from_cmd_table(in_pars)) // returns 1 if malloc fails
-		return (-1);
+		return (1);
 	
 	if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
-		return (3);
+		return (1);
 
 	// free(input_str);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/20 11:13:35 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/20 15:46:59 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static char	**get_cmd_paths(char **envv)
 	if (!envv[i])
 		return (NULL);
 	paths = ft_split(envv[i] + 5, ':');
+	if (!paths)
+		return (NULL);
 	return (paths);
 }
 
