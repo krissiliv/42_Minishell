@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/21 15:14:04 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/21 15:52:11 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 			return (pipex_free_all(pipex_m, NULL), NULL);
 		if (access(pipex_m->cmdpath, F_OK | X_OK) == 0)
 			return (free_strstr(pipex_m->poss_paths), pipex_m->cmdpath);
+		else if (access(pipex_m->cmdpath, F_OK) == 0)
+			return (pipex_free_all(pipex_m, NULL), NULL);
 		free(pipex_m->cmdpath);
 		pipex_m->cmdpath = NULL;
 	}
 	if (access(cmd, F_OK | X_OK) == 0)
-		return (free_strstr(pipex_m->poss_paths), cmd);
+		return (free_strstr(pipex_m->poss_paths), cmd); // this free strstr apparently causes some leaks
 	return (pipex_free_all(pipex_m, NULL), NULL);
 }

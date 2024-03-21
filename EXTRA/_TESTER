@@ -13,7 +13,7 @@ if (!input_str)
     exit(1);
 
 2) run tester with 
-mtest m
+mstest m
 
 3) to see the segfaults run tester and look for exit code 139 (=segfault)
 mstest m | grep minishell\(139\)
