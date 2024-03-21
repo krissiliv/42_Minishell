@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:04:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/03/20 16:19:40 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:09:46 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ void	free_env_table(char **envv_table)
 {
 	int		i;
 
-	i = 0;
 	if (envv_table == NULL)
 		return ;
-    while (envv_table[i] != NULL)
-		free_and_null(envv_table[i++]);
+	i = -1;
+    while (envv_table[++i] != NULL)
+		free_and_null(envv_table[i]);
 	free_and_null(envv_table);
 }
 
@@ -117,19 +117,14 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 	env_table = (char **)malloc((i + 1) * sizeof(char *));
 	if (env_table == NULL)
 		return (NULL);
-	// printf("%d\n", i);
     pos = mllcd->env_list;
 	i = 0;
     while (pos != NULL)
     {
 		env_table[i] = ft_strdup(pos->env_var);
-		if (!env_table[i])
-		{
-			free_env_table(env_table);
-			return (NULL);
-		}
+		if (!env_table[i++])
+			return (free_env_table(env_table), NULL);
 		pos = pos->next;
-		i++;
 	}
 	env_table[i] = NULL;
 	return (env_table);

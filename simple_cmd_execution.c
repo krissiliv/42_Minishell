@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/20 11:23:25 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:56:01 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		return (res);
 
 	envv = convert_linkedlst_to_table(mllcd);
+	if (!envv)
+		return (ft_putstr_fd("Simplecmd-Error: Could not convert env_list to env_table.\n", 2), 127);
 	cmdpath = find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
 		return (free_env_table(envv), ft_putstr_fd("Simplecmd-Error: cmd not found.\n", 2), 127);
