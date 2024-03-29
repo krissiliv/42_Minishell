@@ -25,7 +25,6 @@
  #include <sys/ioctl.h>
 
 # include "libft/libft.h"
-# include "get_next_line/get_next_line.h"
 
 # include "input_parser.h"
 # include "pipex_multipipe.h"
@@ -71,7 +70,7 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd);
 int     expander(char **input_str, t_alloc *mllcd);
 
 // heredocs
-int	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
+int		adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
 int		finish_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
