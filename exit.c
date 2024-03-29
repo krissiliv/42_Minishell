@@ -15,8 +15,7 @@
 
 static void	exit_program(t_alloc *mllcd)
 {
-	// ft_putstr_fd("exit\n", 1);  //JUST FOR TESTER, need to add it for submission
-	// close all fds;
+	// ft_putstr_fd("exit\n", 1);  JUST FOR TESTER, need to add it for submission
 	free_before_exit(mllcd, true);
 	exit(mllcd->exit_status);
 }
@@ -42,6 +41,9 @@ int	validate_input(char *input)
 
 int	exiting(t_alloc *mllcd, char **cmd, int argc)
 {
+	int	error;
+
+	error = 0;
 	if (cmd[1])
 	{
 		if (validate_input(cmd[1]) == 1)
@@ -59,7 +61,7 @@ int	exiting(t_alloc *mllcd, char **cmd, int argc)
 			return (1);
 		}
 		else
-			mllcd->exit_status = ft_atoi_minishell(cmd[1]);
+			mllcd->exit_status = ft_atoi_minishell(cmd[1], &error);
 	}
 	free_strstr(cmd);
 	exit_program(mllcd);

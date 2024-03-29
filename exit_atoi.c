@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_atoi.c                                        :+:      :+:    :+:   */
+/*   Pia___ft_atoi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:57:46 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 19:17:14 by pgober           ###   ########.fr       */
+/*   Updated: 2024/03/29 12:09:51 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_atoi_checker(int res, int c, int sign)
+{
+	if (sign > 0 && res > (2147483647 - (c - '0')) / 10)
+		return (0);
+	if (sign < 0 && -(res) < (-2147483648 + (c - '0')) / 10)
+		return (0);
+	return (1);
+}
 
 int	is_num(char str)
 {
@@ -26,17 +35,17 @@ int	is_pm(char str)
 	return (0);
 }
 
-static int	is_valid(char str)
+int	is_valid(char str)
 {
 	if (is_space(str) == 1 || is_num(str) == 1 || is_pm(str) == 1)
 		return (1);
 	return (0);
 }
 
-int	ft_atoi_minishell(const char *nptr)
+int	ft_atoi_minishell(const char *nptr, int *error)
 {
 	unsigned long long	res;
-	int	sign;
+	int					sign;
 
 	sign = 1;
 	res = 0;
@@ -50,6 +59,8 @@ int	ft_atoi_minishell(const char *nptr)
 			sign = sign * (-1);
 		while (is_num(*nptr) == 1)
 		{
+			if (!ft_atoi_checker(res, *nptr, sign))
+				return (*error = 1, 0);
 			res = res * 10 + *nptr - '0';
 			if (is_num(*(nptr + 1)) == 0)
 				return ((sign * res) % 256);

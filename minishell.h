@@ -107,7 +107,7 @@ int		exiting(t_alloc *mllcd, char **cmd, int argc);
 //atoi for exit builtin
 int		is_num(char str);
 int		is_pm(char str);
-int		ft_atoi_minishell(const char *nptr);
+int		ft_atoi_minishell(const char *nptr, int *error);
 int		validate_input(char *input);
 
 //export utils
