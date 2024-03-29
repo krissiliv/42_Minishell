@@ -151,23 +151,28 @@ static int preparing_minishell(t_alloc *mllcd, char *input_str)
 	return (0);
 }
 
+void	init_minishell(t_alloc *mllcd, char **envv)
+{
+	mllcd->in_pars.m_argc = 0;
+	mllcd->in_pars.m_argv = NULL;
+	mllcd->in_pars.cmd_table = NULL;
+	mllcd->saved_stdin = -1;
+	mllcd->env_list = NULL;
+	mllcd->exit_status = 0;
+	if (get_env(envv, &mllcd->env_list) || adapt_shlvl(mllcd))
+	{
+		ft_lstclear(&mllcd->env_list);
+		exit(1);
+	}
+}
+
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 int main(int argc, char **argv, char **envv)
 {
 	t_alloc	mllcd;
 	char	*input_str;
 
-	mllcd.exit_status = 0;
-	mllcd.in_pars.m_argv = NULL;
-	mllcd.in_pars.cmd_table = NULL;
-	mllcd.saved_stdin = -1;
-	mllcd.env_list = NULL;
-	if (get_env(envv, &mllcd.env_list) || adapt_shlvl(&mllcd))
-	{
-		ft_lstclear(&mllcd.env_list);
-		exit(1);
-	}
-	//prntlist(mllcd.env_list);
+	init_minishell(&mllcd, envv);
 	while (1)
 	{
 		// input_str = ft_strdup("cat <_testfile|wc -l");

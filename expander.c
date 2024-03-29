@@ -50,17 +50,22 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	t_env	*pos;
 	int		len;
 	char	*envvar_w_equalsign;
+	char	*return_value;
 
-	if (!envvar)
+	if (!envvar || ft_strlen(envvar) == 0)
 		return (NULL);
 	if (ft_strcmp(envvar, "?") == 0)
-		return (ft_itoa(mllcd->exit_status));
+	{
+		return_value = ft_itoa(mllcd->exit_status);
+		if (!return_value)
+			return (free(envvar), NULL);
+		return (free(envvar), return_value);
+	}
     pos = mllcd->env_list;
 	envvar_w_equalsign = ft_strjoin(envvar, "=");
 	if (!envvar_w_equalsign)
 		return (NULL);
 	len = ft_strlen(envvar_w_equalsign);
-	// printf("envvar_w_equalsign = %s\n", envvar_w_equalsign);
     while (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) != 0)
     {
 		pos = pos->next;
@@ -98,19 +103,21 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	while ((*input_str)[i] && (ft_isalnum((*input_str)[i]) || (*input_str)[i] == '_' || (*input_str)[i] == '?')) //determine envvar size
 		i++;
 	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1); // fill in envvar with $ variable
+	if (!envvar || ft_strlen(envvar) == 0)
+		return (free(new_str), exit_mllcfail(mllcd), -1);
 	envvar_value = find_envvar_value(envvar, mllcd);
 	if (!envvar_value)
-		return (free(envvar), free(*input_str), -1);
+		return (free(new_str), -1);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
 	if (!new_str)
-		return (free(envvar), free(envvar_value), free(*input_str), -1);
+		return (free(envvar_value), free(*input_str), -1);
 	new_str = ft_strjoin_w_free(new_str, (*input_str) + dsign + 1 + i - dsign - 1); // fill in rest of (*input_str)
 	free(*input_str);
 	if (!new_str)
-		return (free(envvar), free(envvar_value), -1);
+		return (free(envvar_value), -1);
 	*input_str = new_str;
 	i = ft_strlen(envvar_value);
-	return (free(envvar), free(envvar_value), i);
+	return (free(envvar_value), i);
 }
 
 static void	expand_tilde(char **input_str, t_alloc *mllcd)
@@ -176,6 +183,7 @@ int expander(char **input_str, t_alloc *mllcd)
 {
 	int dsign;
 	int i;
+	int j;
 
 	expand_tilde(input_str, mllcd);
 	dsign = 0;
@@ -185,11 +193,13 @@ int expander(char **input_str, t_alloc *mllcd)
 	while (*input_str && dsign != -1 && (*input_str)[i])
 	{
 		dsign = find_dollar_sign((*input_str), i); // only those $ with no blankspace righ after will be found, as echo $ simply outputs $
+		j = 0;
 		if (dsign != -1)
 		{
-			i += replace_dollar_sign(input_str, dsign, mllcd);
-			if (i == -1)
+			j = replace_dollar_sign(input_str, dsign, mllcd);
+			if (j == -1)
 				return (1);
+			i += j;
 		}
 		else
 			i++; // go on looking from this spot on to find next $ and replace it
