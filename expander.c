@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int find_dollar_sign(char *str, int starting_pt)
+static int	find_dollar_sign(char *str, int starting_pt)
 {
 	int		i;
 	bool	single_quotes_open;
@@ -36,9 +36,9 @@ static int find_dollar_sign(char *str, int starting_pt)
 			single_quotes_open = !single_quotes_open;
 		else if (str[i] == '\"' && !single_quotes_open)
 			double_quotes_open = !double_quotes_open;
-		if (single_quotes_open == false && \
-			str[i + 1] && str[i] == '$' && (ft_isalpha(str[i + 1]) != 0 \
-			|| str[i + 1] == '?' || (str[i + 1] == '\"' && double_quotes_open == false) || str[i + 1] == '\''))
+		if (single_quotes_open == false && str[i + 1] && str[i] == '$'
+			&& (ft_isalpha(str[i + 1]) != 0 || str[i + 1] == '?' ||
+			(str[i + 1] == '\"' && double_quotes_open == false) || str[i + 1] == '\''))
 			return (i);
 		i++;
 	}
@@ -61,12 +61,12 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 			return (NULL);
 		return (return_value);
 	}
-    pos = mllcd->env_list;
+	pos = mllcd->env_list;
 	envvar_w_equalsign = ft_strjoin(envvar, "=");
 	if (!envvar_w_equalsign)
 		return (NULL);
 	len = ft_strlen(envvar_w_equalsign);
-    while (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) != 0)
+	while (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len))
 		pos = pos->next;
 	if (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) == 0)
 		return (free(envvar_w_equalsign), ft_strdup(pos->env_var + len)); // + 1 to jump over "="
@@ -104,11 +104,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	if (!envvar || ft_strlen(envvar) == 0)
 		return (free(new_str), exit_mllcfail(mllcd), -1);
 	envvar_value = find_envvar_value(envvar, mllcd);
-	if (envvar)
-	{
-		free(envvar);
-		envvar = NULL;
-	} //added this to fix leaks - and it did but caused additional seg faults
+	free(envvar);
 	if (!envvar_value)
 		return (free(new_str), -1);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
@@ -125,13 +121,13 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 
 static void	expand_tilde(char **input_str, t_alloc *mllcd)
 {
-	int i;
-	bool single_quotes_open;
-	bool double_quotes_open;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-	char *tmp4;
+	int		i;
+	bool	single_quotes_open;
+	bool	double_quotes_open;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+	char	*tmp4;
 
 	single_quotes_open = false;
 	double_quotes_open = false;
@@ -182,11 +178,11 @@ static void	expand_tilde(char **input_str, t_alloc *mllcd)
 	}
 }
 
-int expander(char **input_str, t_alloc *mllcd)
+int	expander(char **input_str, t_alloc *mllcd)
 {
-	int dsign;
-	int i;
-	int j;
+	int	dsign;
+	int	i;
+	int	j;
 
 	expand_tilde(input_str, mllcd);
 	dsign = 0;
