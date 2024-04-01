@@ -58,8 +58,8 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 	{
 		return_value = ft_itoa(mllcd->exit_status);
 		if (!return_value)
-			return (free(envvar), NULL);
-		return (free(envvar), return_value);
+			return (NULL);
+		return (return_value);
 	}
     pos = mllcd->env_list;
 	envvar_w_equalsign = ft_strjoin(envvar, "=");
@@ -67,9 +67,7 @@ char	*find_envvar_value(char *envvar, t_alloc *mllcd)
 		return (NULL);
 	len = ft_strlen(envvar_w_equalsign);
     while (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) != 0)
-    {
 		pos = pos->next;
-	}
 	if (pos != NULL && ft_strncmp(pos->env_var, envvar_w_equalsign, len) == 0)
 		return (free(envvar_w_equalsign), ft_strdup(pos->env_var + len)); // + 1 to jump over "="
 	return (free(envvar_w_equalsign), ft_strdup(""));
@@ -94,7 +92,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 		*input_str = new_str;
 		// printf("in replace_dsign: input_str = %s\n", *input_str);
 		return (1);
-	}	
+	}
 	// here it is already clear that there is sth after the $ (not a blankspace)
 	new_str = ft_substr((*input_str), 0, dsign); // fill in new_str with everything before $ variable
 	if (!new_str)
@@ -106,6 +104,11 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 	if (!envvar || ft_strlen(envvar) == 0)
 		return (free(new_str), exit_mllcfail(mllcd), -1);
 	envvar_value = find_envvar_value(envvar, mllcd);
+	if (envvar)
+	{
+		free(envvar);
+		envvar = NULL;
+	} //added this to fix leaks - and it did but caused additional seg faults
 	if (!envvar_value)
 		return (free(new_str), -1);
 	new_str = ft_strjoin_w_free(new_str, envvar_value); // fill in $ variable value
