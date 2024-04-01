@@ -113,7 +113,7 @@ int		validate_input(char *input);
 //export utils
 t_env	*ft_new_node(char *input);
 void	ft_lstadd_front(t_env **env_list, t_env *new_node);
-t_env	*sort_list(t_env *env_list);
+t_env	*sort_list(t_env **list);
 void	prnt_sortedlist(t_env *head);
 
 #endif

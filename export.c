@@ -37,7 +37,8 @@ static int	compare_env_var(char *env_var1, char *env_var2)
 
 	i = 0;
 	j = 0;
-	while (env_var1[i] != '=' && env_var2[j] != '=' && env_var1[i] == env_var2[j])
+	while (env_var1[i] != '=' && env_var2[j] != '='
+		&& env_var1[i] == env_var2[j])
 	{
 		if (env_var1[i + 1] == '=' && env_var2[j + 1] == '=')
 			return (0);
@@ -79,13 +80,15 @@ static int	export_one(char *input, t_alloc *mllcd)
 
 	i = -1;
 	err_flag = 0;
-	if (!validate_input(input) || input[0] == '=' || (!ft_isalpha(input[0]) && input[0] != '_'))
+	if (!validate_input(input) || input[0] == '='
+		|| (!ft_isalpha(input[0]) && input[0] != '_'))
 		err_flag = 1;
 	if (ft_strchr(input, '=') != NULL)
 	{
 		while (input[++i] && input[i] != '=')
 		{
-			if (!ft_isalpha(input[i]) && input[i] != '_' && !ft_isdigit(input[i]))
+			if (!ft_isalpha(input[i]) && input[i] != '_'
+				&& !ft_isdigit(input[i]))
 				err_flag = 1;
 		}
 		if (check_exist_var(mllcd, input) == 1)
@@ -105,7 +108,7 @@ int	exporting(char **cmd, t_alloc *mllcd)
 	if (!cmd[1])
 	{
 		mllcd->exit_status = 0;
-		return (prnt_sortedlist(sort_list(mllcd->env_list)), 0);
+		return (prnt_sortedlist(sort_list(&mllcd->env_list)), 0);
 	}
 	if (cmd[1][0] == '-')
 	{

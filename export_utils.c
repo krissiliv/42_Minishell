@@ -45,43 +45,43 @@ static void	swap_nodes_mid(t_env **env_list)
 
 void	prnt_sortedlist(t_env *head)
 {
-	t_env *pos;
+	t_env	*pos;
 
-    pos = head;
+	pos = head;
 	if (pos == NULL)
 		printf("NULL\n");
-    while (pos != NULL)
-    {
-        printf("declare -x %s\n", pos->env_var);
-        pos = pos->next;
-    }
+	while (pos != NULL)
+	{
+		printf("declare -x %s\n", pos->env_var);
+		pos = pos->next;
+	}
 }
 
-t_env	*sort_list(t_env *env_list)
+t_env	*sort_list(t_env **list)
 {
 	t_env	*head;
 
-	head = env_list;
-	while (env_list->next && env_list->next->next)
+	head = *list;
+	while ((*list)->next && (*list)->next->next)
 	{
-		if (env_list == head)
+		if ((*list) == head)
 		{
-			if (ft_strcmp(env_list->env_var, env_list->next->env_var) > 0)
+			if (ft_strcmp((*list)->env_var, (*list)->next->env_var) > 0)
 			{
-				swap_nodes_begin(&env_list);
-				head = env_list;
+				swap_nodes_begin(list);
+				head = *list;
 			}
 		}
-		if (ft_strcmp(env_list->next->env_var, env_list->next->next->env_var) > 0)
+		if (ft_strcmp((*list)->next->env_var, (*list)->next->next->env_var) > 0)
 		{
-			swap_nodes_mid(&env_list);
-			env_list = head;
+			swap_nodes_mid(list);
+			*list = head;
 		}
 		else
-			env_list = env_list->next;
+			*list = (*list)->next;
 	}
-	env_list = head;
-	return (env_list);
+	*list = head;
+	return (*list);
 }
 
 void	ft_lstadd_front(t_env **env_list, t_env *new_node)
