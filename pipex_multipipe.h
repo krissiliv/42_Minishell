@@ -29,7 +29,7 @@ typedef struct s_pipex_m
 char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m);
 
 // error
-int		pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m *pipex_m);
+int		pipex_error_handling(int err_code, t_pipex_m *pipex_m);
 
 //finish
 void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends);

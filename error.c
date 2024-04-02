@@ -12,24 +12,12 @@
 
 #include "minishell.h"
 
-int	pipex_error_handling(int *pipe_ends[], int pipenum, int err_code, t_pipex_m *pipex_m)
+int	pipex_error_handling(int err_code, t_pipex_m *pipex_m)
 {
-	if (pipe_ends)
-	{
-		while (pipenum >= 0)
-		{
-			if (pipe_ends[pipenum] && pipe_ends[pipenum][0] != -1)
-				close (pipe_ends[pipenum][0]);
-			if (pipe_ends[pipenum] && pipe_ends[pipenum][1] != -1)
-				close (pipe_ends[pipenum][1]);
-			pipenum--;
-		}
-		free(pipe_ends);
-	}
 	if (err_code == 127)
 		perror("Pipex-Error: command not found\n");
 	else if (err_code == 1)
-		perror("Pipex-Error: Access to cmdpath denied\n");
+		perror("minishell");
 	else if (err_code == 2)
 		perror("Pipex-Error: Access to infile denied\n");
 	else if (err_code == 7)

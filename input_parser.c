@@ -118,6 +118,8 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 	{
 		if ((ft_strcmp(in_pars->m_argv[i], "<") == 0)) // && inside_qu(in_pars) == false)) // input redirection <
 		{
+			if (in_pars->cmd_table[curr_cmdnum][1])
+				free(in_pars->cmd_table[curr_cmdnum][1]);
 			in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[++i]); // input file should not generally be in first position in a-s-t (abstract synax tree) - it should be on first position of the resp command that it belongs to as it should mimic shell
 			if (!in_pars->cmd_table[curr_cmdnum][1])
 				return (1);
