@@ -126,6 +126,8 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 		}
 		else if (ft_strcmp(in_pars->m_argv[i], ">") == 0) // && inside_qu(in_pars) == false) // output redirection >
 		{
+			if (in_pars->cmd_table[curr_cmdnum][2])
+				free(in_pars->cmd_table[curr_cmdnum][2]);
 			in_pars->cmd_table[curr_cmdnum][2] = ft_strdup(in_pars->m_argv[++i]); // output file should not generally be in last position in a-s-t (abstract synax tree) - it should be on last position of the resp command that it belongs to as it should mimic shell
 			if (!in_pars->cmd_table[curr_cmdnum][2])
 				return (1);
@@ -151,6 +153,8 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 		}
 		else if (ft_strcmp(in_pars->m_argv[i], ">>") == 0)
 		{
+			if (in_pars->cmd_table[curr_cmdnum][4])
+				free(in_pars->cmd_table[curr_cmdnum][4]);
 			in_pars->cmd_table[curr_cmdnum][4] = ft_strdup(in_pars->m_argv[++i]);
 			if (!in_pars->cmd_table[curr_cmdnum][4])
 				return (1);
