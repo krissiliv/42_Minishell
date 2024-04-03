@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 19:04:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/03/21 13:09:46 by pgober           ###   ########.fr       */
+/*   Created: 2024/04/03 14:01:55 by pgober            #+#    #+#             */
+/*   Updated: 2024/04/03 14:01:58 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ int	get_env(char **envv, t_env **head)
 	int		i;
 	t_env	*temp;
 
-	i = 0;
-	if (!envv[i] && *head)
+	if (!envv[0] && *head)
 		free(*head);
 	*head = (t_env *)malloc(sizeof(t_env));
 	if (*head == NULL)
 		return (1);
 	temp = *head;
-	while (envv[i])
+	i = -1;
+	while (envv[++i])
 	{
 		temp->env_var = envv[i];
 		temp->malloced = false;
@@ -77,7 +77,6 @@ int	get_env(char **envv, t_env **head)
 			temp->env_var = NULL;
 			temp->next = NULL;
 		}
-		i++;
 	}
 	return (0);
 }

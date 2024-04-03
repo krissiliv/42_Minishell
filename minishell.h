@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 13:49:35 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 15:22:44 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ void	exit_mllcfail(t_alloc *mllcd);
 // simple cmd execution
 void    init_simple_cmd(t_pipex_m *simple_cmd);
 int		run_simple_cmd(t_alloc *mllcd);
+
+// simple cmd execution 2
+void	init_simple_cmd(t_pipex_m *simple_cmd);
+int		simple_execute_interpreter(t_alloc *mllcd);
 
 // expander
 char	*find_envvar_value(char *envvar, t_alloc *mllcd);
