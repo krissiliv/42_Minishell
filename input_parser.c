@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/20 16:44:46 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 15:28:24 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,8 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	if (remove_quotes_from_cmd_table(in_pars)) // returns 1 if malloc fails
 		return (1);
 	
-	// if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
-	// 	return (1);                                       UNCOMMENT THIS PART!!!!!!!!!!
+	if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
+		return (1); // UNCOMMENT THIS PART!!!!!!!!!!
 
 	// free(input_str);
 	return (0);
