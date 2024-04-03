@@ -42,7 +42,7 @@ static int	init_input_parser(t_input_parsing *in_pars, char *input_str) // initi
 	{
 		in_pars->cmd_table[i] = (char **)malloc(5 * sizeof(char *));
 		if (in_pars->cmd_table[i] == NULL)
-			return (1);
+			return (free_and_null((void *)in_pars->cmd_table), 1);
 		j = 0;
 		while (j <= 4)
 			in_pars->cmd_table[i][j++] = NULL;
@@ -63,7 +63,7 @@ static int	look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, int curr_cmd
 	{
 		in_pars->cmd_table[curr_cmdnum][0] = ft_strdup(in_pars->m_argv[i]);
 		if (!in_pars->cmd_table[curr_cmdnum][0])
-			return (-1);
+			return (free_strstr(in_pars->m_argv), free_cmd_table(in_pars), -1);
 		if (in_pars->m_argv[i + 1] && in_pars->m_argv[i + 1][0] == '-' && ft_strlen(in_pars->m_argv[i]) > 1)
 		{
 			temp = ft_strjoin_w_free(in_pars->cmd_table[curr_cmdnum][0], " ");
@@ -122,7 +122,7 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 				free(in_pars->cmd_table[curr_cmdnum][1]);
 			in_pars->cmd_table[curr_cmdnum][1] = ft_strdup(in_pars->m_argv[++i]); // input file should not generally be in first position in a-s-t (abstract synax tree) - it should be on first position of the resp command that it belongs to as it should mimic shell
 			if (!in_pars->cmd_table[curr_cmdnum][1])
-				return (1);
+				return (free_cmd_table(in_pars), free_strstr(in_pars->m_argv), 1);
 		}
 		else if (ft_strcmp(in_pars->m_argv[i], ">") == 0) // && inside_qu(in_pars) == false) // output redirection >
 		{
@@ -138,7 +138,7 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 			{
 				in_pars->cmd_table[curr_cmdnum][3] = ft_strdup(in_pars->m_argv[++i]);
 				if (!in_pars->cmd_table[curr_cmdnum][3])
-					return (1);
+					return (free_cmd_table(in_pars), free_strstr(in_pars->m_argv), 1);
 			}
 			else
 			{
@@ -157,7 +157,7 @@ static int processing_read(t_input_parsing *in_pars)  // here in_pars->cmd_table
 				free(in_pars->cmd_table[curr_cmdnum][4]);
 			in_pars->cmd_table[curr_cmdnum][4] = ft_strdup(in_pars->m_argv[++i]);
 			if (!in_pars->cmd_table[curr_cmdnum][4])
-				return (1);
+				return (free_cmd_table(in_pars), free_strstr(in_pars->m_argv), 1);
 		}
 		else if (ft_strcmp(in_pars->m_argv[i], "|") == 0 && in_pars->m_argv[i + 1])
 		{
@@ -212,7 +212,7 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	if (init_input_parser(in_pars, input_str)) // returns 1 if malloc fails
 		return (-1);
 	in_pars->m_argc = count_words(input_str, ' '); //argc is created
-	in_pars->m_argv = ft_split_w_quotes(input_str, ' '); //argv is created
+	in_pars->m_argv = ft_split_w_quotes(input_str, ' ', in_pars); //argv is created
 	if (in_pars->m_argv == NULL)
 		return (-1);
 	exit_status = syntax_checker(in_pars->m_argv, in_pars->m_argc);
@@ -231,34 +231,33 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 	if (remove_quotes_from_cmd_table(in_pars)) // returns 1 if malloc fails
 		return (1);
 	
-	if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
-		return (1);
+	// if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
+	// 	return (1);                                       UNCOMMENT THIS PART!!!!!!!!!!
 
 	// free(input_str);
 	return (0);
 }
+/* cc -Wall -Wextra -Werror input_parser.c input_parser_ft_split_w_quotes.c finish.c input_parser_utils.c libft.c -g -lreadline
+valgrind --leak-check=full --show-leak-kinds=all -s ./a.out  */
+/* int main(void) // will later be parsing tester
+{
+	t_input_parsing in_pars;
+	int			 i;  
+	char	*input_str;
 
-// cc -Wall -Wextra -Werror input_parser.c input_parser_ft_split_w_quotes.c finish.c input_parser_utils.c libft/*.c -g -lreadline
-// valgrind --leak-check=full --show-leak-kinds=all -s ./a.out 
-// int main(void) // will later be parsing tester
-// {
-// 	t_input_parsing in_pars;
-// 	int			 i;  
-// 	char	*input_str;
-
-// 	input_str = "cat << h < _testfile >> out"; //fill in stuff from EXTRA/input_parser_testing
-// 	// input_str = read_input_print_prompt(); 
-// 	if (cmdline_input_parser(&in_pars, input_str))
-// 		return (1);
-// 	i = 0;
-// 	while (i < in_pars.m_argc)
-// 	{
-// 		printf("m_argv[%d] = %s\n", i, in_pars.m_argv[i]);
-// 		i++;
-// 	}
-// 	free_strstr(in_pars.m_argv);
-// 	free_cmd_table(&in_pars);
-// }
+	input_str = "cat << h < _testfile >> out"; //fill in stuff from EXTRA/input_parser_testing
+	// input_str = read_input_print_prompt(); 
+	if (cmdline_input_parser(&in_pars, input_str))
+		return (1);
+	i = 0;
+	while (i < in_pars.m_argc)
+	{
+		printf("m_argv[%d] = %s\n", i, in_pars.m_argv[i]);
+		i++;
+	}
+	free_strstr(in_pars.m_argv);
+	free_cmd_table(&in_pars);
+} */
 
 
 

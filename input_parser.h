@@ -35,7 +35,7 @@ typedef struct s_quotes
 }	t_quotes;
 
 int		count_words(char *str, char c);
-char	**ft_split_w_quotes(char const *s, char c);
+char	**ft_split_w_quotes(char const *s, char c, t_input_parsing *in_pars);
 
 //input parser utils
 char	*ft_remove_quotes(char *str);

@@ -97,7 +97,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 	int		c;
 
 	init_simple_cmd(&mllcd->simple_cmd);
-	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' '); // on the cmd-position 0 there is always the command
+	cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' ', &mllcd->in_pars); // on the cmd-position 0 there is always the command
 	if (!cmd || !cmd[0])
 	{
 		free_strstr(cmd);

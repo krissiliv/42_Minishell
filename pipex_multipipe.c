@@ -19,7 +19,7 @@ static int	multi_execute_interpreter(t_alloc *mllcd)
 	int in;
 	int out;
 
-    mllcd->pipex_m.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0], ' '); // on the cmd-position 0 there is always the command
+    mllcd->pipex_m.cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0], ' ', &mllcd->in_pars); // on the cmd-position 0 there is always the command
 	if (!(mllcd->pipex_m.cmd) || !(mllcd->pipex_m.cmd[0]) || !(mllcd->pipex_m.cmd[0][0]))
 		return (1);
 	c = 0; // now remove "" from everywhere

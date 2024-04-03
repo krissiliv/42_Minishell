@@ -77,7 +77,7 @@ static void	quote_checker(char c, t_quotes *quotes, char quote_type) // if quote
 		quotes->double_quotes_open = !quotes->double_quotes_open;
 }
 
-char	**ft_split_w_quotes(char const *s, char c)
+char	**ft_split_w_quotes(char const *s, char c, t_input_parsing *in_pars)
 {
 	char		**words;
 	t_mystruct	*hst;
@@ -87,10 +87,10 @@ char	**ft_split_w_quotes(char const *s, char c)
 	quotes.double_quotes_open = false;
 	hst = (t_mystruct *)malloc(sizeof(t_mystruct));
 	if (!hst)
-		return (NULL);
+		return (free_cmd_table(in_pars), NULL);
 	words = (char **)malloc((count_words((char *)s, c) + 1) * sizeof(char *));
 	if (freeing_choice_struct(words, hst) == NULL)
-		return (NULL);
+		return (free_cmd_table(in_pars), NULL);
 	hst->j = 0;
 	hst->wct = 0;
 	while (hst->wct < count_words((char *)s, c))
@@ -108,7 +108,7 @@ char	**ft_split_w_quotes(char const *s, char c)
 		}
 		words[hst->wct] = (char *)malloc((hst->j - hst->k + 1) * sizeof(char));
 		if (freeing_choice_word(words, hst) == NULL)
-			return (NULL);
+			return (free_cmd_table(in_pars), NULL);
 		ft_strlcpy(words[hst->wct], &s[hst->k], hst->j - hst->k + 1);
 		words[hst->wct++][hst->j - hst->k] = '\0';
 	}
