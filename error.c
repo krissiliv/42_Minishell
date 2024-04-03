@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:58:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/09 13:50:04 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 18:23:25 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	cd_error_handler(t_alloc *mllcd, char *str)
+{
+	mllcd->exit_status = 1;
+	ft_putendl_fd(str, 2);
+}
 
 int	pipex_error_handling(int err_code, t_pipex_m *pipex_m)
 {
