@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 19:04:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/03/21 13:09:46 by pgober           ###   ########.fr       */
+/*   Created: 2024/04/03 14:01:55 by pgober            #+#    #+#             */
+/*   Updated: 2024/04/03 14:01:58 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,13 @@
 int	adapt_shlvl(t_alloc *mllcd)
 {
 	t_env	*temp;
-	char 	*temp2;
+	char	*temp2;
 
 	temp = mllcd->env_list;
 	while (temp)
 	{
 		if (ft_strncmp(temp->env_var, "SHLVL=", 6) == 0)
 		{
-			// if (ft_atoi(temp->env_var + 6) > 1000)  can save the plase bc we will never get to that level
-			// {
-			// 	ft_putstr_fd("Error: Recursion level too deep.\n", 2);
-			// 	return (1);
-			// }
-			// printf("SHLVL: %s\n", temp->env_var);
 			temp2 = ft_itoa(ft_atoi(temp->env_var + 6) + 1);
 			if (temp2 == NULL)
 				return (1);
@@ -36,7 +30,6 @@ int	adapt_shlvl(t_alloc *mllcd)
 			temp->malloced = true;
 			if (temp->env_var == NULL)
 				return (1);
-			// printf("new SHLVL: %s\n", temp->env_var);
 			break ;
 		}
 		temp = temp->next;
@@ -64,14 +57,14 @@ int	get_env(char **envv, t_env **head)
 	int		i;
 	t_env	*temp;
 
-	i = 0;
-	if (!envv[i] && *head)
+	if (!envv[0] && *head)
 		free(*head);
 	*head = (t_env *)malloc(sizeof(t_env));
 	if (*head == NULL)
 		return (1);
 	temp = *head;
-	while (envv[i])
+	i = -1;
+	while (envv[++i])
 	{
 		temp->env_var = envv[i];
 		temp->malloced = false;
@@ -84,7 +77,6 @@ int	get_env(char **envv, t_env **head)
 			temp->env_var = NULL;
 			temp->next = NULL;
 		}
-		i++;
 	}
 	return (0);
 }
@@ -96,7 +88,7 @@ void	free_env_table(char **envv_table)
 	if (envv_table == NULL)
 		return ;
 	i = -1;
-    while (envv_table[++i] != NULL)
+	while (envv_table[++i] != NULL)
 		free_and_null(envv_table[i]);
 	free_and_null(envv_table);
 }
@@ -107,20 +99,20 @@ char	**convert_linkedlst_to_table(t_alloc *mllcd)
 	int		i;
 	t_env	*pos;
 
-    pos = mllcd->env_list;
+	pos = mllcd->env_list;
 	i = 0;
-    while (pos != NULL)
-    {
+	while (pos != NULL)
+	{
 		pos = pos->next;
 		i++;
 	}
 	env_table = (char **)malloc((i + 1) * sizeof(char *));
 	if (env_table == NULL)
 		return (NULL);
-    pos = mllcd->env_list;
+	pos = mllcd->env_list;
 	i = 0;
-    while (pos != NULL)
-    {
+	while (pos != NULL)
+	{
 		env_table[i] = ft_strdup(pos->env_var);
 		if (!env_table[i++])
 			return (free_env_table(env_table), NULL);
