@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 09:42:09 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/05 10:32:35 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 12:00:00 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	prntlist_char(t_charlist *head)
 	pos = head;
 	while (pos != NULL)
 	{
-		 ft_putstr_fd(((char *)(pos->data)), 1);
+		ft_putstr_fd(((char *)(pos->data)), 1);
 		if (pos-> next != NULL)
-			 ft_putstr_fd(" -> ", 1);
+			ft_putstr_fd(" -> ", 1);
 		pos = pos->next;
 	}
 }
