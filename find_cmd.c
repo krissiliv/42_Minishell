@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/21 15:52:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 13:53:56 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	**translated_pathsign(char *cmd)
 		paths = (char **)malloc(1 * sizeof(char *));
 		if (!paths)
 			return (NULL);
-		paths[0] = NULL; //file is in current dir
+		paths[0] = NULL;
 	}
 	else
 	{
@@ -52,16 +52,21 @@ static char	**translated_pathsign(char *cmd)
 	return (paths);
 }
 
+static void	find_poss_paths(char *cmd, char **envv, t_pipex_m *pipex_m)
+{
+	if (cmd[0] == '.' || cmd[0] == '/')
+		pipex_m->poss_paths = translated_pathsign(cmd);
+	else
+		pipex_m->poss_paths = get_cmd_paths(envv);
+}
+
 char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 {
 	int		i;
 
 	i = 0;
-	if (cmd[0] == '.' || cmd[0] == '/')
-		pipex_m->poss_paths = translated_pathsign(cmd);
-	else
-		pipex_m->poss_paths = get_cmd_paths(envv);
-	if (!pipex_m->poss_paths) // malloc protection of above lines
+	find_poss_paths(cmd, envv, pipex_m);
+	if (!pipex_m->poss_paths)
 		return (pipex_free_all(pipex_m, NULL), NULL);
 	while (pipex_m->poss_paths[i])
 	{
@@ -80,6 +85,6 @@ char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
 		pipex_m->cmdpath = NULL;
 	}
 	if (access(cmd, F_OK | X_OK) == 0)
-		return (free_strstr(pipex_m->poss_paths), cmd); // this free strstr apparently causes some leaks
+		return (free_strstr(pipex_m->poss_paths), cmd);
 	return (pipex_free_all(pipex_m, NULL), NULL);
 }
