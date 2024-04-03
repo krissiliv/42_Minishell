@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:02:57 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/07 18:00:37 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:14:30 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	unset_one(t_env **env_list, char *input, t_alloc *mllcd)
 	return (0);
 }
 
-int unset(char **cmd, t_alloc *mllcd)
+int	unset(char **cmd, t_alloc *mllcd)
 {
 	int	i;
 
