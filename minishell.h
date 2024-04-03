@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/28 16:31:38 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/03 13:49:35 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,24 @@ typedef struct s_alloc
 	int				exit_status; //put it in a global struct
 }	t_alloc;
 
-// PIA
 // signals
 void 		signals(int mode);
 extern int	g_sigint;
 
+// PIA
+
+// main
+void	sigint_helper(t_alloc *mllcd);
+
+// preparing minishell 2
+int		put_space_before_special_operator(char **input_str);
+
+//preparing minishell
+int		preparing_minishell(t_alloc *mllcd, char *input_str);
+
+
 //print prompt
-char	*read_input_print_prompt(void);
+char	*read_input_print_prompt(t_env **env_list);
 
 //finish
 void	free_cmd_table(t_input_parsing *in_pars);

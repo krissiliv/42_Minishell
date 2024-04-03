@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   print_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:07:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/05 18:36:12 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/03 13:38:37 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *read_input_print_prompt(void) 
+char *read_input_print_prompt(t_env **env_list)
 {
     char    *line;
     
@@ -20,6 +20,8 @@ char *read_input_print_prompt(void)
     line = readline("~/minishell> ");
     if (!line)
     {
+        ft_lstclear(env_list);
+		rl_clear_history();
         return (NULL);
     }
 	signals(2);
