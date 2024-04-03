@@ -34,16 +34,15 @@ static int	validate_n_flag(char *flag)
 		return (1);
 }
 
-int echo(char *cmd[])
+int	echo(char *cmd[])
 {
-    int i;
+	int	i;
 
 	i = 1;
-    if (!cmd[1]) {
-        return (write(1, "\n", 1), 0);
-	}
+	if (!cmd[1])
+		return (write(1, "\n", 1), 0);
 	while (!validate_n_flag(cmd[i]))
-    	i++;
+		i++;
 	while (cmd[i])
 	{
 		ft_putstr_fd(cmd[i], 1);
@@ -53,7 +52,7 @@ int echo(char *cmd[])
 	}
 	if (validate_n_flag(cmd[1]) == 1)
 		write(1, "\n", 1);
-    return (0);
+	return (0);
 }
 
 /* int main(int argc, char *argv[])
