@@ -6,13 +6,13 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/03/20 13:06:21 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 13:58:25 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_cmd_table(t_input_parsing *in_pars) //parsing
+void	free_cmd_table(t_input_parsing *in_pars)
 {
 	int	i;
 	int	j;
@@ -25,9 +25,8 @@ void	free_cmd_table(t_input_parsing *in_pars) //parsing
 			if (in_pars->cmd_table[i])
 			{
 				j = 0;
-				// printf("freeing cmd_table[%d]: [%s, %s, %s, %s, %s] \n", i, in_pars->cmd_table[i][0], in_pars->cmd_table[i][1], in_pars->cmd_table[i][2], in_pars->cmd_table[i][3], in_pars->cmd_table[i][4]);
 				while (j <= 4)
-				{	
+				{
 					if (in_pars->cmd_table[i][j])
 						free_and_null((void *)in_pars->cmd_table[i][j]);
 					j++;
@@ -41,23 +40,30 @@ void	free_cmd_table(t_input_parsing *in_pars) //parsing
 	}
 }
 
-void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends) //pipex
+static void	close_pipes(t_pipex_m *pipex_m, int **pipe_ends)
 {
 	int	i;
-	
+
+	i = 0;
+	while (i < pipex_m->cmdnum)
+	{
+		close (pipe_ends[i][0]);
+		close (pipe_ends[i][1]);
+		i++;
+	}
+	free_intarr(pipe_ends, pipex_m->pipenum);
+}
+
+void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends)
+{
+	int	i;
+
 	if (!pipex_m)
 		return ;
 	i = 0;
 	if (pipe_ends)
 	{
-		while (i < pipex_m->cmdnum)
-		{
-			close (pipe_ends[i][0]);
-			close (pipe_ends[i][1]);
-			i++;
-		}
-		i = 0;
-		free_intarr(pipe_ends, pipex_m->pipenum);
+		close_pipes(pipex_m, pipe_ends);
 		pipe_ends = NULL;
 	}
 	if (pipex_m->cmd)
@@ -102,8 +108,8 @@ void	free_before_exit(t_alloc *mllcd, bool end)
 
 void	exit_mllcfail(t_alloc *mllcd)
 {
-	int i;
-	t_env *temp;
+	int		i;
+	t_env	*temp;
 
 	i = mllcd->exit_status;
 	free_before_exit(mllcd, true);
