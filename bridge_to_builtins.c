@@ -6,28 +6,28 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:58:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/01 15:11:53 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:12:09 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int  count_cmd_args(char **cmd)
+static int	count_cmd_args(char **cmd)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (cmd[i])
-        i++;
-    return (i);
+	i = 0;
+	while (cmd[i])
+		i++;
+	return (i);
 }
 
-int	builtins_1(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
+int	builtins_1(char **cmd, t_alloc *mllcd)
 {
 	if (!ft_strcmp("cd", cmd[0]))
 		cd(cmd, count_cmd_args(cmd), mllcd);
 	else if (!ft_strcmp("export", cmd[0]))
-		exporting(cmd, mllcd); // should have no dollar signs
+		exporting(cmd, mllcd);
 	else if (!ft_strcmp("unset", cmd[0]))
 		unset(cmd, mllcd);
 	else if (!ft_strcmp("exit", cmd[0]))
@@ -37,7 +37,7 @@ int	builtins_1(char **cmd, t_alloc *mllcd) // this is actually like execute or e
 	return (0);
 }
 
-int	builtins_2(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
+int	builtins_2(char **cmd, t_alloc *mllcd)
 {
 	if (!ft_strcmp("echo", cmd[0]))
 		return (echo(cmd));
@@ -50,7 +50,7 @@ int	builtins_2(char **cmd, t_alloc *mllcd) // this is actually like execute or e
 	return (0);
 }
 
-int	builtins_all(char **cmd, t_alloc *mllcd) // this is actually like execute or execve
+int	builtins_all(char **cmd, t_alloc *mllcd)
 {
 	if (!ft_strcmp("echo", cmd[0]))
 		return (echo(cmd));
@@ -59,7 +59,7 @@ int	builtins_all(char **cmd, t_alloc *mllcd) // this is actually like execute or
 	else if (!ft_strcmp("env", cmd[0]))
 		return (env(cmd, *mllcd));
 	else if (!ft_strcmp("export", cmd[0]))
-		return (exporting(cmd, mllcd)); // should have no dollar signs
+		return (exporting(cmd, mllcd));
 	else if (!ft_strcmp("unset", cmd[0]))
 		return (unset(cmd, mllcd));
 	else if (!ft_strcmp("exit", cmd[0]))
