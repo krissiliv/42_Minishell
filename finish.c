@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 13:58:25 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 16:45:20 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,18 @@ void	free_cmd_table(t_input_parsing *in_pars)
 	}
 }
 
-static void	close_pipes(t_pipex_m *pipex_m, int **pipe_ends)
+void	close_pipes(int num1, int **pipe_ends, int num)
 {
 	int	i;
 
 	i = 0;
-	while (i < pipex_m->cmdnum)
+	while (i < num)
 	{
 		close (pipe_ends[i][0]);
 		close (pipe_ends[i][1]);
 		i++;
 	}
-	free_intarr(pipe_ends, pipex_m->pipenum);
+	free_intarr(pipe_ends, num1);
 }
 
 void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends)
@@ -63,7 +63,7 @@ void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends)
 	i = 0;
 	if (pipe_ends)
 	{
-		close_pipes(pipex_m, pipe_ends);
+		close_pipes(pipex_m->pipenum, pipe_ends, pipex_m->cmdnum);
 		pipe_ends = NULL;
 	}
 	if (pipex_m->cmd)

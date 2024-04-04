@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 15:54:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 11:02:24 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ int		pipex(int **pipe_ends, t_alloc *mllcd);
 int		multi_execute_interpreter(t_alloc *mllcd);
 int		execute(int **pipe_ends, t_alloc *mllcd);
 
+// pipex multipipe 3
+int		child(int **pipe_ends, t_alloc *mllcd, int *pid);
+
 // pipex multipipe interpreter
 int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
 
@@ -122,6 +125,9 @@ int		env(char **cmd, t_alloc mllcd);
 int		exporting(char **cmd, t_alloc *mllcd);
 int		unset(char **cmd, t_alloc *mllcd);
 int		exiting(t_alloc *mllcd, char **cmd, int argc);
+
+// error
+void	cd_error_handler(t_alloc *mllcd, char *str);
 
 //atoi for exit builtin
 int		is_num(char str);
