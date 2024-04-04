@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 15:54:11 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/03 17:15:22 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ int		pipex(int **pipe_ends, t_alloc *mllcd);
 // pipex multipipe 2
 int		multi_execute_interpreter(t_alloc *mllcd);
 int		execute(int **pipe_ends, t_alloc *mllcd);
+
+// pipex multipipe 3
+int		child(int **pipe_ends, t_alloc *mllcd);
 
 // pipex multipipe interpreter
 int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
