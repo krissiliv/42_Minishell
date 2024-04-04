@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:13:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 17:16:25 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 11:03:47 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	child_helper(t_alloc *mllcd, int cmd_file, int **pipe_ends)
 	return (-1);
 }
 
-int	child(int **pipe_ends, t_alloc *mllcd)
+int	child(int **pipe_ends, t_alloc *mllcd, int *pid)
 {
 	int	cmd_file;
 	int	i;
@@ -57,5 +57,6 @@ int	child(int **pipe_ends, t_alloc *mllcd)
 		close(cmd_file);
 	i = execute(pipe_ends, mllcd);
 	free_before_exit(mllcd, true);
+	free(pid);
 	exit(i);
 }

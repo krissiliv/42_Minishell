@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 15:28:24 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 11:09:12 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	init_input_parser(t_input_parsing *in_pars, char *input_str) // initi
 	{
 		in_pars->cmd_table[i] = (char **)malloc(5 * sizeof(char *));
 		if (in_pars->cmd_table[i] == NULL)
-			return (free_and_null((void *)in_pars->cmd_table), 1);
+			return (1);
 		j = 0;
 		while (j <= 4)
 			in_pars->cmd_table[i][j++] = NULL;

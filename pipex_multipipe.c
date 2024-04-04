@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 17:22:43 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 11:07:20 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	last_child_outredir(t_alloc *mllcd, int *outfile)
 	return (-1);
 }
 
-int	last_child(int **pipe_ends, t_alloc *mllcd)
+int	last_child(int **pipe_ends, t_alloc *mllcd, int *pid)
 {
 	int	outfile;
 	int	i;
@@ -52,6 +52,7 @@ int	last_child(int **pipe_ends, t_alloc *mllcd)
 		close(outfile);
 	i = execute(pipe_ends, mllcd);
 	free_before_exit(mllcd, true);
+	free(pid);
 	exit(i);
 }
 
@@ -66,7 +67,7 @@ static int	pipex_helper(int *i, int **pid, int **pipe_ends, t_alloc *mllcd)
 			return (pipex_error_handling(6, &mllcd->pipex_m));
 		else if ((*pid)[*i] == 0)
 		{
-			mllcd->pipex_m.compil_res = child(pipe_ends, mllcd);
+			mllcd->pipex_m.compil_res = child(pipe_ends, mllcd, *pid);
 			if (mllcd->pipex_m.compil_res != 0)
 				return (pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 					mllcd->pipex_m.compil_res);
@@ -84,21 +85,23 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 	int	*pid;
 
 	pid = malloc(sizeof(int) * (mllcd->pipex_m.pipenum + 1));
+	if (!pid)
+		return (pipex_error_handling(1, &mllcd->pipex_m));
 	mllcd->pipex_m.status = 0;
 	i = 0;
 	j = pipex_helper(&i, &pid, pipe_ends, mllcd);
 	if (j != -1)
-		return (j);
+		return (free(pid), j);
 	mllcd->pipex_m.cmdnum = i;
 	signals(2);
 	pid[i] = fork();
 	if (pid[i] < 0)
-		return (pipex_error_handling(6, &mllcd->pipex_m));
+		return (free(pid), pipex_error_handling(6, &mllcd->pipex_m));
 	else if (pid[i] == 0)
 	{
-		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd);
+		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd, pid);
 		if (mllcd->pipex_m.compil_res != 0)
-			return (pipex_free_all(&mllcd->pipex_m, pipe_ends), \
+			return (free(pid), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				mllcd->pipex_m.compil_res);
 	}
 	close_pipes(mllcd->pipex_m.pipenum, pipe_ends, mllcd->pipex_m.pipenum);
@@ -107,5 +110,5 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 		waitpid(pid[i], NULL, 0);
 	waitpid(pid[i], &(mllcd->pipex_m.status), 0);
 	mllcd->exit_status = WEXITSTATUS(mllcd->pipex_m.status);
-	return (pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status);
+	return (free(pid), pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status);
 }
