@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 12:52:41 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:12:58 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 //NASTYA
 // stored environment
-typedef struct	s_env
+typedef struct s_env
 {
 	char			*env_var;
 	bool			malloced;
@@ -50,85 +50,84 @@ typedef struct s_alloc
 }	t_alloc;
 
 // signals
-void 		signals(int mode);
+void		signals(int mode);
 extern int	g_sigint;
 
 // PIA
 
 // main
-void	sigint_helper(t_alloc *mllcd);
+void		sigint_helper(t_alloc *mllcd);
 
 // preparing minishell 2
-int		put_space_before_special_operator(char **input_str);
+int			put_space_before_special_operator(char **input_str);
 
 //preparing minishell
-int		preparing_minishell(t_alloc *mllcd, char *input_str);
-
+int			preparing_minishell(t_alloc *mllcd, char *input_str);
 
 //print prompt
-char	*read_input_print_prompt(t_env **env_list);
+char		*read_input_print_prompt(t_env **env_list);
 
 //finish
-void	free_cmd_table(t_input_parsing *in_pars);
-void	free_before_exit(t_alloc *mllcd, bool end);
-void	exit_mllcfail(t_alloc *mllcd);
+void		free_cmd_table(t_input_parsing *in_pars);
+void		free_before_exit(t_alloc *mllcd, bool end);
+void		exit_mllcfail(t_alloc *mllcd);
 
 // simple cmd execution
-void    init_simple_cmd(t_pipex_m *simple_cmd);
-int		run_simple_cmd(t_alloc *mllcd);
+void		init_simple_cmd(t_pipex_m *simple_cmd);
+int			run_simple_cmd(t_alloc *mllcd);
 
 // simple cmd execution 2
-void	init_simple_cmd(t_pipex_m *simple_cmd);
-int		simple_execute_interpreter(t_alloc *mllcd);
+void		init_simple_cmd(t_pipex_m *simple_cmd);
+int			simple_execute_interpreter(t_alloc *mllcd);
 
 // expander
-char	*find_envvar_value(char *envvar, t_alloc *mllcd);
-int     expander(char **input_str, t_alloc *mllcd);
+char		*find_envvar_value(char *envvar, t_alloc *mllcd);
+int			expander(char **input_str, t_alloc *mllcd);
 
 // heredocs
-int		adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
-int		finish_heredocs(t_alloc *mllcd);
+int			adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars);
+int			finish_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
-int		outredir_appendmode(t_alloc *mllcd, int cmdnum);
+int			outredir_appendmode(t_alloc *mllcd, int cmdnum);
 
 //pipex multipipe
-int		pipex(int **pipe_ends, t_alloc *mllcd);
+int			pipex(int **pipe_ends, t_alloc *mllcd);
 
 // pipex multipipe 2
-int		multi_execute_interpreter(t_alloc *mllcd);
-int		execute(int **pipe_ends, t_alloc *mllcd);
+int			multi_execute_interpreter(t_alloc *mllcd);
+int			execute(int **pipe_ends, t_alloc *mllcd);
 
 // pipex multipipe 3
-int		child(int **pipe_ends, t_alloc *mllcd, int *pid);
+int			child(int **pipe_ends, t_alloc *mllcd, int *pid);
 
 // pipex multipipe interpreter
-int		run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
+int			run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv);
 
 // bridge to builtins
-int		builtins_1(char **cmd, t_alloc *mllcd);
-int		builtins_2(char **cmd, t_alloc *mllcd);
-int		builtins_all(char **cmd, t_alloc *mllcd);
+int			builtins_1(char **cmd, t_alloc *mllcd);
+int			builtins_2(char **cmd, t_alloc *mllcd);
+int			builtins_all(char **cmd, t_alloc *mllcd);
 
 // NASTYA
 //store environment
-int		adapt_shlvl(t_alloc *mllcd);
-int		get_env(char **envv, t_env **head);
-void	ft_lstclear(t_env **env_list);
-char	**convert_linkedlst_to_table(t_alloc *mllcd);
-void	free_env_table(char **envv);
+int			adapt_shlvl(t_alloc *mllcd);
+int			get_env(char **envv, t_env **head);
+void		ft_lstclear(t_env **env_list);
+char		**convert_linkedlst_to_table(t_alloc *mllcd);
+void		free_env_table(char **envv);
 
 //built-ins:
-int		echo(char *cmd[]);
-int		cd(char **cmd, int argc, t_alloc *mllcd);
-int		pwd(void);
-int		env(char **cmd, t_alloc mllcd);
-int		exporting(char **cmd, t_alloc *mllcd);
-int		unset(char **cmd, t_alloc *mllcd);
-int		exiting(t_alloc *mllcd, char **cmd, int argc);
+int			echo(char *cmd[]);
+int			cd(char **cmd, int argc, t_alloc *mllcd);
+int			pwd(void);
+int			env(char **cmd, t_alloc mllcd);
+int			exporting(char **cmd, t_alloc *mllcd);
+int			unset(char **cmd, t_alloc *mllcd);
+int			exiting(t_alloc *mllcd, char **cmd, int argc);
 
 // error
-void	cd_error_handler(t_alloc *mllcd, char *str);
+void		cd_error_handler(t_alloc *mllcd, char *str);
 
 //atoi for exit builtin
 int			is_num(char str);
@@ -137,9 +136,9 @@ long int	ft_atoi_minishell(const char *nptr, int *error);
 int			validate_input(char *input);
 
 //export utils
-t_env	*ft_new_node(char *input);
-void	ft_lstadd_front(t_env **env_list, t_env *new_node);
-t_env	*sort_list(t_env **list);
-void	prnt_sortedlist(t_env *head);
+t_env		*ft_new_node(char *input);
+void		ft_lstadd_front(t_env **env_list, t_env *new_node);
+t_env		*sort_list(t_env **list);
+void		prnt_sortedlist(t_env *head);
 
 #endif
