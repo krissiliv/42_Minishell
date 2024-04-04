@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+static void	init_pipex_multipipe(t_alloc *mllcd)
+{
+	mllcd->pipex_m.cmd = NULL;
+	mllcd->pipex_m.poss_paths = NULL;
+	mllcd->pipex_m.cmdpath = NULL;
+	mllcd->pipex_m.poss_path = NULL;
+}
+
 int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv)
 {
 	int		**pipe_ends;
@@ -31,10 +39,7 @@ int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv)
 			return (pipex_error_handling(9, NULL));
 	}
 	i = -1;
-	mllcd->pipex_m.cmd = NULL;
-	mllcd->pipex_m.poss_paths = NULL;
-	mllcd->pipex_m.cmdpath = NULL;
-	mllcd->pipex_m.poss_path = NULL;
+	init_pipex_multipipe(mllcd);
 	while (++i < mllcd->pipex_m.pipenum)
 	{
 		if (pipe(pipe_ends[i]) == -1)
