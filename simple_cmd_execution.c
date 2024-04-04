@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 15:29:12 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:54:15 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		return (free_env_table(envv), ft_putstr_fd(choose_message(2), 2), 127);
 	if (access(cmdpath, F_OK) != 0 || !ft_strcmp(cmd[0], ".") || \
 		!ft_strcmp(cmd[0], ".."))
-		return (free_env_table(envv), ft_putstr_fd(choose_message(2), 2), free(cmdpath), 127);
+		return (free_env_table(envv), ft_putstr_fd(choose_message(2), 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
 		return (free_env_table(envv), ft_putstr_fd(choose_message(3), 2), \
-			free(cmdpath), 126);
+			126);
 	if (execve(cmdpath, cmd, envv) == -1)
 		return (free_env_table(envv), free(cmdpath),
 			ft_putstr_fd("Simplecmd-Error: Is a directory\n", 2), 126);
-	return (ft_putstr_fd(cmd[0], 2), free(cmdpath),
+	return (ft_putstr_fd(cmd[0], 2),
 		ft_putstr_fd("\nSimplecmd-Error: cmd not found.\n", 2), 127);
 }
 
