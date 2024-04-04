@@ -61,13 +61,3 @@ void	signals(int mode)
 		signal(SIGQUIT, SIG_IGN);
 	}
 }
-	/*else if (mode == 4) //child (we probably don't even need it)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
-	else if (signal(SIGQUIT, SIG_IGN))
-		perror("Ctrl-\\");
-	// signal(SIGINT, signal_processing); // SIGINT - Ctrl+C
-	// signal(SIGQUIT, signal_processing); SIGQUIT - Ctrl+\
-	// signal(SIGTERM, signal_processing); // SIGTERM */

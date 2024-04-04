@@ -46,7 +46,7 @@ static int	put_sp_bef_sp_op_helper2(char *temp[2], char **input_str, int i)
 
 static int	psp_b_sp_op_helper3(char *temp[2], char **input_str, int *i, int k)
 {
-	if (i > 0 && !is_space((*input_str)[*i - 1]) && \
+	if (*i > 0 && !is_space((*input_str)[*i - 1]) && \
 		put_sp_bef_sp_op_helper(temp, input_str, *i) == -1)
 		return (-1);
 	*i += k - 1;

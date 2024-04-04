@@ -56,11 +56,8 @@ void	close_pipes(int num1, int **pipe_ends, int num)
 
 void	pipex_free_all(t_pipex_m *pipex_m, int **pipe_ends)
 {
-	int	i;
-
 	if (!pipex_m)
 		return ;
-	i = 0;
 	if (pipe_ends)
 	{
 		close_pipes(pipex_m->pipenum, pipe_ends, pipex_m->cmdnum);
