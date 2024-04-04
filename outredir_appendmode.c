@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outredir_appendmode.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:28 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 14:03:41 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 14:42:41 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	outredir_appendmode(t_alloc *mllcd, int cmdnum)
 		mllcd->exit_status = 1;
 		return (1);
 	}
-	dup2(fd, 1);
+	if (dup2(fd, 1) == -1)
+		return (mllcd->exit_status = 1, close(fd), 1);
 	close(fd);
 	return (0);
 }

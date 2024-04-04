@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 11:02:24 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 12:52:41 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include "readline/readline.h" //readline
 # include "readline/history.h" //readline
 # include <signal.h>
- #include <sys/ioctl.h>
+# include <sys/ioctl.h>
+# include <limits.h>
 
 # include "libft/libft.h"
 
@@ -130,10 +131,10 @@ int		exiting(t_alloc *mllcd, char **cmd, int argc);
 void	cd_error_handler(t_alloc *mllcd, char *str);
 
 //atoi for exit builtin
-int		is_num(char str);
-int		is_pm(char str);
-int		ft_atoi_minishell(const char *nptr, int *error);
-int		validate_input(char *input);
+int			is_num(char str);
+int			is_pm(char str);
+long int	ft_atoi_minishell(const char *nptr, int *error);
+int			validate_input(char *input);
 
 //export utils
 t_env	*ft_new_node(char *input);
