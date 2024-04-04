@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 11:07:20 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/04 11:19:31 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,21 @@ static int	pipex_helper(int *i, int **pid, int **pipe_ends, t_alloc *mllcd)
 		}
 		(*i)++;
 	}
+	mllcd->pipex_m.cmdnum = *i;
+	signals(2);
 	return (-1);
+}
+
+static void	pipex_helper2(int **pid, int **pipe_ends, t_alloc *mllcd)
+{
+	int	i;
+
+	close_pipes(mllcd->pipex_m.pipenum, pipe_ends, mllcd->pipex_m.pipenum);
+	i = -1;
+	while (++i < mllcd->pipex_m.pipenum)
+		waitpid((*pid)[i], NULL, 0);
+	waitpid((*pid)[i], &(mllcd->pipex_m.status), 0);
+	mllcd->exit_status = WEXITSTATUS(mllcd->pipex_m.status);
 }
 
 int	pipex(int **pipe_ends, t_alloc *mllcd)
@@ -92,8 +106,6 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 	j = pipex_helper(&i, &pid, pipe_ends, mllcd);
 	if (j != -1)
 		return (free(pid), j);
-	mllcd->pipex_m.cmdnum = i;
-	signals(2);
 	pid[i] = fork();
 	if (pid[i] < 0)
 		return (free(pid), pipex_error_handling(6, &mllcd->pipex_m));
@@ -104,11 +116,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 			return (free(pid), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
 				mllcd->pipex_m.compil_res);
 	}
-	close_pipes(mllcd->pipex_m.pipenum, pipe_ends, mllcd->pipex_m.pipenum);
-	i = -1;
-	while (++i < mllcd->pipex_m.pipenum)
-		waitpid(pid[i], NULL, 0);
-	waitpid(pid[i], &(mllcd->pipex_m.status), 0);
-	mllcd->exit_status = WEXITSTATUS(mllcd->pipex_m.status);
-	return (free(pid), pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status);
+	pipex_helper2(&pid, pipe_ends, mllcd);
+	return (free(pid), pipex_free_all(&mllcd->pipex_m, NULL),
+		mllcd->exit_status);
 }
