@@ -6,11 +6,12 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/04/03 18:28:50 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/04 19:40:12 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
 void	case_with_minus(char **path, t_alloc *mllcd)
 {
@@ -51,7 +52,7 @@ static int	var_is_oldpwd(t_env **temp, t_alloc *mllcd)
 	return (0);
 }
 
-static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
+int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 {
 	t_env	*temp;
 
@@ -79,6 +80,7 @@ static int	update_pwds(t_env **env_list, char *pwd_var, t_alloc *mllcd)
 int	cd(char **cmd, int argc, t_alloc *mllcd)
 {
 	char	*path;
+	char	buf[100];
 
 	if (argc > 2)
 		return (cd_error_handler(mllcd, "cd: too many arguments"), 1);
@@ -98,8 +100,8 @@ int	cd(char **cmd, int argc, t_alloc *mllcd)
 			return (free(path), cd_error_handler(mllcd, "chdir failed"), 1);
 		free(path);
 	}
-	if (update_pwds(&mllcd->env_list, "OLDPWD", mllcd) == 1 || \
-		update_pwds(&mllcd->env_list, "PWD", mllcd))
+	if (getcwd(buf, 0) && (update_pwds(&mllcd->env_list, "OLDPWD", mllcd) == 1
+			|| update_pwds(&mllcd->env_list, "PWD", mllcd)))
 		return (free_strstr(cmd), exit_mllcfail(mllcd), 1);
 	return (mllcd->exit_status = 0, 0);
 }
