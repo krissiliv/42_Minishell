@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 18:36:05 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:24:32 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_PARSING_H
-# define MINISHELL_PARSING_H
+#ifndef INPUT_PARSER_H
+# define INPUT_PARSER_H
 
 typedef struct s_input_parsing
 {
 	char	**m_argv;
 	int		m_argc;
-	int		pipenum;  //have to replace the one in minishell_pipex.h with this one later // If there is just "< infile" in front of the first pipe, then pipenum-- as the first pipe is not needed/counted
+	int		pipenum;
 	char	***cmd_table;
 	bool	doublequote_open;
 	bool	singlequote_open;
@@ -25,20 +25,20 @@ typedef struct s_input_parsing
 }	t_input_parsing;
 
 // input parser 2
-int	init_input_parser(t_input_parsing *in_pars, char *input_str);
-int	look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, \
+int		init_input_parser(t_input_parsing *in_pars, char *input_str);
+int		look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, \
 	int curr_cmdnum, int i);
 
 // input parser 3
-int	remove_quotes_from_cmd_table(t_input_parsing *in_pars);
-int	processing_read_heredocs(t_input_parsing *in_pars, int *i, \
-	int curr_cmdnum);
+int		remove_quotes_from_cmd_table(t_input_parsing *in_pars);
+int		processing_read_heredocs(t_input_parsing *in_pars, int *i, \
+		int curr_cmdnum);
 
 // ft_split w quotes
 typedef struct s_quotes
 {
-	bool single_quotes_open;
-	bool double_quotes_open;
+	bool	single_quotes_open;
+	bool	double_quotes_open;
 }	t_quotes;
 
 int		count_words(char *str, char c);
