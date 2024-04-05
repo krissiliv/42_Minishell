@@ -27,6 +27,16 @@ typedef struct s_input_parsing
 // input parser
 int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str);
 
+// input parser 2
+int	init_input_parser(t_input_parsing *in_pars, char *input_str);
+int	look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, \
+	int curr_cmdnum, int i);
+
+// input parser 3
+int	remove_quotes_from_cmd_table(t_input_parsing *in_pars);
+int	processing_read_heredocs(t_input_parsing *in_pars, int *i, \
+	int curr_cmdnum);
+
 // ft_split w quotes
 typedef struct s_quotes
 {
