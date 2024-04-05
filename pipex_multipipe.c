@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 11:19:31 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 16:32:34 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	last_child(int **pipe_ends, t_alloc *mllcd, int *pid)
 	close_pipes(mllcd->pipex_m.pipenum, pipe_ends, mllcd->pipex_m.pipenum);
 	if (outfile != -1)
 		close(outfile);
-	i = execute(pipe_ends, mllcd);
+	i = execute(mllcd);
 	free_before_exit(mllcd, true);
 	free(pid);
 	exit(i);
