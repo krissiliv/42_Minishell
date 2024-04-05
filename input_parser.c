@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 11:09:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 17:26:03 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int	processing_read(t_input_parsing *in_pars)
 	return (0);
 }
 
-int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
+int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str, t_alloc *mllcd)
 {
 	int	exit_status;
 
@@ -116,7 +116,7 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str)
 		return (1);
 	if (remove_quotes_from_cmd_table(in_pars))
 		return (1);
-	if (adapt_cmd_tble_to_heredocs(in_pars) == 1)
+	if (adapt_cmd_tble_to_heredocs(in_pars, mllcd) == 1)
 		return (1);
 	return (0);
 }

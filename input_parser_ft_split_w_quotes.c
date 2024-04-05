@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:12:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:05 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 18:35:27 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,36 +116,3 @@ char	**ft_split_w_quotes(char const *s, char c, t_input_parsing *in_pars)
 	free(hst);
 	return (words);
 }
-
-//cc -Wall -Wextra -Werror -g input_parser_ft_split_w_quotes.c expander.c input_parser_utils.c get_env.c libft/*.c
-// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./a.out
-// int	main(int argc, char **argv, char **envv)
-// {
-//     char	*input_str;
-//     int	wcnt;
-//     char	**words;
-// 	char	c = ' ';
-// 	t_alloc mllcd;
-
-// 	if (!argc || !argv)
-// 		return (1);
-// 	input_str = ft_strdup("echo \'$SHELL\'$PWD"); //fill in stuff from EXTRA/input_parser_testing
-//     mllcd.env_list = (t_env *)malloc(sizeof(t_env));
-//     get_env(envv, &mllcd.env_list);
-// 	if (expander(&input_str, &mllcd))
-//         return (1);
-//     if (!input_str || ft_strlen(input_str) == 0 || input_check_adapt(input_str))
-// 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
-//     words = ft_split_w_quotes(input_str, c);
-//     wcnt = 0;
-// 	printf("%d words:\n", count_words(input_str, c));
-//     while (wcnt < count_words(input_str, c))
-// 	{
-// 		printf("%s\n", words[wcnt]);
-//         free(words[wcnt++]);
-// 	}
-// 	free(words);
-// 	free(input_str);
-// 	ft_lstclear(&mllcd.env_list);
-//     return (0);
-// }

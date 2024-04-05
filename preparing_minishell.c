@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:32:57 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 13:25:32 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 18:35:58 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	preparing_minishell_helper(char *input_str, t_alloc *mllcd)
 	if (!input_str)
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
 	if (pre_check_input(input_str) || ft_strlen(input_str) == 0 || \
-		input_check_adapt(input_str))
+		quotes_check(input_str))
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), \
 			free(input_str), 1);
 	return (0);
@@ -65,7 +65,7 @@ int	preparing_minishell(t_alloc *mllcd, char *input_str)
 		free(input_str);
 		exit_mllcfail(mllcd);
 	}
-	temp = cmdline_input_parser(&mllcd->in_pars, input_str);
+	temp = cmdline_input_parser(&mllcd->in_pars, input_str, mllcd);
 	free(input_str);
 	if (temp == 1)
 		exit_mllcfail(mllcd);

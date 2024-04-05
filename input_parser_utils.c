@@ -6,20 +6,34 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:18:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/02/06 18:08:28 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 18:45:18 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *ft_remove_quotes(char *str)
+static char	*ft_remove_quotes_common(char *str, int i)
 {
-	int i;
-	bool single_quotes_open;
-	bool double_quotes_open;
-	char *new;
-	char *tmp;
-	
+	char	*new;
+	char	*tmp;
+
+	tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+	if (!tmp)
+		return (free(str), NULL);
+	new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
+	free(str);
+	free(tmp);
+	if (!new)
+		return (NULL);
+	return (new);
+}
+
+char	*ft_remove_quotes(char *str)
+{
+	int		i;
+	bool	single_quotes_open;
+	bool	double_quotes_open;
+
 	single_quotes_open = false;
 	double_quotes_open = false;
 	i = 0;
@@ -27,28 +41,12 @@ char *ft_remove_quotes(char *str)
 	{
 		if (str[i] == '\"' && (!single_quotes_open || double_quotes_open))
 		{
-			tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
-			if (!tmp)
-				return (free(str), NULL);
-			new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
-			free(str);
-			free(tmp);
-			if (!new)
-				return (NULL);
-			str = new;
+			str = ft_remove_quotes_common(str, i);
 			double_quotes_open = !double_quotes_open;
 		}
 		else if (str[i] == '\'' && (!double_quotes_open || single_quotes_open))
 		{
-			tmp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
-			if (!tmp)
-				return (free(str), NULL);
-			new = ft_strjoin_w_free(ft_substr(str, 0, i), tmp);
-			free(str);
-			free(tmp);
-			if (!new)
-				return (NULL);
-			str = new;
+			str = ft_remove_quotes_common(str, i);
 			single_quotes_open = !single_quotes_open;
 		}
 		else
@@ -89,7 +87,7 @@ char	*ft_strjoin_w_free(char *s1, char *s2)
 		new[k] = s1[k];
 		k++;
 	}
-    free(s1);
+	free(s1);
 	s = 0;
 	while (s2[s])
 		new[k++] = s2[s++];
@@ -97,11 +95,11 @@ char	*ft_strjoin_w_free(char *s1, char *s2)
 	return (new);
 }
 
-static int	quotes_check(char *input)
+int	quotes_check(char *input)
 {
-	int i;
-	bool single_quotes_open;
-	bool double_quotes_open;
+	int		i;
+	bool	single_quotes_open;
+	bool	double_quotes_open;
 
 	single_quotes_open = false;
 	double_quotes_open = false;
@@ -115,13 +113,6 @@ static int	quotes_check(char *input)
 		i++;
 	}
 	if (single_quotes_open == true || double_quotes_open == true)
-		return (ft_putstr_fd("Error: Quotes not closed.\n", 2), 1);	
-	return (0);
-}
-
-int	input_check_adapt(char *input)
-{
-	if (quotes_check(input))
-		return (1);
+		return (ft_putstr_fd("Error: Quotes not closed.\n", 2), 1);
 	return (0);
 }
