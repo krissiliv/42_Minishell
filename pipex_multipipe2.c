@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 16:13:53 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 15:11:35 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,15 @@ int	execute(int **pipe_ends, t_alloc *mllcd)
 	if (multi_execute_interpreter(mllcd))
 		return (ft_lstclear(&mllcd->env_list), \
 			pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
-	envv = convert_linkedlst_to_table(mllcd);
-	res = builtins_all(mllcd->pipex_m.cmd, mllcd);
+	if (!ft_strcmp(mllcd->pipex_m.cmd[0], "exit") || \
+		!ft_strcmp(mllcd->pipex_m.cmd[0], "cd") || \
+		!ft_strcmp(mllcd->pipex_m.cmd[0], "export") || \
+		!ft_strcmp(mllcd->pipex_m.cmd[0], "unset"))
+		return (pipex_free_all(&mllcd->pipex_m, NULL), 0);
+	res = builtins_2(mllcd->pipex_m.cmd, mllcd);
 	if (res != -1)
-		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), res);
+		return (free_strstr(mllcd->pipex_m.cmd), res);
+	envv = convert_linkedlst_to_table(mllcd);
 	mllcd->pipex_m.cmdpath = find_cmd_path(mllcd->pipex_m.cmd[0], envv, \
 		&mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
