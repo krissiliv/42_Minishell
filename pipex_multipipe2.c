@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 15:11:35 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 16:37:33 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,30 +72,28 @@ int	multi_execute_interpreter(t_alloc *mllcd)
 	return (0);
 }
 
-static int	execute_helper(t_alloc *mllcd, char **envv, int **pipe_ends)
+static int	execute_helper(t_alloc *mllcd, char **envv)
 {
 	if (access(mllcd->pipex_m.cmdpath, F_OK) != 0)
-		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), \
+		return (free_env_table(envv),
 			pipex_error_handling(127, &mllcd->pipex_m));
 	if (access(mllcd->pipex_m.cmdpath, F_OK) == 0 && \
 		access(mllcd->pipex_m.cmdpath, X_OK) != 0)
-		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), \
-			pipex_free_all(&mllcd->pipex_m, pipe_ends), \
-				pipex_error_handling(126, &mllcd->pipex_m));
+		return (free_env_table(envv),
+			pipex_error_handling(126, &mllcd->pipex_m));
 	if (execve(mllcd->pipex_m.cmdpath, mllcd->pipex_m.cmd, envv) == -1)
-		return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), \
+		return (free_env_table(envv),
 			pipex_error_handling(3, &mllcd->pipex_m));
 	return (-1);
 }
 
-int	execute(int **pipe_ends, t_alloc *mllcd)
+int	execute(t_alloc *mllcd)
 {
 	char	**envv;
 	int		res;
 
 	if (multi_execute_interpreter(mllcd))
-		return (ft_lstclear(&mllcd->env_list), \
-			pipex_free_all(&mllcd->pipex_m, pipe_ends), 1);
+		return (pipex_free_all(&mllcd->pipex_m, NULL), 1);
 	if (!ft_strcmp(mllcd->pipex_m.cmd[0], "exit") || \
 		!ft_strcmp(mllcd->pipex_m.cmd[0], "cd") || \
 		!ft_strcmp(mllcd->pipex_m.cmd[0], "export") || \
@@ -103,19 +101,16 @@ int	execute(int **pipe_ends, t_alloc *mllcd)
 		return (pipex_free_all(&mllcd->pipex_m, NULL), 0);
 	res = builtins_2(mllcd->pipex_m.cmd, mllcd);
 	if (res != -1)
-		return (free_strstr(mllcd->pipex_m.cmd), res);
+		return (pipex_free_all(&mllcd->pipex_m, NULL), res);
 	envv = convert_linkedlst_to_table(mllcd);
 	mllcd->pipex_m.cmdpath = find_cmd_path(mllcd->pipex_m.cmd[0], envv, \
 		&mllcd->pipex_m);
 	if (mllcd->pipex_m.cmdpath == NULL)
-	{
-		free_env_table(envv);
-		return (pipex_error_handling(127, &mllcd->pipex_m));
-	}
-	res = execute_helper(mllcd, envv, pipe_ends);
+		return (free_env_table(envv),
+			pipex_error_handling(127, &mllcd->pipex_m));
+	res = execute_helper(mllcd, envv);
 	if (res != -1)
 		return (res);
-	return (free_env_table(envv), free_strstr(mllcd->pipex_m.cmd), \
-		ft_putstr_fd("Something went wrong", 2), \
-			pipex_free_all(&mllcd->pipex_m, pipe_ends), 0);
+	return (free_env_table(envv), ft_putstr_fd("Something went wrong", 2),
+		pipex_free_all(&mllcd->pipex_m, NULL), 0);
 }
