@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:25:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 15:21:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 15:40:12 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	simple_execute_interpreter_input_redir(t_alloc *mllcd, int *in)
 		return (ft_putstr_fd("Simplecmd-Error: Interrupted system call. \
 			Permission for input-file denied.\n", 2), 4);
 	}
+	close(*in);
 	return (-1);
 }
 
@@ -52,6 +53,7 @@ static int	simple_exec_interpt_output_redir(t_alloc *mllcd, int *out, int in)
 		return (ft_putstr_fd("Simplecmd-Error: Interrupted system call. \
 			Permission for output-file denied.\n", 2), 4);
 	}
+	close(*out);
 	return (-1);
 }
 
