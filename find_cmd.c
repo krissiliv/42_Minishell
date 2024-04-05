@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:34 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 13:53:56 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/05 15:26:54 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ static void	find_poss_paths(char *cmd, char **envv, t_pipex_m *pipex_m)
 		pipex_m->poss_paths = translated_pathsign(cmd);
 	else
 		pipex_m->poss_paths = get_cmd_paths(envv);
+	if (!pipex_m->poss_paths && access(cmd, F_OK | X_OK) == 0)
+	{
+		pipex_m->poss_paths = (char **)malloc(2 * sizeof(char *));
+		pipex_m->poss_paths[0] = ft_strdup(cmd);
+		pipex_m->poss_paths[1] = NULL;
+	}
 }
 
 char	*find_cmd_path(char *cmd, char **envv, t_pipex_m *pipex_m)
