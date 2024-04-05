@@ -3,7 +3,7 @@ RM := rm -rf
 NAME := minishell
 LIBFTNAME := ./libft/libft.a
 
-.PHONY: all clean fclean re libft
+.PHONY: all clean fclean re libft valgrind
 
 all: $(NAME)
 
@@ -34,3 +34,6 @@ $(LIBFTNAME):
 ${NAME}: ${OBJS}
 	@${MAKE} -C ./libft --no-print-directory
 	@${CC} ${CFLAGS} ${OBJS} $(LIBFTNAME) -o ${NAME} $(LDFLAGS) -lreadline
+
+valgrind:
+	valgrind --suppressions=valgrind_ignore_leaks.txt --leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes --track-fds=yes ./minishell
