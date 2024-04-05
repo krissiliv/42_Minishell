@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:58:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 17:12:21 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/05 17:16:12 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	builtins_2(char **cmd, t_alloc *mllcd)
 		return (echo(cmd));
 	else if (!ft_strcmp("pwd", cmd[0]))
 	{
-		if (cmd[1][0] == '-')
+		if (cmd[1] && cmd[1][0] == '-')
 			return (ft_putstr_fd("pwd: invalid option\n", 2), 2);
 		return (pwd());
 	}
@@ -60,7 +60,7 @@ int	builtins_all(char **cmd, t_alloc *mllcd)
 		return (echo(cmd));
 	else if (!ft_strcmp("pwd", cmd[0]))
 	{
-		if (cmd[1][0] == '-')
+		if (cmd[1] && cmd[1][0] == '-')
 			return (ft_putstr_fd("pwd: invalid option\n", 2), 2);
 		return (pwd());
 	}
