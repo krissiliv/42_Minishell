@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bridge_to_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:58:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 17:16:12 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:02:18 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static int	count_cmd_args(char **cmd)
 
 int	builtins_1(char **cmd, t_alloc *mllcd)
 {
+	if (!cmd || !cmd[0])
+		return (-1);
 	if (!ft_strcmp("cd", cmd[0]))
 		cd(cmd, count_cmd_args(cmd), mllcd);
 	else if (!ft_strcmp("export", cmd[0]))

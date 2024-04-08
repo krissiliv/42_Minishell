@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:25:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 15:40:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 17:26:16 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static int	simple_execute_interpreter_input_redir(t_alloc *mllcd, int *in)
 {
 	*in = open(mllcd->in_pars.cmd_table[0][1], O_RDONLY);
 	if (*in == -1 && mllcd->in_pars.cmd_table[0][1] != NULL)
-		return (ft_putstr_fd("Simplecmd-Error: \
-		Could not open input-file.\n", 2), 1);
+		return (ft_putstr_fd("Simplecmd-Error: Could not open input-file.\n",
+				2), 1);
 	if (*in != -1 && dup2(*in, 0) == -1)
 	{
 		close(*in);

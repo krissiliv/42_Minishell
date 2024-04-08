@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 16:37:33 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 16:13:40 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	execute(t_alloc *mllcd)
 	char	**envv;
 	int		res;
 
-	if (multi_execute_interpreter(mllcd))
+	if (multi_execute_interpreter(mllcd) || \
+		str_is_empty(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][0]))
 		return (pipex_free_all(&mllcd->pipex_m, NULL), 1);
 	if (!ft_strcmp(mllcd->pipex_m.cmd[0], "exit") || \
 		!ft_strcmp(mllcd->pipex_m.cmd[0], "cd") || \

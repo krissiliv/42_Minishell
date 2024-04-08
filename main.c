@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 15:25:36 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:12:36 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ int	main(int argc, char **argv, char **envv)
 			exit(mllcd.exit_status);
 		sigint_helper(&mllcd);
 		if (preparing_minishell(&mllcd, input_str) || \
-			str_is_empty(mllcd.in_pars.cmd_table[0][0])
-			|| g_sigint == SIGINT)
+			g_sigint == SIGINT)
 		{
 			if (g_sigint == SIGINT)
 			{
