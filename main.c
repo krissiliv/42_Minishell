@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 13:48:54 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 14:32:47 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,6 @@ void	sigint_helper(t_alloc *mllcd)
 	}
 }
 
-		// if (isatty(fileno(stdin)))
-		// 	input_str = read_input_print_prompt(&mllcd.env_list);
-		// else
-		// {
-		// 	char *line;
-		// 	line = get_next_line(fileno(stdin));
-		// 	if (!line)
-		// 		exit_mllcfail(&mllcd);
-		// 	input_str = ft_strtrim(line, "\n");
-		// 	if (!input_str)
-		// 		exit_mllcfail(&mllcd);
-		// }
 int	main(int argc, char **argv, char **envv)
 {
 	t_alloc	mllcd;
