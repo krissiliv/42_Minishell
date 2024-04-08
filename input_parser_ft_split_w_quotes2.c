@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser_ft_split_w_quotes2.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:02:23 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 11:06:26 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:02:16 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	cnt_wrds_mini(char *str, char c)
 
 	single_quotes_open = false;
 	double_quotes_open = false;
-	if (!str && str[0] == '\0')
+	if (!str || str[0] == '\0')
 		return (0);
 	wcnt = 0;
 	if (str[0] != c)

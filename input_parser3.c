@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 11:05:59 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:39:05 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	processing_read_heredocs(t_input_parsing *in_pars, int *i, \
 
 	if (ft_strlen(in_pars->m_argv[*i]) == 2)
 	{
+		if (in_pars->cmd_table[curr_cmdnum][3])
+			free(in_pars->cmd_table[curr_cmdnum][3]);
 		in_pars->cmd_table[curr_cmdnum][3] = ft_strdup(in_pars->m_argv[++(*i)]);
 		if (!in_pars->cmd_table[curr_cmdnum][3])
 			return (1);
