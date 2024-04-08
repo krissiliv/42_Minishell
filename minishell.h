@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 17:31:52 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 14:30:07 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,22 @@ void		init_simple_cmd(t_pipex_m *simple_cmd);
 int			simple_execute_interpreter(t_alloc *mllcd);
 
 // expander
-char		*find_envvar_value(char *envvar, t_alloc *mllcd);
 int			expander(char **input_str, t_alloc *mllcd);
 
+// expander tilde
+int			expand_tilde(char **input_str, t_alloc *mllcd);
+
+// find
+char		*find_envvar_value(char *envvar, t_alloc *mllcd);
+int			find_dollar_sign(char *str, int starting_pt);
+
 // input parser
-int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str, t_alloc *mllcd);
+int			cmdline_input_parser(t_input_parsing *in_pars, \
+	char *input_str, t_alloc *mllcd);
 
 // heredocs
-int			adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars, t_alloc *mllcd);
+int			adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars, \
+	t_alloc *mllcd);
 int			finish_heredocs(t_alloc *mllcd);
 
 // outredir appendmode
