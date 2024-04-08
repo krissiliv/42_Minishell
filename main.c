@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 14:32:47 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 14:54:09 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,15 @@ int	main(int argc, char **argv, char **envv)
 			exit(mllcd.exit_status);
 		sigint_helper(&mllcd);
 		if (preparing_minishell(&mllcd, input_str) || \
-			str_is_empty(mllcd.in_pars.cmd_table[0][0]))
+			str_is_empty(mllcd.in_pars.cmd_table[0][0])
+			|| g_sigint == SIGINT)
 		{
+			if (g_sigint == SIGINT)
+			{
+				finish_heredocs(&mllcd);
+				sigint_helper(&mllcd);
+			}
+			printf("%d\n", mllcd.exit_status);
 			free_before_exit(&mllcd, false);
 			continue ;
 		}
