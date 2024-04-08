@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 11:06:16 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 18:12:26 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,18 @@
 static int	processing_read_helper(t_input_parsing *in_pars, int *i, int pos, \
 	int curr_cmdnum)
 {
+	int	outfile;
+
 	if (in_pars->cmd_table[curr_cmdnum][pos])
+	{
+		outfile = open(in_pars->cmd_table[curr_cmdnum][pos], \
+		O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		if (outfile == -1)
+			return (ft_putstr_fd("Error: \
+				Could not open file for writing.\n", 2), 0);
+		close(outfile);
 		free(in_pars->cmd_table[curr_cmdnum][pos]);
+	}
 	in_pars->cmd_table[curr_cmdnum][pos] = ft_strdup(in_pars->m_argv[++(*i)]);
 	if (!in_pars->cmd_table[curr_cmdnum][pos])
 		return (1);
