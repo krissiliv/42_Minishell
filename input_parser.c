@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 17:26:03 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 11:06:16 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ static int	processing_read(t_input_parsing *in_pars)
 	return (0);
 }
 
-int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str, t_alloc *mllcd)
+int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str, \
+	t_alloc *mllcd)
 {
 	int	exit_status;
 
@@ -105,7 +106,7 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str, t_alloc *mll
 	in_pars->input_str = input_str;
 	if (init_input_parser(in_pars, input_str))
 		return (-1);
-	in_pars->m_argc = count_words(input_str, ' ');
+	in_pars->m_argc = cnt_wrds_mini(input_str, ' ');
 	in_pars->m_argv = ft_split_w_quotes(input_str, ' ', in_pars);
 	if (in_pars->m_argv == NULL)
 		return (-1);
