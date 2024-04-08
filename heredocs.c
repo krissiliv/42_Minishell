@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 18:31:21 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 09:56:00 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "minishell.h"
 
 static char	*return_message(int i)
@@ -43,7 +44,7 @@ static int	handle_heredocs(t_input_parsing *in_pars, int cmdnum, \
 	signals(3);
 	gnl = readline("> ");
 	if (!gnl)
-		return (close(fd_here_document), 1);
+		gnl = ft_strdup(in_pars->cmd_table[cmdnum][3]);
 	while ((ft_strcmp(gnl, in_pars->cmd_table[cmdnum][3]) != 0) && \
 		g_sigint != SIGINT)
 	{
@@ -51,7 +52,7 @@ static int	handle_heredocs(t_input_parsing *in_pars, int cmdnum, \
 			return (1);
 		gnl = readline("> ");
 		if (!gnl)
-			return (close(fd_here_document), 1);
+			gnl = ft_strdup(in_pars->cmd_table[cmdnum][3]);
 		if (g_sigint == SIGINT)
 			break ;
 	}
