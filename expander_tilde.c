@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_tilde.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 14:08:56 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 14:14:17 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 15:24:42 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,27 @@
 
 static int	exp_tilde_helper(char **input_str, int i, t_alloc *mllcd, int k)
 {
-	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
 	char	*tmp4;
 	char	*tmp5;
 
-	tmp = find_envvar_value("USER", mllcd);
 	tmp2 = ft_substr((*input_str), i + k, ft_strlen((*input_str)) - i - k);
 	if (!tmp2)
-		return (free(*input_str), free(tmp), 1);
+		return (free(*input_str), 1);
 	tmp3 = find_envvar_value("PWD", mllcd);
 	if (!tmp3)
-		return (free(*input_str), free(tmp), free(tmp2), 1);
+		return (free(*input_str), free(tmp2), 1);
 	tmp4 = ft_substr((*input_str), 0, i);
 	free(*input_str);
 	if (!tmp4)
-		return (free(tmp), free(tmp2), free(tmp3), 1);
+		return (free(tmp2), free(tmp3), 1);
 	tmp5 = ft_strjoin_w_free(tmp4, tmp3);
 	if (!tmp5)
-		return (free(tmp), free(tmp2), free(tmp3), 1);
+		return (free(tmp2), free(tmp3), 1);
 	*input_str = ft_strjoin_w_free(tmp5, tmp2);
 	if (!(*input_str))
-		return (free(tmp), free(tmp2), free(tmp3), 1);
+		return (free(tmp2), free(tmp3), 1);
 	return (free(tmp2), free(tmp3), 0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 14:54:09 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/08 15:25:36 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	main(int argc, char **argv, char **envv)
 				finish_heredocs(&mllcd);
 				sigint_helper(&mllcd);
 			}
-			printf("%d\n", mllcd.exit_status);
 			free_before_exit(&mllcd, false);
 			continue ;
 		}
