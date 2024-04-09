@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 17:02:07 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/09 12:03:12 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,7 @@ static void	run_simple_cmd_get_cmd(t_alloc *mllcd, char ***cmd)
 	*cmd = ft_split_w_quotes(mllcd->in_pars.cmd_table[0][0], ' ', \
 		&mllcd->in_pars);
 	if (!(*cmd))
-	{
-		if (*cmd)
-			free_strstr((*cmd));
 		exit_mllcfail(mllcd);
-	}
 	c = 0;
 	while ((*cmd)[c] && c < 6)
 	{
@@ -80,10 +76,19 @@ static void	run_simple_cmd_get_cmd(t_alloc *mllcd, char ***cmd)
 static void	run_simple_cmd_helper(t_alloc *mllcd, char **cmd)
 {
 	signals(2);
-	if (simple_execute_interpreter(mllcd) || !cmd)
+	if (simple_execute_interpreter(mllcd))
 	{
+		if (cmd)
+			free_strstr(cmd);
 		free_before_exit(mllcd, true);
 		exit(1);
+	}
+	if (!cmd || !cmd[0])
+	{
+		if (cmd)
+			free_strstr(cmd);
+		free_before_exit(mllcd, true);
+		exit(mllcd->exit_status);
 	}
 	mllcd->exit_status = simple_execute(mllcd, cmd);
 	free_strstr(cmd);
