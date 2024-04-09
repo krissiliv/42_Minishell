@@ -19,7 +19,7 @@ static int	processing_read_helper(t_input_parsing *in_pars, int *i, int pos, \
 
 	if (in_pars->cmd_table[curr_cmdnum][pos])
 	{
-		if (pos == 2)
+		if (pos == 2 || pos == 4)
 		{
 			outfile = open(in_pars->cmd_table[curr_cmdnum][pos], \
 			O_WRONLY | O_CREAT | O_TRUNC, 0777);
