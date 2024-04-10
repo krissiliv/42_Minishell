@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_cmd_execution2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:25:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 17:26:16 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/10 16:01:03 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ static int	simple_execute_interpreter_input_redir(t_alloc *mllcd, int *in)
 
 static int	simple_exec_interpt_output_redir(t_alloc *mllcd, int *out, int in)
 {
+	char	*temp;
+	char	*temp2;
+
+	temp2 = ft_strdup(mllcd->in_pars.cmd_table[0][2]);
+	if (!temp2)
+		return (1);
+	temp = ft_strtrim(temp2, " ");
+	if (!temp)
+		return (free(temp2), 1);
+	temp2 = ft_strchr(temp, ' ');
+	free(temp);
+	if (temp2)
+		return (ft_putstr_fd("minishell: ambiguous redirect\n", 2), 1);
 	*out = open(mllcd->in_pars.cmd_table[0][2], \
 		O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (*out == -1 && mllcd->in_pars.cmd_table[0][2] != NULL)
@@ -49,12 +62,10 @@ static int	simple_exec_interpt_output_redir(t_alloc *mllcd, int *out, int in)
 	{
 		if (in != -1)
 			close(in);
-		close(*out);
 		return (ft_putstr_fd("Simplecmd-Error: Interrupted system call. \
-			Permission for output-file denied.\n", 2), 4);
+			Permission for output-file denied.\n", 2), close(*out), 4);
 	}
-	close(*out);
-	return (-1);
+	return (close(*out), -1);
 }
 
 int	simple_execute_interpreter(t_alloc *mllcd)

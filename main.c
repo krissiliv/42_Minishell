@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 16:12:36 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/10 14:15:43 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ static void	init_minishell(t_alloc *mllcd, char **envv)
 	mllcd->saved_stdin = -1;
 	mllcd->env_list = NULL;
 	mllcd->exit_status = 0;
-	if (get_env(envv, &mllcd->env_list) || adapt_shlvl(mllcd))
+	if (!envv || !envv[0])
+		return ;
+	else if (get_env(envv, &mllcd->env_list) || adapt_shlvl(mllcd))
 	{
-		ft_lstclear(&mllcd->env_list);
+		if (mllcd->env_list)
+			ft_lstclear(&mllcd->env_list);
 		exit(1);
 	}
 }
