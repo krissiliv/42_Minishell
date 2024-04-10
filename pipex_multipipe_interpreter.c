@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:06:55 by pgober            #+#    #+#             */
-/*   Updated: 2024/01/24 10:41:33 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/10 17:44:13 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	run_pipex_multipipe(t_alloc *mllcd, int argc, char **argv)
 	while (++i < mllcd->pipex_m.pipenum)
 	{
 		if (pipe(pipe_ends[i]) == -1)
-			return (pipex_error_handling(9, NULL));
+			return (close_pipes(mllcd->pipex_m.pipenum, pipe_ends, i),
+				pipex_error_handling(9, NULL));
 	}
 	return (pipex(pipe_ends, mllcd));
 }

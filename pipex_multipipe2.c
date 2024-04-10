@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 16:13:40 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/10 16:43:16 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	multi_execute_interpreter_input_redir(t_alloc *mllcd, int *in)
 		close(*in);
 		return (pipex_error_handling(4, &mllcd->pipex_m));
 	}
+	close(*in);
 	return (-1);
 }
 
