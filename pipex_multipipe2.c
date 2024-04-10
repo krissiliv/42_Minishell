@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 16:13:40 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/10 13:06:27 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "pipex_multipipe.h"
 #include "minishell.h"
 
@@ -28,8 +29,20 @@ static int	multi_execute_interpreter_input_redir(t_alloc *mllcd, int *in)
 
 static int	multi_execute_interpreter_output_redir(t_alloc *mllcd)
 {
-	int	out;
+	int		out;
+	char	*temp;
+	char	*temp2;
 
+	temp2 = ft_strdup(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2]);
+	if (!temp2)
+		return (1);
+	temp = ft_strtrim(temp2, " ");
+	if (!temp)
+		return (free(temp2), 1);
+	temp2 = ft_strchr(temp, ' ');
+	free(temp);
+	if (temp2)
+		return (ft_putstr_fd("minishell: ambiguous redirect\n", 2), 1);
 	out = open(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2], \
 		O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (out == -1 && \
