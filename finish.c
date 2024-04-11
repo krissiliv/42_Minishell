@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/03 16:45:20 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/11 14:49:01 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,23 @@ void	close_pipes(int num1, int **pipe_ends, int num)
 	int	i;
 
 	i = 0;
-	while (i < num)
+	if (num == 0 && num1 != 0)
 	{
-		close (pipe_ends[i][0]);
-		close (pipe_ends[i][1]);
-		i++;
+		while (i < num1)
+		{
+			close (pipe_ends[i][0]);
+			close (pipe_ends[i][1]);
+			i++;
+		}
+	}
+	else
+	{
+		while (i < num)
+		{
+			close (pipe_ends[i][0]);
+			close (pipe_ends[i][1]);
+			i++;
+		}
 	}
 	free_intarr(pipe_ends, num1);
 }
