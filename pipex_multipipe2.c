@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/10 18:12:35 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:32:47 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	multi_execute_interpreter_output_redir(t_alloc *mllcd)
 		close(out);
 		return (pipex_error_handling(4, &mllcd->pipex_m));
 	}
-	return (-1);
+	return (close(out), -1);
 }
 
 int	multi_execute_interpreter(t_alloc *mllcd)
