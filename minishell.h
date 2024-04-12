@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:47 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 14:30:07 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 18:58:24 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int			exiting(t_alloc *mllcd, char **cmd, int argc);
 
 // error
 void		cd_error_handler(t_alloc *mllcd, char *str);
+void		case_with_minus(char **path, t_alloc *mllcd);
 
 //atoi for exit builtin
 int			is_num(char str);
