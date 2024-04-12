@@ -6,18 +6,30 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:01:40 by apashkov          #+#    #+#             */
-/*   Updated: 2024/04/04 19:40:12 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 19:04:46 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-void	case_with_minus(char **path, t_alloc *mllcd)
+static int	main_cd(char **cmd, t_alloc *mllcd)
 {
-	free(*path);
-	*path = find_envvar_value("OLDPWD", mllcd);
-	pwd();
+	char	*path;
+
+	path = ft_strdup(cmd[1]);
+	if (!path)
+		return (free_strstr(cmd), exit_mllcfail(mllcd), 1);
+	if (!ft_strcmp(path, "-"))
+		case_with_minus(&path, mllcd);
+	if (chdir(path) == -1)
+	{
+		if (!(cmd[1][0] == '\0'))
+			ft_putendl_fd("minishell: no such file or directory", 2);
+		return (free(path), mllcd->exit_status = 1, 1);
+	}
+	free(path);
+	return (0);
 }
 
 static int	var_is_pwd(t_env **temp)
@@ -86,19 +98,15 @@ int	cd(char **cmd, int argc, t_alloc *mllcd)
 		return (cd_error_handler(mllcd, "cd: too many arguments"), 1);
 	else if (argc == 1)
 	{
-		if (chdir(find_envvar_value("HOME", mllcd)) == -1)
-			return (cd_error_handler(mllcd, "chdir failed"), 1);
-	}
-	else
-	{
-		path = ft_strdup(cmd[1]);
-		if (!path)
-			return (free_strstr(cmd), exit_mllcfail(mllcd), 1);
-		if (!ft_strcmp(path, "-"))
-			case_with_minus(&path, mllcd);
+		path = find_envvar_value("HOME", mllcd);
 		if (chdir(path) == -1)
 			return (free(path), cd_error_handler(mllcd, "chdir failed"), 1);
 		free(path);
+	}
+	else
+	{
+		if (main_cd(cmd, mllcd))
+			return (1);
 	}
 	if (getcwd(buf, 0) && (update_pwds(&mllcd->env_list, "OLDPWD", mllcd) == 1
 			|| update_pwds(&mllcd->env_list, "PWD", mllcd)))
