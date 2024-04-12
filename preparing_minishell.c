@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:32:57 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 19:16:50 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 20:40:29 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,13 @@ int	preparing_minishell(t_alloc *mllcd, char *input_str)
 		return (1);
 	temp = put_space_before_special_operator(&input_str);
 	if (temp == -1)
-	{
-		free(input_str);
-		exit_mllcfail(mllcd);
-	}
+		return (free(input_str), exit_mllcfail(mllcd), 1);
 	temp = cmdline_input_parser(&mllcd->in_pars, input_str, mllcd);
 	free(input_str);
 	if (temp == 1)
 		exit_mllcfail(mllcd);
+	else if (temp == -2)
+		return (1);
 	else
 		exit_status = temp;
 	if (exit_status == 2)
