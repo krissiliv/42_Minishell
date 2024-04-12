@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:02:23 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 12:02:16 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 22:04:31 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	cnt_wrds_mini(char *str, char c)
 	if (!str || str[0] == '\0')
 		return (0);
 	wcnt = 0;
-	if (str[0] != c)
+	if (str[0] != c && str[0] != '\t')
 		wcnt++;
 	i = -1;
 	while (str[++i + 1])
@@ -33,7 +33,8 @@ int	cnt_wrds_mini(char *str, char c)
 			double_quotes_open = !double_quotes_open;
 		if (str[i] == '\'' && !double_quotes_open)
 			single_quotes_open = !single_quotes_open;
-		if (str[i] == c && str[i + 1] != c && \
+		if ((str[i] == c || str[i] == '\t') && \
+			(str[i + 1] != c && str[i + 1] != '\t') && \
 			(single_quotes_open == false && double_quotes_open == false))
 			wcnt++;
 	}

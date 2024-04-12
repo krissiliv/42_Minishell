@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser_ft_split_w_quotes.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:12:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 11:04:42 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 22:04:10 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,19 @@ static void	quote_checker(char c, t_quotes *quotes, char quote_type)
 static void	split_helper(char const **s, char c, t_mystruct **hst, \
 	t_quotes quotes)
 {
-	while ((*s)[(*hst)->j] == c && (*s)[(*hst)->j] != '\0')
+	while (((*s)[(*hst)->j] == '\t' || (*s)[(*hst)->j] == c) && \
+		(*s)[(*hst)->j] != '\0')
 		(*hst)->j++;
 	(*hst)->k = (*hst)->j;
 	quote_checker((*s)[(*hst)->j++], &quotes, 'x');
 	while ((*s)[(*hst)->j] != '\0' && ((*s)[(*hst)->j] != c || \
-		((*s)[(*hst)->j] == c && (quotes.single_quotes_open || \
+		(((*s)[(*hst)->j] == '\t' || (*s)[(*hst)->j] == c) && \
+			(quotes.single_quotes_open || \
 			quotes.double_quotes_open))))
 	{
 		quote_checker((*s)[(*hst)->j], &quotes, 'x');
-		if ((*s)[(*hst)->j] == c && !quotes.single_quotes_open && \
+		if (((*s)[(*hst)->j] == '\t' || (*s)[(*hst)->j] == c) && \
+			!quotes.single_quotes_open && \
 			!quotes.double_quotes_open)
 			break ;
 		(*hst)->j++;

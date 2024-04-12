@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:55:20 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 18:13:02 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:26:34 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ static int	last_child_outredir(t_alloc *mllcd, int *outfile)
 		O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (*outfile == -1 && \
 		mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2] != NULL)
+	{
+		if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2][0] == '\0')
+			return (pipex_free_all(&mllcd->pipex_m, NULL), 10);
 		return (pipex_error_handling(10, &mllcd->pipex_m));
+	}
 	if (*outfile != -1 && dup2(*outfile, 1) == -1)
 	{
 		close(*outfile);
@@ -114,7 +118,7 @@ int	pipex(int **pipe_ends, t_alloc *mllcd)
 		mllcd->pipex_m.compil_res = last_child(pipe_ends, mllcd, pid);
 		if (mllcd->pipex_m.compil_res != 0)
 			return (free(pid), pipex_free_all(&mllcd->pipex_m, pipe_ends), \
-				mllcd->pipex_m.compil_res);
+				free_before_exit(mllcd, true), exit(1), 1);
 	}
 	return (pipex_helper2(&pid, pipe_ends, mllcd), free(pid),
 		pipex_free_all(&mllcd->pipex_m, NULL), mllcd->exit_status);

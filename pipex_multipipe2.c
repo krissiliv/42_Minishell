@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:43:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/11 15:32:47 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 20:53:45 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	multi_execute_interpreter_output_redir(t_alloc *mllcd)
 	char	*temp;
 	char	*temp2;
 
+	if (mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2][0] == '\0')
+		return (ft_putstr_fd("minishell: ambiguous redirect\n", 2), 1);
 	temp2 = ft_strdup(mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2]);
 	if (!temp2)
 		return (1);
@@ -50,10 +52,7 @@ static int	multi_execute_interpreter_output_redir(t_alloc *mllcd)
 		mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][2] != NULL)
 		return (pipex_error_handling(10, &mllcd->pipex_m));
 	if (out != -1 && dup2(out, 1) == -1)
-	{
-		close(out);
-		return (pipex_error_handling(4, &mllcd->pipex_m));
-	}
+		return (close(out), pipex_error_handling(4, &mllcd->pipex_m));
 	return (close(out), -1);
 }
 
