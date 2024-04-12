@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 18:42:26 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 21:03:47 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	processing_read_helper(t_input_parsing *in_pars, int *i, int pos, \
 {
 	int	outfile;
 
+	outfile = -1;
 	if (in_pars->cmd_table[curr_cmdnum][pos])
 	{
 		if (pos == 2 || pos == 4)
@@ -24,10 +25,15 @@ static int	processing_read_helper(t_input_parsing *in_pars, int *i, int pos, \
 			outfile = open(in_pars->cmd_table[curr_cmdnum][pos], \
 			O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			if (outfile == -1)
-				return (ft_putstr_fd("Error: \
-					Could not open file for writing.\n", 2), 0);
-			close(outfile);
+				return (0);
 		}
+		if (pos == 1)
+		{
+			if (prr_helper_mini(in_pars->cmd_table[curr_cmdnum][pos], \
+				outfile, i) != -1)
+				return (0);
+		}
+		close(outfile);
 		free(in_pars->cmd_table[curr_cmdnum][pos]);
 	}
 	in_pars->cmd_table[curr_cmdnum][pos] = ft_strdup(in_pars->m_argv[++(*i)]);
@@ -38,26 +44,28 @@ static int	processing_read_helper(t_input_parsing *in_pars, int *i, int pos, \
 
 static int	processing_read2(t_input_parsing *in_pars, int *i, int curr_cmdnum)
 {
-	if ((ft_strcmp(in_pars->m_argv[*i], "<") == 0))
+	if (*i != -2 && ft_strcmp(in_pars->m_argv[*i], "<") == 0)
 	{
 		if (processing_read_helper(in_pars, i, 1, curr_cmdnum))
 			return (1);
 	}
-	else if (ft_strcmp(in_pars->m_argv[*i], ">") == 0)
+	else if (*i != -2 && ft_strcmp(in_pars->m_argv[*i], ">") == 0)
 	{
 		if (processing_read_helper(in_pars, i, 2, curr_cmdnum))
 			return (1);
 	}
-	else if (ft_strncmp(in_pars->m_argv[*i], "<<", 2) == 0)
+	else if (*i != -2 && ft_strncmp(in_pars->m_argv[*i], "<<", 2) == 0)
 	{
 		if (processing_read_heredocs(in_pars, i, curr_cmdnum))
 			return (1);
 	}
-	else if (ft_strcmp(in_pars->m_argv[*i], ">>") == 0)
+	else if (*i != -2 && ft_strcmp(in_pars->m_argv[*i], ">>") == 0)
 	{
 		if (processing_read_helper(in_pars, i, 4, curr_cmdnum))
 			return (1);
 	}
+	if (*i == -2)
+		return (0);
 	return (0);
 }
 
@@ -89,21 +97,22 @@ static int	processing_read(t_input_parsing *in_pars)
 	curr_cmdnum = 0;
 	while (++i < in_pars->m_argc)
 	{
-		if (ft_strcmp(in_pars->m_argv[i], "<") == 0 || \
+		if (i != -2 && (ft_strcmp(in_pars->m_argv[i], "<") == 0 || \
 			ft_strcmp(in_pars->m_argv[i], ">") == 0 || \
 			ft_strncmp(in_pars->m_argv[i], "<<", 2) == 0 || \
-			ft_strcmp(in_pars->m_argv[i], ">>") == 0)
+			ft_strcmp(in_pars->m_argv[i], ">>") == 0))
 		{
 			if (processing_read2(in_pars, &i, curr_cmdnum))
 				return (1);
 		}
-		else if ((ft_strcmp(in_pars->m_argv[i], "|") == 0 && \
-			in_pars->m_argv[i + 1]) || \
-			in_pars->m_argv[i] != NULL)
+		else if (i != -2 && ((ft_strcmp(in_pars->m_argv[i], "|") == 0 && \
+			in_pars->m_argv[i + 1]) || in_pars->m_argv[i]))
 		{
 			if (processing_read3(in_pars, &i, &curr_cmdnum))
 				return (1);
 		}
+		if (i == -2)
+			return (-2);
 	}
 	return (0);
 }
@@ -126,8 +135,11 @@ int	cmdline_input_parser(t_input_parsing *in_pars, char *input_str, \
 	exit_status = syntax_checker(in_pars->m_argv, in_pars->m_argc);
 	if (exit_status != 0)
 		return (exit_status);
-	if (processing_read(in_pars))
+	exit_status = processing_read(in_pars);
+	if (exit_status == 1)
 		return (1);
+	else if (exit_status == -2)
+		return (-2);
 	if (remove_quotes_from_cmd_table(in_pars))
 		return (1);
 	if (adapt_cmd_tble_to_heredocs(in_pars, mllcd) == 1)

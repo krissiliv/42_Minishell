@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 12:39:05 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:03:38 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,15 @@ int	processing_read_heredocs(t_input_parsing *in_pars, int *i, \
 			return (1);
 	}
 	return (0);
+}
+
+int	prr_helper_mini(char *curr_file, int outfile, int *i)
+{
+	outfile = open(curr_file, O_RDONLY, 0777);
+	if (outfile == -1)
+		return (0);
+	if (outfile == -1 && \
+		access(curr_file, F_OK))
+		return (close(outfile), perror("minishell"), *i = -2, 0);
+	return (-1);
 }

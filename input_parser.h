@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 08:47:13 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 11:10:10 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 20:58:52 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_input_parsing
 int		init_input_parser(t_input_parsing *in_pars, char *input_str);
 int		look_for_free_spot_in_cmdtable(t_input_parsing *in_pars, \
 	int curr_cmdnum, int i);
+int		prr_helper_mini(char *curr_file, int outfile, int *i);
 
 // input parser 3
 int		remove_quotes_from_cmd_table(t_input_parsing *in_pars);

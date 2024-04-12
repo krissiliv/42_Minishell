@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:42 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 14:28:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 17:10:23 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	replace_dollar_sign(char **input_str, int dsign, t_alloc *mllcd)
 		return (ret);
 	envvar = ft_substr((*input_str), dsign + 1, i - dsign - 1);
 	if (!envvar || ft_strlen(envvar) == 0)
-		return (free(new_str), exit_mllcfail(mllcd), -1);
+		return (free(new_str), -1);
 	if (repl_dsign_h2(&envvar_value, envvar, mllcd, &new_str))
 		return (free(*input_str), -1);
 	new_str = ft_strjoin_w_free(new_str, \
