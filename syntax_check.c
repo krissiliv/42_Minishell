@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:58:53 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 12:59:23 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 19:22:28 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	pre_check_input(char *input_str)
 
 	if (!input_str || ft_strlen(input_str) == 0)
 	{
-		printf("\n");
+		if (!input_str)
+			printf("\n");
 		return (1);
 	}
 	i = 0;
