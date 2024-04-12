@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:58:26 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 19:12:46 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 22:10:12 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	pipex_error_handling(int err_code, t_pipex_m *pipex_m)
 	else if (err_code == 3)
 		ft_putstr_fd("Pipex-Error: No such process!\n", 2);
 	else if (err_code == 4)
-		ft_putstr_fd("Pipex-Error: Interrupted system call. Permission denied.\n", 2);
+		ft_putstr_fd("Pipex-Error: Interrupted system call.\n", 2);
 	else if (err_code == 6)
 		ft_putstr_fd("Pipex-Error: Forking process failed.\n", 2);
 	else if (err_code == 8)
