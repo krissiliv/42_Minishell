@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 21:03:47 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 22:20:04 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	processing_read_helper(t_input_parsing *in_pars, int *i, int pos, \
 				outfile, i) != -1)
 				return (0);
 		}
-		close(outfile);
+		close_if_open(outfile);
 		free(in_pars->cmd_table[curr_cmdnum][pos]);
 	}
 	in_pars->cmd_table[curr_cmdnum][pos] = ft_strdup(in_pars->m_argv[++(*i)]);

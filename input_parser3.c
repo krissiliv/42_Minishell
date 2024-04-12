@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 21:03:38 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 22:21:40 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
 int	remove_quotes_from_cmd_table(t_input_parsing *in_pars)
 {
@@ -70,6 +71,12 @@ int	prr_helper_mini(char *curr_file, int outfile, int *i)
 		return (0);
 	if (outfile == -1 && \
 		access(curr_file, F_OK))
-		return (close(outfile), perror("minishell"), *i = -2, 0);
-	return (-1);
+		return (perror("minishell"), *i = -2, 0);
+	return (close(outfile), -1);
+}
+
+void	close_if_open(int fd)
+{
+	if (fd != -1)
+		close(fd);
 }
