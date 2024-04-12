@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   preparing_minishell.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:32:57 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/05 18:35:58 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/12 19:16:50 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ static int	preparing_minishell_helper(char *input_str, t_alloc *mllcd)
 		return (ft_putstr_fd("Error: Input is invalid.\n", 2), 1);
 	if (pre_check_input(input_str) || ft_strlen(input_str) == 0 || \
 		quotes_check(input_str))
-		return (ft_putstr_fd("Error: Input is invalid.\n", 2), \
-			free(input_str), 1);
+		return (free(input_str), 1);
 	return (0);
 }
 
