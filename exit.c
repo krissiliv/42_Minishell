@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/02/07 18:10:49 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 18:21:51 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 static void	exit_program(t_alloc *mllcd)
 {
-	// ft_putstr_fd("exit\n", 1);  JUST FOR TESTER, need to add it for submission
 	free_before_exit(mllcd, true);
 	exit(mllcd->exit_status);
 }
@@ -44,6 +43,7 @@ int	exiting(t_alloc *mllcd, char **cmd, int argc)
 	int	error;
 
 	error = 0;
+	// ft_putstr_fd("exit\n", 1);  JUST FOR TESTER, need to add it for submission
 	if (cmd[1])
 	{
 		if (validate_input(cmd[1]) == 1)
@@ -52,7 +52,6 @@ int	exiting(t_alloc *mllcd, char **cmd, int argc)
 			ft_putstr_fd(cmd[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
 			mllcd->exit_status = 2;
-			return (2);
 		}
 		else if (argc > 2)
 		{
@@ -64,6 +63,5 @@ int	exiting(t_alloc *mllcd, char **cmd, int argc)
 			mllcd->exit_status = ft_atoi_minishell(cmd[1], &error);
 	}
 	free_strstr(cmd);
-	exit_program(mllcd);
-	return (0);
+	return (exit_program(mllcd), 0);
 }
