@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:22:55 by apashkov          #+#    #+#             */
-/*   Updated: 2024/04/03 15:26:39 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:09:07 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,16 @@ void	signals(int mode)
 	else if (mode == 2)
 	{
 		signal(SIGINT, &signal_processing2);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (mode == 3)
 	{
 		signal(SIGINT, &signal_processing3);
 		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == 4)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 	}
 }

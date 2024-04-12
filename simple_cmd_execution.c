@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 13:58:56 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:15:32 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static void	run_simple_cmd_get_cmd(t_alloc *mllcd, char ***cmd)
 
 static void	run_simple_cmd_helper(t_alloc *mllcd, char **cmd)
 {
-	signals(2);
 	if (simple_execute_interpreter(mllcd))
 	{
 		if (cmd)
@@ -112,6 +111,7 @@ int	run_simple_cmd(t_alloc *mllcd)
 			ft_putstr_fd("Simplecmd-Error: forking process failed.\n", 2), 6);
 	else if (pid == 0)
 	{
+		signals(4);
 		run_simple_cmd_helper(mllcd, cmd);
 		exit(mllcd->exit_status);
 	}
