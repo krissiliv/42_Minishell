@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:25:06 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/10 16:01:03 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/12 20:35:36 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static int	simple_execute_interpreter_input_redir(t_alloc *mllcd, int *in)
 {
 	*in = open(mllcd->in_pars.cmd_table[0][1], O_RDONLY);
 	if (*in == -1 && mllcd->in_pars.cmd_table[0][1] != NULL)
-		return (ft_putstr_fd("Simplecmd-Error: Could not open input-file.\n",
-				2), 1);
+		return (perror("minishell"), 1);
 	if (*in != -1 && dup2(*in, 0) == -1)
 	{
 		close(*in);
@@ -52,18 +51,16 @@ static int	simple_exec_interpt_output_redir(t_alloc *mllcd, int *out, int in)
 	temp2 = ft_strchr(temp, ' ');
 	free(temp);
 	if (temp2)
-		return (ft_putstr_fd("minishell: ambiguous redirect\n", 2), 1);
+		return (ft_putendl_fd("minishell: ambiguous redirect", 2), 1);
 	*out = open(mllcd->in_pars.cmd_table[0][2], \
 		O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (*out == -1 && mllcd->in_pars.cmd_table[0][2] != NULL)
-		return (ft_putstr_fd("Simplecmd-Error: \
-		Could not open outputfile.\n", 2), 1);
+		return (perror("minishell"), 1);
 	if (*out != -1 && dup2(*out, 1) == -1)
 	{
 		if (in != -1)
 			close(in);
-		return (ft_putstr_fd("Simplecmd-Error: Interrupted system call. \
-			Permission for output-file denied.\n", 2), close(*out), 4);
+		return (perror("minishell"), close(*out), 4);
 	}
 	return (close(*out), -1);
 }
@@ -87,6 +84,8 @@ int	simple_execute_interpreter(t_alloc *mllcd)
 	}
 	if (mllcd->in_pars.cmd_table[0][2])
 	{
+		if (mllcd->in_pars.cmd_table[0][2][0] == '\0')
+			return (ft_putstr_fd("minishell: ambiguous redirect\n", 2), 1);
 		res = simple_exec_interpt_output_redir(mllcd, &out, in);
 		if (res != -1)
 			return (res);
