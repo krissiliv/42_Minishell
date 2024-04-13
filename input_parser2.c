@@ -6,7 +6,7 @@
 /*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/04 11:09:12 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/13 11:09:13 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ int	init_input_parser(t_input_parsing *in_pars, char *input_str)
 		&doublequote_open, in_pars))
 		return (1);
 	i = -1;
+	in_pars->last_in = (int *)malloc((in_pars->pipenum + 1) * sizeof(int));
 	while (++i <= in_pars->pipenum)
 	{
+		in_pars->last_in[i] = -1;
 		in_pars->cmd_table[i] = (char **)malloc(5 * sizeof(char *));
 		if (in_pars->cmd_table[i] == NULL)
 			return (1);

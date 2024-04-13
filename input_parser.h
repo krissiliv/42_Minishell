@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 08:47:13 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 22:19:45 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:06:11 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_input_parsing
 	bool	doublequote_open;
 	bool	singlequote_open;
 	char	*input_str;
+	int		*last_in;
 }	t_input_parsing;
 
 // input parser 2

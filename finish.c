@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:57:39 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/11 14:49:01 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:09:41 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	free_cmd_table(t_input_parsing *in_pars)
 	int	j;
 
 	i = 0;
+	free(in_pars->last_in);
 	if (in_pars->cmd_table)
 	{
 		while (i <= in_pars->pipenum)
