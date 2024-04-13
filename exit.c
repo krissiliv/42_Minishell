@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:08:48 by apashkov          #+#    #+#             */
-/*   Updated: 2024/04/12 18:21:51 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 12:33:02 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exiting(t_alloc *mllcd, char **cmd, int argc)
 	int	error;
 
 	error = 0;
-	// ft_putstr_fd("exit\n", 1);  JUST FOR TESTER, need to add it for submission
+	ft_putstr_fd("exit\n", 1);
 	if (cmd[1])
 	{
 		if (validate_input(cmd[1]) == 1)

@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:54:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/10 14:15:43 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 12:56:50 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,17 @@ void	sigint_helper(t_alloc *mllcd)
 	}
 }
 
+static void	main_helper(t_alloc *mllcd, int argc, char **argv)
+{
+	if (mllcd->in_pars.pipenum > 0)
+		run_pipex_multipipe(mllcd, argc, argv);
+	else
+		run_simple_cmd(mllcd);
+	finish_heredocs(mllcd);
+	sigint_helper(mllcd);
+	free_before_exit(mllcd, false);
+}
+
 int	main(int argc, char **argv, char **envv)
 {
 	t_alloc	mllcd;
@@ -47,20 +58,9 @@ int	main(int argc, char **argv, char **envv)
 	init_minishell(&mllcd, envv);
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
-			input_str = read_input_print_prompt(&mllcd.env_list);
-		else
-		{
-			char *line;
-			line = get_next_line(fileno(stdin));
-			if (!line)
-				exit_mllcfail(&mllcd);
-			input_str = ft_strtrim(line, "\n");
-			if (!input_str)
-				exit_mllcfail(&mllcd);
-		}
+		input_str = read_input_print_prompt(&mllcd.env_list);
 		if (!input_str)
-			exit(mllcd.exit_status);
+			return (printf("exit\n"), exit(mllcd.exit_status), 1);
 		sigint_helper(&mllcd);
 		if (preparing_minishell(&mllcd, input_str) || \
 			g_sigint == SIGINT)
@@ -73,13 +73,7 @@ int	main(int argc, char **argv, char **envv)
 			free_before_exit(&mllcd, false);
 			continue ;
 		}
-		if (mllcd.in_pars.pipenum > 0)
-			run_pipex_multipipe(&mllcd, argc, argv);
-		else
-			run_simple_cmd(&mllcd);
-		finish_heredocs(&mllcd);
-		sigint_helper(&mllcd);
-		free_before_exit(&mllcd, false);
+		main_helper(&mllcd, argc, argv);
 	}
 	return (free_before_exit(&mllcd, true), mllcd.exit_status);
 }
