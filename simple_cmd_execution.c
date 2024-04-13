@@ -6,13 +6,13 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:33:51 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/13 10:21:46 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 10:57:07 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*choose_message(int m)
+static char	*prnt_m(int m)
 {
 	if (m == 1)
 		return ("Simplecmd-Error: \
@@ -35,21 +35,22 @@ static int	simple_execute(t_alloc *mllcd, char **cmd)
 		return (res);
 	envv = convert_linkedlst_to_table(mllcd);
 	if (!envv)
-		return (ft_putstr_fd(choose_message(1), 2), 127);
+		return (ft_putstr_fd(prnt_m(1), 2), 127);
 	cmdpath = find_cmd_path(cmd[0], envv, &mllcd->simple_cmd);
 	if (cmdpath == NULL)
-		return (free_env_table(envv), ft_putstr_fd(choose_message(2), 2), 127);
+		return (free_env_table(envv), ft_putstr_fd(prnt_m(2), 2), 127);
+	if (cmd[0][0] == '\0')
+		return (free(cmdpath), cmdpath = NULL, free_env_table(envv),
+			ft_putstr_fd(prnt_m(2), 2), 127);
 	if (access(cmdpath, F_OK) != 0 || !ft_strcmp(cmd[0], ".") || \
 		!ft_strcmp(cmd[0], ".."))
-		return (free_env_table(envv), ft_putstr_fd(choose_message(2), 2), 127);
+		return (free_env_table(envv), ft_putstr_fd(prnt_m(2), 2), 127);
 	if (access(cmdpath, F_OK) == 0 && access(cmdpath, X_OK) != 0)
-		return (free_env_table(envv), ft_putstr_fd(choose_message(3), 2), \
-			126);
+		return (free_env_table(envv), ft_putstr_fd(prnt_m(3), 2), 126);
 	if (execve(cmdpath, cmd, envv) == -1)
-		return (free_env_table(envv), free(cmdpath), cmdpath = NULL,
+		return (free_env_table(envv),
 			ft_putstr_fd("Simplecmd-Error: Is a directory\n", 2), 126);
-	return (ft_putstr_fd(cmd[0], 2),
-		ft_putstr_fd("\nSimplecmd-Error: cmd not found.\n", 2), 127);
+	return (free(cmdpath), cmdpath = NULL, free_env_table(envv), 127);
 }
 
 static void	run_simple_cmd_get_cmd(t_alloc *mllcd, char ***cmd)
