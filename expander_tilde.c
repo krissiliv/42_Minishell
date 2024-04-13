@@ -6,7 +6,7 @@
 /*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 14:08:56 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 15:24:42 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 12:25:39 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	exp_tilde_helper(char **input_str, int i, t_alloc *mllcd, int k)
 	tmp2 = ft_substr((*input_str), i + k, ft_strlen((*input_str)) - i - k);
 	if (!tmp2)
 		return (free(*input_str), 1);
-	tmp3 = find_envvar_value("PWD", mllcd);
+	tmp3 = find_envvar_value("HOME", mllcd);
 	if (!tmp3)
 		return (free(*input_str), free(tmp2), 1);
 	tmp4 = ft_substr((*input_str), 0, i);
