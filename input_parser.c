@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 13:05:03 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/12 22:20:04 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:14:37 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	processing_read2(t_input_parsing *in_pars, int *i, int curr_cmdnum)
 {
 	if (*i != -2 && ft_strcmp(in_pars->m_argv[*i], "<") == 0)
 	{
+		in_pars->last_in[curr_cmdnum] = 1;
 		if (processing_read_helper(in_pars, i, 1, curr_cmdnum))
 			return (1);
 	}
@@ -56,6 +57,7 @@ static int	processing_read2(t_input_parsing *in_pars, int *i, int curr_cmdnum)
 	}
 	else if (*i != -2 && ft_strncmp(in_pars->m_argv[*i], "<<", 2) == 0)
 	{
+		in_pars->last_in[curr_cmdnum] = 3;
 		if (processing_read_heredocs(in_pars, i, curr_cmdnum))
 			return (1);
 	}

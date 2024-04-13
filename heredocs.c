@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:53:30 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/08 09:56:00 by apashkov         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:15:12 by pgober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ static int	handle_heredocs(t_input_parsing *in_pars, int cmdnum, \
 		if (g_sigint == SIGINT)
 			break ;
 	}
-	free(in_pars->cmd_table[cmdnum][1]);
-	in_pars->cmd_table[cmdnum][1] = ft_strdup("heredoc.tmp");
 	return (close(fd_here_document), free(gnl), 0);
 }
 
@@ -70,6 +68,11 @@ int	adapt_cmd_tble_to_heredocs(t_input_parsing *in_pars, t_alloc *mllcd)
 	{
 		if (in_pars->cmd_table[i][3])
 		{
+			if (in_pars->last_in[i] == 3)
+			{
+				free(in_pars->cmd_table[i][1]);
+				in_pars->cmd_table[i][1] = ft_strdup("heredoc.tmp");
+			}
 			if (handle_heredocs(in_pars, i, mllcd) == 1)
 				return (1);
 		}
