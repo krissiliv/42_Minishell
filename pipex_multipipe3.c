@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_multipipe3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgober <pgober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apashkov <apashkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:13:15 by pgober            #+#    #+#             */
-/*   Updated: 2024/04/10 17:09:21 by pgober           ###   ########.fr       */
+/*   Updated: 2024/04/13 11:47:43 by apashkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ int	child(int **pipe_ends, t_alloc *mllcd, int *pid)
 		O_RDONLY);
 	if (cmd_file == -1 && \
 		mllcd->in_pars.cmd_table[mllcd->pipex_m.cmdnum][1] != NULL)
-		return (perror("minishell"), pipex_free_all(&mllcd->pipex_m, \
-			pipe_ends), free_before_exit(mllcd, true), free(pid), \
-			exit(1), 1);
+		return (perror("minishell"), close_pipes(mllcd->pipex_m.pipenum, \
+			pipe_ends, mllcd->pipex_m.pipenum), \
+			pipex_free_all(&mllcd->pipex_m, NULL),
+			free_before_exit(mllcd, true), free(pid), exit(1), 1);
 	i = child_helper(mllcd, cmd_file, pipe_ends);
 	if (i != -1)
 		return (pipex_free_all(&mllcd->pipex_m, \
