@@ -94,6 +94,4 @@ void	free_strstr(char **str);
 void	free_intarr(int **arr, int number);
 int		str_is_empty(char *str);
 
-char	*get_next_line(int fd);
-
 #endif
